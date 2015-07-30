@@ -77,7 +77,6 @@ if( ! class_exists( 'Woocommerce_Custom_Emails' ) ) {
 		 */
 		public function __construct() {
 			$this->define_constants();
-			$this->includes();
 			$this->init_hooks();
 		}
 
@@ -86,7 +85,7 @@ if( ! class_exists( 'Woocommerce_Custom_Emails' ) ) {
 		 * @since  0.1
 		 */
 		private function init_hooks() {
-			add_action( 'init', array( $this, 'init' ), 0 );
+			add_action( 'init', array( $this, 'init' ) );
 		}
 
 		/**
@@ -96,6 +95,7 @@ if( ! class_exists( 'Woocommerce_Custom_Emails' ) ) {
 			$this->define( 'WCEmails_PLUGIN_FILE', __FILE__ );
 			$this->define( 'WCEmails_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			$this->define( 'WCEmails_VERSION', $this->version );
+			$this->define( 'WCEmails_TEXT_DOMAIN', 'wcemails' );
 		}
 
 		/**
@@ -121,6 +121,7 @@ if( ! class_exists( 'Woocommerce_Custom_Emails' ) ) {
 		 * Init WooCommerce when WordPress Initialises.
 		 */
 		public function init() {
+			$this->includes();
 		}
 
 		/**
@@ -152,3 +153,4 @@ if( ! class_exists( 'Woocommerce_Custom_Emails' ) ) {
 function WCEmails() {
 	return Woocommerce_Custom_Emails::instance();
 }
+WCEmails();
