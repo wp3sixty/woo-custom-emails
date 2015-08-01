@@ -138,15 +138,14 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Template HTML File Name', WCEmails_TEXT_DOMAIN ); ?></th>
+						<th scope="row"><?php _e( 'Template', WCEmails_TEXT_DOMAIN ); ?></th>
 						<td>
-							<input name="wcemails_html_template" id="wcemails_html_template" type="text" value="<?php echo isset( $wcemails_detail['html_template'] ) ? $wcemails_detail['html_template'] : ''; ?>" placeholder="<?php _e( 'Template HTML File Name', WCEmails_TEXT_DOMAIN ); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php _e( 'Template Plain File Name', WCEmails_TEXT_DOMAIN ); ?></th>
-						<td>
-							<input name="wcemails_plain_template" id="wcemails_plain_template" type="text" value="<?php echo isset( $wcemails_detail['plain_template'] ) ? $wcemails_detail['plain_template'] : ''; ?>" placeholder="<?php _e( 'Template Plain File Name', WCEmails_TEXT_DOMAIN ); ?>" />
+							<?php
+							$settings = array(
+								'textarea_name' => 'wcemails_template',
+							);
+							wp_editor( html_entity_decode( isset( $wcemails_detail['template'] ) ? $wcemails_detail['template'] : '' ), 'ezway_custom_email_new_order', $settings );
+							?>
 						</td>
 					</tr>
 					<tr>
@@ -187,8 +186,6 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 					<th><?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Hook', WCEmails_TEXT_DOMAIN ); ?></th>
-					<th><?php _e( 'HTML Template', WCEmails_TEXT_DOMAIN ); ?></th>
-					<th><?php _e( 'Plain Template', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Order Action', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Enable', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Action', WCEmails_TEXT_DOMAIN ); ?></th>
@@ -203,8 +200,6 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 							<td><?php echo $details['description']; ?></td>
 							<td><?php echo $details['heading']; ?></td>
 							<td><?php echo $details['hook']; ?></td>
-							<td><?php echo $details['html_template']; ?></td>
-							<td><?php echo $details['plain_template']; ?></td>
 							<td><?php echo $details['order_action'] == 'on' ? 'Yes' : 'No'; ?></td>
 							<td><?php echo $details['enable'] == 'on' ? 'Yes' : 'No'; ?></td>
 							<td>
@@ -229,8 +224,7 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 				$description = filter_input( INPUT_POST, 'wcemails_description',FILTER_SANITIZE_STRING );
 				$heading = filter_input( INPUT_POST, 'wcemails_heading',FILTER_SANITIZE_STRING );
 				$hook = filter_input( INPUT_POST, 'wcemails_hook',FILTER_SANITIZE_STRING );
-				$html_template = filter_input( INPUT_POST, 'wcemails_html_template',FILTER_SANITIZE_STRING );
-				$plain_template = filter_input( INPUT_POST, 'wcemails_plain_template',FILTER_SANITIZE_STRING );
+				$template = isset( $_POST['wcemails_template'] ) ? $_POST['wcemails_template'] : '';
 				$order_action = filter_input( INPUT_POST, 'wcemails_order_action',FILTER_SANITIZE_STRING );
 				$order_action = empty( $order_action ) ? 'off' : $order_action;
 				$enable = filter_input( INPUT_POST, 'wcemails_enable',FILTER_SANITIZE_STRING );
@@ -243,8 +237,7 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 					'description' => $description,
 					'heading' => $heading,
 					'hook' => $hook,
-					'html_template' => $html_template,
-					'plain_template' => $plain_template,
+					'template' => $template,
 					'order_action' => $order_action,
 					'enable' => $enable,
 				);
