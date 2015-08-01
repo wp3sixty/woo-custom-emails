@@ -114,31 +114,65 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 				<table class="form-table">
 					<tbody>
 					<tr>
-						<th scope="row"><?php _e( 'Title', WCEmails_TEXT_DOMAIN ); ?></th>
+						<th scope="row">
+							<?php _e( 'Title', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( '( Title of the Email. )' ); ?>
+								</span>
+						</th>
 						<td>
 							<input name="wcemails_title" id="wcemails_title" type="text" required value="<?php echo isset( $wcemails_detail['title'] ) ? $wcemails_detail['title'] : ''; ?>" placeholder="<?php _e( 'Title', WCEmails_TEXT_DOMAIN ); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?></th>
+						<th scope="row">
+							<?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( '( Email Description to display at Woocommerce Email Setting. )' ); ?>
+								</span>
+						</th>
 						<td>
 							<input name="wcemails_description" id="wcemails_description" required type="text" value="<?php echo isset( $wcemails_detail['description'] ) ? $wcemails_detail['description'] : ''; ?>" placeholder="<?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?></th>
+						<th scope="row">
+							<?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( '( Email Default Heading )' ); ?>
+								</span>
+						</th>
 						<td>
 							<input name="wcemails_heading" id="wcemails_heading" type="text" required value="<?php echo isset( $wcemails_detail['heading'] ) ? $wcemails_detail['heading'] : ''; ?>" placeholder="<?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); ?></th>
+						<th scope="row">
+							<?php _e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( '( Action or Hook on which the email will fire. )' ); ?>
+								</span>
+						</th>
 						<td>
 							<input name="wcemails_hook" id="wcemails_hook" type="text" required value="<?php echo isset( $wcemails_detail['hook'] ) ? $wcemails_detail['hook'] : ''; ?>" placeholder="<?php _e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Template', WCEmails_TEXT_DOMAIN ); ?></th>
+						<th scope="row">
+							<?php _e( 'Template', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( '( Use these tags to to print them in email. - <br/>
+										<i>{order_date},
+										{order_number},
+										{woocommerce_email_order_meta},
+										{order_billing_name},
+										{email_order_items_table},
+										{email_order_total_footer},
+										{order_billing_email},
+										{order_billing_phone},
+										{email_addresses}</i> )' ); ?>
+								</span>
+						</th>
 						<td>
 							<?php
 							$settings = array(
@@ -149,13 +183,23 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Put It In Order Actions?', WCEmails_TEXT_DOMAIN ); ?></th>
+						<th scope="row">
+							<?php _e( 'Put It In Order Actions?', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( '( Order Edit screen at backend will have this email as order action. )' ); ?>
+								</span>
+						</th>
 						<td>
 							<input name="wcemails_order_action" id="wcemails_order_action" type="checkbox" <?php echo isset( $wcemails_detail['order_action'] ) && $wcemails_detail['order_action'] == 'on' ? 'checked="checked"' : ''; ?> />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Enable?', WCEmails_TEXT_DOMAIN ); ?></th>
+						<th scope="row">
+							<?php _e( 'Enable?', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( '( Enable this email here. )' ); ?>
+								</span>
+						</th>
 						<td>
 							<input name="wcemails_enable" id="wcemails_enable" type="checkbox" <?php echo isset( $wcemails_detail['enable'] ) && $wcemails_detail['enable'] == 'on' ? 'checked="checked"' : ''; ?> />
 						</td>
