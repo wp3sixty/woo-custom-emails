@@ -296,8 +296,7 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 						$description    = $details['description'];
 						$heading        = $details['heading'];
 						$hook           = $details['hook'];
-						$html_template  = $details['html_template'];
-						$plain_template = $details['plain_template'];
+						$template       = $details['template'];
 
 						$title = str_replace( ' ', '_', $title );
 
@@ -305,15 +304,6 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 						if ( ! class_exists( 'WCustom_Emails_".$title."_Email' ) ) {
 
 							class WCustom_Emails_".$title."_Email extends WC_Email {
-
-								protected static \$_instance = null;
-
-								public static function instance() {
-									if ( is_null( self::\$_instance ) ) {
-										self::\$_instance = new self();
-									}
-									return self::\$_instance;
-								}
 
 								public function __construct() {
 
@@ -324,8 +314,7 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 									\$this->heading = __( '".$heading."', WCEmails_TEXT_DOMAIN );
 									\$this->subject = __( '', WCEmails_TEXT_DOMAIN );
 
-									\$this->template_html  = 'emails/".$html_template."';
-									\$this->template_plain = 'emails/plain/".$plain_template."';
+									\$this->custom_template = html_entity_decode( '" . $template . "' );
 
 									// Triggers for this email
 									add_action( '".$hook."', array( \$this, 'trigger' ) );
@@ -357,28 +346,20 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 										return;
 									}
 
+									\$this->convert_template();
+
 									\$this->send( \$this->get_recipient(), \$this->get_subject(), \$this->get_content(), \$this->get_headers(), \$this->get_attachments() );
 								}
 
 								function get_content_html() {
 									ob_start();
-									wc_get_template( \$this->template_html, array(
-										'order' 		=> \$this->object,
-										'email_heading' => \$this->get_heading(),
-										'sent_to_admin' => true,
-										'plain_text'    => false
-									) );
+									echo str_replace( \$this->find, \$this->replace, \$this->custom_template );
 									return ob_get_clean();
 								}
 
 								function get_content_plain() {
 									ob_start();
-									wc_get_template( \$this->template_plain, array(
-										'order' 		=> \$this->object,
-										'email_heading' => \$this->get_heading(),
-										'sent_to_admin' => true,
-										'plain_text'    => true
-									) );
+									echo str_replace( \$this->find, \$this->replace, \$this->custom_template );
 									return ob_get_clean();
 								}
 
@@ -421,6 +402,59 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 										)
 									);
 								}
+
+								function convert_template() {
+
+									\$this->find[]    = '{woocommerce_email_order_meta}';
+									\$this->replace[] = \$this->woocommerce_email_order_meta();
+
+									\$this->find[]    = '{order_billing_name}';
+									\$this->replace[] = \$this->object->billing_first_name . ' ' . \$this->object->billing_last_name;
+
+									\$this->find[]    = '{email_order_items_table}';
+									\$this->replace[] = \$this->object->email_order_items_table();
+
+									\$this->find[]    = '{email_order_total_footer}';
+									\$this->replace[] = \$this->email_order_total_footer();
+
+									\$this->find[]    = '{order_billing_email}';
+									\$this->replace[] = \$this->object->billing_email;
+
+									\$this->find[]    = '{order_billing_phone}';
+									\$this->replace[] = \$this->object->billing_phone;
+
+									\$this->find[]    = '{email_addresses}';
+									\$this->replace[] = \$this->get_email_addresses();
+
+								}
+
+								function woocommerce_email_order_meta() {
+									ob_start();
+									do_action( 'woocommerce_email_order_meta', \$this->object, true );
+									return ob_get_clean();
+								}
+
+								function email_order_total_footer() {
+									ob_start();
+									if ( \$totals = \$this->object->get_order_item_totals() ) {
+										\$i = 0;
+										foreach ( \$totals as \$total ) {
+											\$i++;
+											?><tr>
+												<th scope='row' colspan='2' style='text-align:left; border: 1px solid #eee; <?php if ( \$i == 1 ) echo 'border-top-width: 4px;'; ?>'><?php echo \$total['label']; ?></th>
+												<td style='text-align:left; border: 1px solid #eee; <?php if ( \$i == 1 ) echo 'border-top-width: 4px;'; ?>'><?php echo \$total['value']; ?></td>
+											</tr><?php
+										}
+									}
+									return ob_get_clean();
+								}
+
+								function get_email_addresses() {
+									ob_start();
+									wc_get_template( 'emails/email-addresses.php', array( 'order' => \$this->object ) );
+									return ob_get_clean();
+								}
+
 							}
 						}
 						");
