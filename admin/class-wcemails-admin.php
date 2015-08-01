@@ -455,8 +455,9 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 				foreach ( $wcemails_email_details as $key => $details ) {
 
 					$enable = $details['enable'];
+					$order_action = $details['order_action'];
 
-					if( $enable == 'on' ) {
+					if( $enable == 'on' && $order_action == 'on' ) {
 
 						$title          = $details['title'];
 						$title = str_replace( ' ', '_', $title );
