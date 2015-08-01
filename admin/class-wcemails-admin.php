@@ -45,6 +45,8 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 
 			add_action( 'admin_init', array( $this, 'wcemails_email_actions_details' ) );
 
+			add_filter( 'woocommerce_email_classes', array( $this, 'wcemails_custom_woocommerce_emails' ) );
+
 		}
 
 		function wcemails_settings_menu() {
@@ -280,6 +282,165 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 				add_settings_error( 'wcemails-settings', 'error_code', 'Email settings deleted!', 'success' );
 
 			}
+
+		}
+
+		function wcemails_custom_woocommerce_emails( $email_classes ) {
+
+			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+
+			if( ! empty( $wcemails_email_details ) ) {
+
+				foreach ( $wcemails_email_details as $key => $details ) {
+
+					$enable = $details['enable'];
+
+					if( $enable == 'on' ) {
+
+						$title          = $details['title'];
+						$description    = $details['description'];
+						$heading        = $details['heading'];
+						$hook           = $details['hook'];
+						$html_template  = $details['html_template'];
+						$plain_template = $details['plain_template'];
+
+						$title = str_replace( ' ', '_', $title );
+
+						eval("
+						if ( ! class_exists( 'WCustom_Emails_".$title."_Email' ) ) {
+
+							class WCustom_Emails_".$title."_Email extends WC_Email {
+
+								protected static \$_instance = null;
+
+								public static function instance() {
+									if ( is_null( self::\$_instance ) ) {
+										self::\$_instance = new self();
+									}
+									return self::\$_instance;
+								}
+
+								public function __construct() {
+
+									\$this->id          = 'wcustom_emails_".$title."';
+									\$this->title       = __( '".str_replace( '_', ' ', $title )."', WCEmails_TEXT_DOMAIN );
+									\$this->description = __( '".$description."', WCEmails_TEXT_DOMAIN );
+
+									\$this->heading = __( '".$heading."', WCEmails_TEXT_DOMAIN );
+									\$this->subject = __( '', WCEmails_TEXT_DOMAIN );
+
+									\$this->template_html  = 'emails/".$html_template."';
+									\$this->template_plain = 'emails/plain/".$plain_template."';
+
+									// Triggers for this email
+									add_action( '".$hook."', array( \$this, 'trigger' ) );
+
+									// Call parent constructor
+									parent::__construct();
+
+									// Other settings
+									\$this->recipient = \$this->get_option( 'recipient' );
+
+									if ( ! \$this->recipient ) {
+										\$this->recipient = get_option( 'admin_email' );
+									}
+								}
+
+								function trigger( \$order_id ) {
+
+									if ( \$order_id ) {
+										\$this->object 		= wc_get_order( \$order_id );
+
+										\$this->find['order-date']      = '{order_date}';
+										\$this->find['order-number']    = '{order_number}';
+
+										\$this->replace['order-date']   = date_i18n( wc_date_format(), strtotime( \$this->object->order_date ) );
+										\$this->replace['order-number'] = \$this->object->get_order_number();
+									}
+
+									if ( ! \$this->is_enabled() || ! \$this->get_recipient() ) {
+										return;
+									}
+
+									\$this->send( \$this->get_recipient(), \$this->get_subject(), \$this->get_content(), \$this->get_headers(), \$this->get_attachments() );
+								}
+
+								function get_content_html() {
+									ob_start();
+									wc_get_template( \$this->template_html, array(
+										'order' 		=> \$this->object,
+										'email_heading' => \$this->get_heading(),
+										'sent_to_admin' => true,
+										'plain_text'    => false
+									) );
+									return ob_get_clean();
+								}
+
+								function get_content_plain() {
+									ob_start();
+									wc_get_template( \$this->template_plain, array(
+										'order' 		=> \$this->object,
+										'email_heading' => \$this->get_heading(),
+										'sent_to_admin' => true,
+										'plain_text'    => true
+									) );
+									return ob_get_clean();
+								}
+
+								function init_form_fields() {
+									\$this->form_fields = array(
+										'enabled' => array(
+											'title' 		=> __( 'Enable/Disable', 'woocommerce' ),
+											'type' 			=> 'checkbox',
+											'label' 		=> __( 'Enable this email notification', 'woocommerce' ),
+											'default' 		=> 'yes'
+										),
+										'recipient' => array(
+											'title' 		=> __( 'Recipient(s)', 'woocommerce' ),
+											'type' 			=> 'text',
+											'description' 	=> sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce' ), esc_attr( get_option('admin_email') ) ),
+											'placeholder' 	=> '',
+											'default' 		=> ''
+										),
+										'subject' => array(
+											'title' 		=> __( 'Subject', 'woocommerce' ),
+											'type' 			=> 'text',
+											'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'woocommerce' ), \$this->subject ),
+											'placeholder' 	=> '',
+											'default' 		=> ''
+										),
+										'heading' => array(
+											'title' 		=> __( 'Email Heading', 'woocommerce' ),
+											'type' 			=> 'text',
+											'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'woocommerce' ), \$this->heading ),
+											'placeholder' 	=> '',
+											'default' 		=> ''
+										),
+										'email_type' => array(
+											'title' 		=> __( 'Email type', 'woocommerce' ),
+											'type' 			=> 'select',
+											'description' 	=> __( 'Choose which format of email to send.', 'woocommerce' ),
+											'default' 		=> 'html',
+											'class'			=> 'email_type wc-enhanced-select',
+											'options'		=> \$this->get_email_type_options()
+										)
+									);
+								}
+							}
+						}
+						");
+
+						$email_class = 'WCustom_Emails_'.$title.'_Email';
+
+						$email_classes['WCustom_Emails_'.$title.'_Email'] = new $email_class();
+
+					}
+
+				}
+
+			}
+
+			return $email_classes;
 
 		}
 
