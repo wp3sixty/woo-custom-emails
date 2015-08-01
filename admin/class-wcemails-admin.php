@@ -47,6 +47,8 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 
 			add_filter( 'woocommerce_email_classes', array( $this, 'wcemails_custom_woocommerce_emails' ) );
 
+			add_filter( 'woocommerce_resend_order_emails_available', array( $this, 'wcemails_change_action_emails' ) );
+
 		}
 
 		function wcemails_settings_menu() {
@@ -441,6 +443,32 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 			}
 
 			return $email_classes;
+
+		}
+
+		function wcemails_change_action_emails( $emails ) {
+
+			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+
+			if( ! empty( $wcemails_email_details ) ) {
+
+				foreach ( $wcemails_email_details as $key => $details ) {
+
+					$enable = $details['enable'];
+
+					if( $enable == 'on' ) {
+
+						$title          = $details['title'];
+						$title = str_replace( ' ', '_', $title );
+
+						array_push( $emails, 'wcustom_emails_'.$title );
+
+					}
+
+				}
+			}
+
+			return $emails;
 
 		}
 
