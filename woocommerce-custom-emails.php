@@ -115,7 +115,6 @@ if( ! class_exists( 'Woocommerce_Custom_Emails' ) ) {
 		 * Include required core files used in admin and on the frontend.
 		 */
 		public function includes() {
-			include_once( 'includes/wcemails-core-functions.php' );
 			include_once( 'admin/class-wcemails-admin.php' );
 		}
 
