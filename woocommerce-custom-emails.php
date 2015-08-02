@@ -6,7 +6,7 @@
  * Description: A woocommerce add on to support customize emails
  * Version: 1.0
  * Author: Mehul Kaklotar
- * Author URI: http://kaklo.me
+ * Author URI: http://mehulkaklotar.branded.me
  * Requires at least: 4.1
  * Tested up to: 4.2
  *
