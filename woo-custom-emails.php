@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Woocommerce Custom Emails
+ * Plugin Name: Woo Custom Emails
  * Plugin URI: http://www.test.com/
  * Description: A woocommerce add on to support customize emails
  * Version: 1.0
@@ -10,9 +10,9 @@
  * Requires at least: 4.1
  * Tested up to: 4.2
  *
- * Text Domain: woocommerce-custom-emails
+ * Text Domain: woo-custom-emails
  *
- * @package WooCommerce_Custom_Emails
+ * @package Woo_Custom_Emails
  * @category Core
  * @author mehulkaklotar
  */
@@ -20,35 +20,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if( ! class_exists( 'Woocommerce_Custom_Emails' ) ) {
+if( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 	/**
-	 * Main WooCommerce Custom Emails Class
+	 * Main Woo Custom Emails Class
 	 *
-	 * @class Woocommerce_Custom_Emails
+	 * @class Woo_Custom_Emails
 	 * @version	0.1
 	 */
-	final class Woocommerce_Custom_Emails {
+	final class Woo_Custom_Emails {
 
 		/**
 		 * @var string
 		 */
 		public $version = '1.0';
 		/**
-		 * @var Woocommerce_Custom_Emails The single instance of the class
+		 * @var Woo_Custom_Emails The single instance of the class
 		 * @since 2.1
 		 */
 		protected static $_instance = null;
 
 		/**
-		 * Main WooCommerce_Custom_Emails Instance
+		 * Main Woo_Custom_Emails Instance
 		 *
 		 * Ensures only one instance of WooCommerce_Custom_Emails is loaded or can be loaded.
 		 *
 		 * @since 0.1
 		 * @static
 		 * @see WCEmails()
-		 * @return WooCommerce_Custom_Emails - Main instance
+		 * @return Woo_Custom_Emails - Main instance
 		 */
 		public static function instance() {
 			if ( is_null( self::$_instance ) ) {
@@ -149,9 +149,9 @@ if( ! class_exists( 'Woocommerce_Custom_Emails' ) ) {
  * Returns the main instance of WCEmails to prevent the need to use globals.
  *
  * @since  0.1
- * @return Woocommerce_Custom_Emails
+ * @return Woo_Custom_Emails
  */
 function WCEmails() {
-	return Woocommerce_Custom_Emails::instance();
+	return Woo_Custom_Emails::instance();
 }
 WCEmails();
