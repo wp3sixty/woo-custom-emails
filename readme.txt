@@ -1,4 +1,4 @@
-=== WooCommerce Custom Emails ===
+=== Woo Custom Emails ===
 Contributors: mehulkaklotar
 Tags: woocommerce, email, order, ecommerce, custom email template
 Requires at least: 3.0.1
@@ -7,7 +7,7 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce Custom Emails is a plugin that helps you create custom emails for your WooCommerce Order.
+Woo Custom Emails is a plugin that helps you create custom emails for your WooCommerce Order.
 
 == Description ==
 
