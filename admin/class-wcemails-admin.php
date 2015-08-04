@@ -286,7 +286,7 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 					'enable' => $enable,
 				);
 
-				if( isset( $_POST['wcemails_update'] ) && ! empty( $_POST['wcemails_update'] ) ) {
+				if( isset( $_POST['wcemails_update'] ) ) {
 					if( ! empty( $wcemails_email_details ) ) {
 						foreach ( $wcemails_email_details as $key => $details ) {
 							if( $key == $_POST['wcemails_update'] ) {
@@ -302,11 +302,11 @@ if( ! class_exists( 'WCEmails_Admin' ) ) {
 
 				add_settings_error( 'wcemails-settings', 'error_code', $title.' is saved and if you have enabled it then you can see it in Woocommerce Email Settings Now', 'success' );
 
-			} else if( isset( $_REQUEST['wcemails_delete'] ) && ! empty( $_REQUEST['wcemails_delete'] ) ) {
+			} else if( isset( $_REQUEST['wcemails_delete'] ) ) {
 
 				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
-				$delete_key = $_POST['delete'];
+				$delete_key = $_REQUEST['wcemails_delete'];
 
 				if( ! empty( $wcemails_email_details ) ) {
 					foreach ( $wcemails_email_details as $key => $details ) {
