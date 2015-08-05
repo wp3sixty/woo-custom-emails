@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if( ! class_exists( 'Woo_Custom_Emails' ) ) {
+if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 	/**
 	 * Main Woo Custom Emails Class
@@ -47,7 +47,7 @@ if( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 *
 		 * @since 0.1
 		 * @static
-		 * @see WCEmails()
+		 * @see woo_custom_emails()
 		 * @return Woo_Custom_Emails - Main instance
 		 */
 		public static function instance() {
@@ -146,12 +146,12 @@ if( ! class_exists( 'Woo_Custom_Emails' ) ) {
 }
 
 /**
- * Returns the main instance of WCEmails to prevent the need to use globals.
+ * Returns the main instance of woo_custom_emails to prevent the need to use globals.
  *
  * @since  0.1
  * @return Woo_Custom_Emails
  */
-function WCEmails() {
+function woo_custom_emails() {
 	return Woo_Custom_Emails::instance();
 }
-WCEmails();
+woo_custom_emails();
