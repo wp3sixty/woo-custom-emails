@@ -290,11 +290,14 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					if ( ! empty( $wcemails_email_details ) ) {
 						foreach ( $wcemails_email_details as $key => $details ) {
 							if ( $key == $_POST['wcemails_update'] ) {
+								$data['id'] = $details['id'];
 								$wcemails_email_details[ $key ] = $data;
 							}
 						}
 					}
 				} else {
+					$id = uniqid( 'wcemails' );
+					$data['id'] = $id;
 					array_push( $wcemails_email_details, $data );
 				}
 
@@ -337,22 +340,21 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					if ( 'on' == $enable ) {
 
 						$title          = $details['title'];
+						$id             = $details['id'];
 						$description    = $details['description'];
 						$heading        = $details['heading'];
 						$hook           = $details['hook'];
 						$template       = $details['template'];
 
-						$title = str_replace( ' ', '_', $title );
-
 						eval("
-						if ( ! class_exists( 'WCustom_Emails_".$title."_Email' ) ) {
+						if ( ! class_exists( 'WCustom_Emails_".$id."_Email' ) ) {
 
-							class WCustom_Emails_".$title."_Email extends WC_Email {
+							class WCustom_Emails_".$id."_Email extends WC_Email {
 
 								public function __construct() {
 
-									\$this->id          = 'wcustom_emails_".$title."';
-									\$this->title       = __( '".str_replace( '_', ' ', $title )."', WCEmails_TEXT_DOMAIN );
+									\$this->id          = 'wcustom_emails_".$id."';
+									\$this->title       = __( '".$title."', WCEmails_TEXT_DOMAIN );
 									\$this->description = __( '".$description."', WCEmails_TEXT_DOMAIN );
 
 									\$this->heading = __( '".$heading."', WCEmails_TEXT_DOMAIN );
@@ -503,9 +505,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						}
 						");
 
-						$email_class = 'WCustom_Emails_'.$title.'_Email';
+						$email_class = 'WCustom_Emails_'.$id.'_Email';
 
-						$email_classes[ 'WCustom_Emails_'.$title.'_Email' ] = new $email_class();
+						$email_classes[ 'WCustom_Emails_'.$id.'_Email' ] = new $email_class();
 
 					}
 				}
