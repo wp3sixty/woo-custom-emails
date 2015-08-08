@@ -27,6 +27,12 @@ Create your custom WooCommerce order emails with WooCommerce default email setti
 2. Upload the 'woo-custom-emails' directory to your '/wp-content/plugins/' directory, using your favorite method (ftp, sftp, scp, etc...)
 3. Activate Woo Custom Emails from your Plugins page.
 
+== Screenshots ==
+
+1. Add/Edit custom emails
+2. View custom emails list
+3. WooCommerce email settings
+
 == Changelog ==
 
 = 1.1 =
