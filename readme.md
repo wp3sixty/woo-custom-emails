@@ -28,6 +28,20 @@ Create your custom WooCommerce order emails with WooCommerce default email setti
 3. Activate Woo Custom Emails from your Plugins page.
 
 
+## Screenshots ##
+
+### Add/Edit custom emails
+
+![Add/Edit custom emails](assets/screenshot-1.png)
+
+### View custom emails list
+
+![View custom emails list](assets/screenshot-2.png)
+
+### WooCommerce email settings
+
+![WooCommerce email settings](assets/screenshot-3.png)
+
 ## Changelog ##
 
 ### 1.1 ###
