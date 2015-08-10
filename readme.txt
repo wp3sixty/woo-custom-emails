@@ -23,12 +23,14 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 1. Visit 'Plugins > Add New'
 2. Search for 'Woo Custom Emails'
 3. Activate Woo Custom Emails from your Plugins page.
+4. Go to WordPress Settings menu -> WC Emails.
 
 = From WordPress.org =
 
 1. Download Woo Custom Emails.
 2. Upload the 'woo-custom-emails' directory to your '/wp-content/plugins/' directory, using your favorite method (ftp, sftp, scp, etc...)
 3. Activate Woo Custom Emails from your Plugins page.
+4. Go to WordPress Settings menu -> WC Emails.
 
 == Screenshots ==
 
