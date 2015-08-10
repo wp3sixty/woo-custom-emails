@@ -132,7 +132,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<textarea name="wcemails_description" id="wcemails_description" required value="<?php echo isset( $wcemails_detail['description'] ) ? $wcemails_detail['description'] : ''; ?>" placeholder="<?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?>" ></textarea>
+							<textarea name="wcemails_description" id="wcemails_description" required placeholder="<?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?>" ><?php echo isset( $wcemails_detail['description'] ) ? $wcemails_detail['description'] : ''; ?></textarea>
 						</td>
 					</tr>
 					<tr>
@@ -157,17 +157,17 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 							<input name="wcemails_heading" id="wcemails_heading" type="text" required value="<?php echo isset( $wcemails_detail['heading'] ) ? $wcemails_detail['heading'] : ''; ?>" placeholder="<?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?>" />
 						</td>
 					</tr>
-					<tr>
+					<!--<tr>
 						<th scope="row">
-							<?php _e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); ?>
+							<?php /*_e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); */?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Action or Hook on which the email will fire. )' ); ?>
+							<?php /*_e( '( Action or Hook on which the email will fire. )' ); */?>
 								</span>
 						</th>
 						<td>
-							<textarea name="wcemails_hook" id="wcemails_hook" type="text" required value="<?php echo isset( $wcemails_detail['hook'] ) ? $wcemails_detail['hook'] : ''; ?>" placeholder="<?php _e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); ?>" ></textarea>
+							<textarea name="wcemails_hook" id="wcemails_hook" type="text" required value="<?php /*echo isset( $wcemails_detail['hook'] ) ? $wcemails_detail['hook'] : ''; */?>" placeholder="<?php /*_e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); */?>" ></textarea>
 						</td>
-					</tr>
+					</tr>-->
 					<tr>
 						<th scope="row">
 							<?php _e( 'Template', WCEmails_TEXT_DOMAIN ); ?>
@@ -241,7 +241,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					<th><?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Subject', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?></th>
-					<th><?php _e( 'Hook', WCEmails_TEXT_DOMAIN ); ?></th>
+					<!--<th><?php /*_e( 'Hook', WCEmails_TEXT_DOMAIN ); */?></th>-->
 					<th><?php _e( 'Order Action', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Enable', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Action', WCEmails_TEXT_DOMAIN ); ?></th>
@@ -256,7 +256,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 							<td><?php echo $details['description']; ?></td>
 							<td><?php echo $details['subject']; ?></td>
 							<td><?php echo $details['heading']; ?></td>
-							<td><?php echo $details['hook']; ?></td>
+							<!--<td><?php /*echo $details['hook']; */?></td>-->
 							<td><?php echo 'on' == $details['order_action'] ? 'Yes' : 'No'; ?></td>
 							<td><?php echo 'on' == $details['enable'] ? 'Yes' : 'No'; ?></td>
 							<td>
