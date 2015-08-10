@@ -40,6 +40,11 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 
 == Changelog ==
 
+= 1.2 =
+* Multiple hooks support
+* Email subject field
+* Description with textarea field
+
 = 1.1 =
 * Unique id generation for email classes
 * Assets added
