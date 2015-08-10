@@ -375,7 +375,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 						$id             = $details['id'];
 
-						array_push( $emails, 'wcustom_emails_'. $id );
+						array_push( $emails, $id );
 
 					}
 				}
