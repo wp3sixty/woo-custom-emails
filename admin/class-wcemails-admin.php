@@ -132,7 +132,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_description" id="wcemails_description" required type="text" value="<?php echo isset( $wcemails_detail['description'] ) ? $wcemails_detail['description'] : ''; ?>" placeholder="<?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?>" />
+							<textarea name="wcemails_description" id="wcemails_description" required value="<?php echo isset( $wcemails_detail['description'] ) ? $wcemails_detail['description'] : ''; ?>" placeholder="<?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?>" ></textarea>
 						</td>
 					</tr>
 					<tr>
@@ -154,7 +154,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_hook" id="wcemails_hook" type="text" required value="<?php echo isset( $wcemails_detail['hook'] ) ? $wcemails_detail['hook'] : ''; ?>" placeholder="<?php _e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); ?>" />
+							<textarea name="wcemails_hook" id="wcemails_hook" type="text" required value="<?php echo isset( $wcemails_detail['hook'] ) ? $wcemails_detail['hook'] : ''; ?>" placeholder="<?php _e( 'Hook Or Action Name', WCEmails_TEXT_DOMAIN ); ?>" ></textarea>
 						</td>
 					</tr>
 					<tr>
