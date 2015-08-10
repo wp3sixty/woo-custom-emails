@@ -13,6 +13,9 @@ Woo Custom Emails is a plugin that helps you create custom emails for your WooCo
 
 Create your custom WooCommerce order emails with WooCommerce default email settings functionality.
 
+= Contributing to Woo Custom Emails =
+If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you can contribute this back to the code. Submit your pull request or issue on [Github WooCustomEmails](https://github.com/mehulkaklotar/woo-custom-emails)
+
 == Installation ==
 
 = From your WordPress dashboard =
