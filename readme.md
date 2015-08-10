@@ -8,7 +8,7 @@ Woo Custom Emails is a plugin that helps you create custom emails for your WooCo
 **Tags:** [woocommerce](https://wordpress.org/plugins/tags/woocommerce), [email](https://wordpress.org/plugins/tags/email), [order](https://wordpress.org/plugins/tags/order), [ecommerce](https://wordpress.org/plugins/tags/ecommerce), [custom email template](https://wordpress.org/plugins/tags/custom email template)  
 **Requires at least:** 4.1  
 **Tested up to:** 4.2.4  
-**Stable tag:** 1.2  
+**Stable tag:** 1.2.1  
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)  
 
 ## Description ##
@@ -48,6 +48,9 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 ![WooCommerce email settings](assets/screenshot-3.png)
 
 ## Changelog ##
+
+### 1.2.1 ###
+* Hotfix
 
 ### 1.2 ###
 * Email subject field
