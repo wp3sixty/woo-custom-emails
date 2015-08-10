@@ -23,8 +23,11 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 			$this->custom_template  = $template;
 
-			if ( ! empty( $hooks ) ) {
-				add_action( $hooks, array( $this, 'trigger' ) );
+			$hooks = explode( "\n", $hook );
+			foreach ($hooks as $hook) {
+				if ( ! empty( $hook ) ) {
+					add_action( $hook, array( $this, 'trigger' ) );
+				}
 			}
 
 			// Call parent constructor
