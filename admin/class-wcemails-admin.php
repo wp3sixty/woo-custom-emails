@@ -373,10 +373,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 					if ( 'on' == $enable && 'on' == $order_action ) {
 
-						$title          = $details['title'];
-						$title = str_replace( ' ', '_', $title );
+						$id             = $details['id'];
 
-						array_push( $emails, 'wcustom_emails_'.$title );
+						array_push( $emails, 'wcustom_emails_'. $id );
 
 					}
 				}
