@@ -24,8 +24,8 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->custom_template  = $template;
 
 			$hooks = explode( "\n", $hook );
-			foreach ($hooks as $hook) {
-				if ( ! empty( $hook ) ) {
+			if ( ! empty( $hooks ) ) {
+				foreach ( $hooks as $hook ) {
 					add_action( $hook, array( $this, 'trigger' ) );
 				}
 			}

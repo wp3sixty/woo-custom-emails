@@ -3,7 +3,7 @@ Contributors: mehulkaklotar, utkarshpatel
 Tags: woocommerce, email, order, ecommerce, custom email template
 Requires at least: 4.1
 Tested up to: 4.2.4
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,9 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 3. WooCommerce email settings
 
 == Changelog ==
+
+= 1.2.1 =
+* Hotfix
 
 = 1.2 =
 * Email subject field

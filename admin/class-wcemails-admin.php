@@ -361,7 +361,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$description    = $details['description'];
 						$subject        = $details['subject'];
 						$heading        = $details['heading'];
-						$hook           = $details['hook'];
+						$hook           = ! empty( $details['hook'] ) ? $details['hook'] : '';
 						$template       = html_entity_decode( $details['template'] );
 
 						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $heading, $hook, $template );
