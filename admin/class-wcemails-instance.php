@@ -8,7 +8,7 @@
  */
 
 
-if ( ! class_exists( 'WCEmails_Instance' ) ) {
+if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 	class WCEmails_Instance extends WC_Email {
 
