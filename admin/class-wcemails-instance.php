@@ -13,7 +13,12 @@ if ( ! class_exists( 'WCEmails_Instance' ) ) {
 	class WCEmails_Instance extends WC_Email {
 
 		/**
-		 * Constructor
+		 * @param $id
+		 * @param $title
+		 * @param $description
+		 * @param $heading
+		 * @param $hook
+		 * @param $template
 		 */
 		function __construct( $id, $title, $description, $heading, $hook, $template ) {
 
