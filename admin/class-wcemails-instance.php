@@ -12,14 +12,14 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @param $hook
 		 * @param $template
 		 */
-		function __construct( $id, $title, $description, $heading, $hook, $template ) {
+		function __construct( $id, $title, $description, $subject, $heading, $hook, $template ) {
 
 			$this->id 				= $id;
 			$this->title 			= __( $title, 'woocommerce' );
 			$this->description		= __( $description, 'woocommerce' );
 
 			$this->heading 			= __( $heading, 'woocommerce' );
-			$this->subject      	= __( '[{site_title}] New customer order ({order_number}) - {order_date}', 'woocommerce' );
+			$this->subject      	= __( $subject, 'woocommerce' );
 
 			$this->custom_template  = $template;
 

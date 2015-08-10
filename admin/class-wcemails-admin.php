@@ -137,6 +137,17 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					</tr>
 					<tr>
 						<th scope="row">
+							<?php _e( 'Subject', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( '( Email Subject <br/>[Try this placeholders : <i>{site_title}, {order_number}, {order_date}</i>] )' ); ?>
+								</span>
+						</th>
+						<td>
+							<input name="wcemails_subject" id="wcemails_subject" type="text" required value="<?php echo isset( $wcemails_detail['subject'] ) ? $wcemails_detail['subject'] : ''; ?>" placeholder="<?php _e( 'Subject', WCEmails_TEXT_DOMAIN ); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
 							<?php _e( '( Email Default Heading )' ); ?>
@@ -228,6 +239,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 				<tr>
 					<th><?php _e( 'Title', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?></th>
+					<th><?php _e( 'Subject', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Hook', WCEmails_TEXT_DOMAIN ); ?></th>
 					<th><?php _e( 'Order Action', WCEmails_TEXT_DOMAIN ); ?></th>
@@ -242,6 +254,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<tr>
 							<td><?php echo $details['title']; ?></td>
 							<td><?php echo $details['description']; ?></td>
+							<td><?php echo $details['subject']; ?></td>
 							<td><?php echo $details['heading']; ?></td>
 							<td><?php echo $details['hook']; ?></td>
 							<td><?php echo 'on' == $details['order_action'] ? 'Yes' : 'No'; ?></td>
@@ -266,6 +279,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 				$title = filter_input( INPUT_POST, 'wcemails_title',FILTER_SANITIZE_STRING );
 				$description = filter_input( INPUT_POST, 'wcemails_description',FILTER_SANITIZE_STRING );
+				$subject = filter_input( INPUT_POST, 'wcemails_subject',FILTER_SANITIZE_STRING );
 				$heading = filter_input( INPUT_POST, 'wcemails_heading',FILTER_SANITIZE_STRING );
 				$hook = filter_input( INPUT_POST, 'wcemails_hook',FILTER_SANITIZE_STRING );
 				$template = isset( $_POST['wcemails_template'] ) ? $_POST['wcemails_template'] : '';
@@ -279,6 +293,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 				$data = array(
 					'title' => $title,
 					'description' => $description,
+					'subject' => $subject,
 					'heading' => $heading,
 					'hook' => $hook,
 					'template' => $template,
@@ -344,11 +359,12 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$title          = $details['title'];
 						$id             = $details['id'];
 						$description    = $details['description'];
+						$subject        = $details['subject'];
 						$heading        = $details['heading'];
 						$hook           = $details['hook'];
 						$template       = html_entity_decode( $details['template'] );
 
-						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $heading, $hook, $template );
+						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $heading, $hook, $template );
 
 						$email_classes[ 'WCustom_Emails_'.$id.'_Email' ] = $wcemails_instance;
 
