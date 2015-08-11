@@ -233,44 +233,10 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		}
 
 		function wcemails_render_view_email_section() {
-
-			?>
-			<table class="form-table">
-				<tr>
-					<th><?php _e( 'Title', WCEmails_TEXT_DOMAIN ); ?></th>
-					<th><?php _e( 'Description', WCEmails_TEXT_DOMAIN ); ?></th>
-					<th><?php _e( 'Subject', WCEmails_TEXT_DOMAIN ); ?></th>
-					<th><?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?></th>
-					<!--<th><?php /*_e( 'Hook', WCEmails_TEXT_DOMAIN ); */?></th>-->
-					<th><?php _e( 'Order Action', WCEmails_TEXT_DOMAIN ); ?></th>
-					<th><?php _e( 'Enable', WCEmails_TEXT_DOMAIN ); ?></th>
-					<th><?php _e( 'Action', WCEmails_TEXT_DOMAIN ); ?></th>
-				</tr>
-				<?php
-				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
-				if ( ! empty( $wcemails_email_details ) ) {
-					foreach ( $wcemails_email_details as $key => $details ) {
-						?>
-						<tr>
-							<td><?php echo $details['title']; ?></td>
-							<td><?php echo $details['description']; ?></td>
-							<td><?php echo $details['subject']; ?></td>
-							<td><?php echo $details['heading']; ?></td>
-							<!--<td><?php /*echo $details['hook']; */?></td>-->
-							<td><?php echo 'on' == $details['order_action'] ? 'Yes' : 'No'; ?></td>
-							<td><?php echo 'on' == $details['enable'] ? 'Yes' : 'No'; ?></td>
-							<td>
-								<a href="<?php echo add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $key ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>" data-key="<?php echo $key; ?>"><?php _e( 'Edit', WCEmails_TEXT_DOMAIN ); ?></a>
-								<a href="<?php echo add_query_arg( array( 'type' => 'view-email', 'wcemails_delete' => $key ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>" class="wcemails_delete" data-key="<?php echo $key; ?>"><?php _e( 'Delete', WCEmails_TEXT_DOMAIN ); ?></a>
-							</td>
-						</tr>
-						<?php
-					}
-				}
-				?>
-			</table>
-			<?php
-
+			include_once( 'class-wcemails-list.php' );
+			$wcemails_list = new WCEmails_List();
+			$wcemails_list->prepare_items();
+			$wcemails_list->display();
 		}
 
 		function wcemails_email_actions_details() {
