@@ -28,7 +28,6 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 				'wcemails_heading'      => __( 'Heading' ),
 				'wcemails_order_action' => __( 'Order Action' ),
 				'wcemails_enable'       => __( 'Enable' ),
-				'wcemails_action'       => __( 'action' ),
 			);
 			return $columns;
 		}
@@ -77,13 +76,6 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 
 		function column_wcemails_enable($item){
 			return 'on' == $item['enable'] ? 'Yes' : 'No';;
-		}
-
-		function column_wcemails_action($item){
-			ob_start() ?>
-			<a href="<?php echo add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $key ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>" data-key="<?php echo $key; ?>"><?php _e( 'Edit', WCEmails_TEXT_DOMAIN ); ?></a>
-			<a href="<?php echo add_query_arg( array( 'type' => 'view-email', 'wcemails_delete' => $key ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>" class="wcemails_delete" data-key="<?php echo $key; ?>"><?php _e( 'Delete', WCEmails_TEXT_DOMAIN ); ?></a><?php
-			return ob_get_clean();
 		}
 
 		function get_sortable_columns() {
