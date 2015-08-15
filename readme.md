@@ -4,8 +4,8 @@
 ![Banner](assets/banner-1544x500.png)
 Woo Custom Emails is a plugin that helps you create custom emails for your WooCommerce Order.
 
-**Contributors:** [mehulkaklotar](https://profiles.wordpress.org/mehulkaklotar), [utkarshpatel](https://profiles.wordpress.org/utkarshpatel)  
-**Tags:** [woocommerce](https://wordpress.org/plugins/tags/woocommerce), [email](https://wordpress.org/plugins/tags/email), [order](https://wordpress.org/plugins/tags/order), [ecommerce](https://wordpress.org/plugins/tags/ecommerce), [custom email template](https://wordpress.org/plugins/tags/custom email template)  
+**Contributors:** [mehulkaklotar](https://profiles.wordpress.org/mehulkaklotar), [utkarshpatel](https://profiles.wordpress.org/utkarshpatel), [dipesh.kakadiya](https://profiles.wordpress.org/dipesh.kakadiya)  
+**Tags:** [woo custom emails](https://wordpress.org/plugins/tags/woo custom emails), [woocommerce custom emails](https://wordpress.org/plugins/tags/woocommerce custom emails), [woocommerce](https://wordpress.org/plugins/tags/woocommerce), [email](https://wordpress.org/plugins/tags/email), [order](https://wordpress.org/plugins/tags/order), [ecommerce](https://wordpress.org/plugins/tags/ecommerce), [custom email template](https://wordpress.org/plugins/tags/custom email template)  
 **Requires at least:** 4.1  
 **Tested up to:** 4.2.4  
 **Stable tag:** 1.2.1  
@@ -47,7 +47,16 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 
 ![WooCommerce email settings](assets/screenshot-3.png)
 
+### WooCommerce Order action with custom email
+
+![WooCommerce Order action with custom email](assets/screenshot-4.png)
+
 ## Changelog ##
+
+### 2.0 ###
+* WP List table added for email listing
+* Recipients support
+* WooCommerce order statuses select and fire emails when they change
 
 ### 1.2.1 ###
 * Hotfix
