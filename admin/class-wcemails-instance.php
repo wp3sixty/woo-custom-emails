@@ -33,7 +33,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			parent::__construct();
 
 			// Other settings
-			$this->recipient = $recipients;
+			$this->recipient = ! empty( $recipients ) ? $recipients : $this->get_option( 'recipient' );
 
 			if ( ! $this->recipient ) {
 				$this->recipient = get_option( 'admin_email' );
