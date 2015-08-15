@@ -14,7 +14,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @param $to_status
 		 * @param $template
 		 */
-		function __construct( $id, $title, $description, $subject, $heading, $from_status, $to_status, $template ) {
+		function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $template ) {
 
 			$this->id          = $id;
 			$this->title       = __( $title, 'woocommerce' );
@@ -33,7 +33,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			parent::__construct();
 
 			// Other settings
-			$this->recipient = $this->get_option( 'recipient' );
+			$this->recipient = $recipients;
 
 			if ( ! $this->recipient ) {
 				$this->recipient = get_option( 'admin_email' );

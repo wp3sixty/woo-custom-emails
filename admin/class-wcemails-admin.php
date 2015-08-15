@@ -167,6 +167,17 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					</tr>
 					<tr>
 						<th scope="row">
+							<?php _e( 'Recipients', WCEmails_TEXT_DOMAIN ); ?>
+							<span style="display: block; font-size: 12px; font-weight: 300;">
+							<?php _e( 'Recipients email addresses separated with comma' ); ?>
+								</span>
+						</th>
+						<td>
+							<input name="wcemails_recipients" id="wcemails_recipients" type="text" required value="<?php echo isset( $wcemails_detail['recipients'] ) ? $wcemails_detail['recipients'] : ''; ?>" placeholder="<?php _e( 'Recipients', WCEmails_TEXT_DOMAIN ); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<?php _e( 'Heading', WCEmails_TEXT_DOMAIN ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
 							<?php _e( '( Email Default Heading )' ); ?>
@@ -327,6 +338,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 				$title        = filter_input( INPUT_POST, 'wcemails_title', FILTER_SANITIZE_STRING );
 				$description  = filter_input( INPUT_POST, 'wcemails_description', FILTER_SANITIZE_STRING );
 				$subject      = filter_input( INPUT_POST, 'wcemails_subject', FILTER_SANITIZE_STRING );
+				$recipients   = filter_input( INPUT_POST, 'wcemails_recipients', FILTER_SANITIZE_STRING );
 				$heading      = filter_input( INPUT_POST, 'wcemails_heading', FILTER_SANITIZE_STRING );
 				$from_status  = isset( $_POST['wcemails_from_status'] ) ? $_POST['wcemails_from_status'] : '';
 				$to_status    = isset( $_POST['wcemails_to_status'] ) ? $_POST['wcemails_to_status'] : '';
@@ -342,6 +354,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					'title'        => $title,
 					'description'  => $description,
 					'subject'      => $subject,
+					'recipients'   => $recipients,
 					'heading'      => $heading,
 					'from_status'  => $from_status,
 					'to_status'    => $to_status,
@@ -409,12 +422,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$id          = isset( $details['id'] ) ? $details['id'] : '';
 						$description = isset( $details['description'] ) ? $details['description'] : '';
 						$subject     = isset( $details['subject'] ) ? $details['subject'] : '';
+						$recipients  = isset( $details['recipients'] ) ? $details['recipients'] : '';
 						$heading     = isset( $details['heading'] ) ? $details['heading'] : '';
 						$from_status = isset( $details['from_status'] ) ? $details['from_status'] : array();
 						$to_status   = isset( $details['to_status'] ) ? $details['to_status'] : array();
 						$template    = html_entity_decode( isset( $details['template'] ) ? $details['template'] : '' );
 
-						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $heading, $from_status, $to_status, $template );
+						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $template );
 
 						$email_classes[ 'WCustom_Emails_'.$id.'_Email' ] = $wcemails_instance;
 
