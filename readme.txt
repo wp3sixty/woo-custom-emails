@@ -1,5 +1,5 @@
 === Woo Custom Emails ===
-Contributors: mehulkaklotar, utkarshpatel
+Contributors: mehulkaklotar, utkarshpatel, dipesh.kakadiya
 Tags: woocommerce, email, order, ecommerce, custom email template
 Requires at least: 4.1
 Tested up to: 4.2.4
@@ -39,6 +39,11 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 3. WooCommerce email settings
 
 == Changelog ==
+
+= 2.0 =
+* WP List table added for email listing
+* Recipients support
+* WooCommerce order statuses select and fire emails when they change
 
 = 1.2.1 =
 * Hotfix
