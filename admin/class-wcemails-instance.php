@@ -8,27 +8,26 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @param $id
 		 * @param $title
 		 * @param $description
+		 * @param $subject
 		 * @param $heading
-		 * @param $hook
+		 * @param $from_status
+		 * @param $to_status
 		 * @param $template
 		 */
-		function __construct( $id, $title, $description, $subject, $heading, $hook, $template ) {
+		function __construct( $id, $title, $description, $subject, $heading, $from_status, $to_status, $template ) {
 
-			$this->id 				= $id;
-			$this->title 			= __( $title, 'woocommerce' );
-			$this->description		= __( $description, 'woocommerce' );
+			$this->id          = $id;
+			$this->title       = __( $title, 'woocommerce' );
+			$this->description = __( $description, 'woocommerce' );
 
-			$this->heading 			= __( $heading, 'woocommerce' );
-			$this->subject      	= __( $subject, 'woocommerce' );
+			$this->heading = __( $heading, 'woocommerce' );
+			$this->subject = __( $subject, 'woocommerce' );
 
-			$this->custom_template  = $template;
+			$this->custom_template = $template;
+			$this->from_status     = $from_status;
+			$this->to_status       = $to_status;
 
-			$hooks = explode( "\n", $hook );
-			if ( ! empty( $hooks ) ) {
-				foreach ( $hooks as $hook ) {
-					add_action( $hook, array( $this, 'trigger' ) );
-				}
-			}
+			add_action( 'woocommerce_order_status_changed', array( $this, 'change_order_status_trigger' ), 10, 3 );
 
 			// Call parent constructor
 			parent::__construct();
@@ -51,10 +50,10 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function trigger( $order_id ) {
 
 			if ( $order_id ) {
-				$this->object 		= wc_get_order( $order_id );
+				$this->object = wc_get_order( $order_id );
 
-				$this->find['order-date']      = '{order_date}';
-				$this->find['order-number']    = '{order_number}';
+				$this->find['order-date']   = '{order_date}';
+				$this->find['order-number'] = '{order_number}';
 
 				$this->replace['order-date']   = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
 				$this->replace['order-number'] = $this->object->get_order_number();
@@ -78,6 +77,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function get_content_html() {
 			ob_start();
 			echo str_replace( $this->find, $this->replace, $this->custom_template );
+
 			return ob_get_clean();
 		}
 
@@ -90,6 +90,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function get_content_plain() {
 			ob_start();
 			echo str_replace( $this->find, $this->replace, $this->custom_template );
+
 			return ob_get_clean();
 		}
 
@@ -101,46 +102,54 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 */
 		function init_form_fields() {
 			$this->form_fields = array(
-				'enabled' => array(
-					'title' 		=> __( 'Enable/Disable', 'woocommerce' ),
-					'type' 			=> 'checkbox',
-					'label' 		=> __( 'Enable this email notification', 'woocommerce' ),
-					'default' 		=> 'yes',
+				'enabled'    => array(
+					'title'   => __( 'Enable/Disable', 'woocommerce' ),
+					'type'    => 'checkbox',
+					'label'   => __( 'Enable this email notification', 'woocommerce' ),
+					'default' => 'yes',
 				),
-				'recipient' => array(
-					'title' 		=> __( 'Recipient(s)', 'woocommerce' ),
-					'type' 			=> 'text',
-					'description' 	=> sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce' ), esc_attr( get_option( 'admin_email' ) ) ),
-					'placeholder' 	=> '',
-					'default' 		=> '',
+				'recipient'  => array(
+					'title'       => __( 'Recipient(s)', 'woocommerce' ),
+					'type'        => 'text',
+					'description' => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce' ), esc_attr( get_option( 'admin_email' ) ) ),
+					'placeholder' => '',
+					'default'     => '',
 				),
-				'subject' => array(
-					'title' 		=> __( 'Subject', 'woocommerce' ),
-					'type' 			=> 'text',
-					'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'woocommerce' ), $this->subject ),
-					'placeholder' 	=> '',
-					'default' 		=> '',
+				'subject'    => array(
+					'title'       => __( 'Subject', 'woocommerce' ),
+					'type'        => 'text',
+					'description' => sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'woocommerce' ), $this->subject ),
+					'placeholder' => '',
+					'default'     => '',
 				),
-				'heading' => array(
-					'title' 		=> __( 'Email Heading', 'woocommerce' ),
-					'type' 			=> 'text',
-					'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'woocommerce' ), $this->heading ),
-					'placeholder' 	=> '',
-					'default' 		=> '',
+				'heading'    => array(
+					'title'       => __( 'Email Heading', 'woocommerce' ),
+					'type'        => 'text',
+					'description' => sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'woocommerce' ), $this->heading ),
+					'placeholder' => '',
+					'default'     => '',
 				),
 				'email_type' => array(
-					'title' 		=> __( 'Email type', 'woocommerce' ),
-					'type' 			=> 'select',
-					'description' 	=> __( 'Choose which format of email to send.', 'woocommerce' ),
-					'default' 		=> 'html',
-					'class'			=> 'email_type',
-					'options'		=> array(
-						'plain'		 	=> __( 'Plain text', 'woocommerce' ),
-						'html' 			=> __( 'HTML', 'woocommerce' ),
-						'multipart' 	=> __( 'Multipart', 'woocommerce' ),
+					'title'       => __( 'Email type', 'woocommerce' ),
+					'type'        => 'select',
+					'description' => __( 'Choose which format of email to send.', 'woocommerce' ),
+					'default'     => 'html',
+					'class'       => 'email_type',
+					'options'     => array(
+						'plain'     => __( 'Plain text', 'woocommerce' ),
+						'html'      => __( 'HTML', 'woocommerce' ),
+						'multipart' => __( 'Multipart', 'woocommerce' ),
 					),
 				),
 			);
+		}
+
+		function change_order_status_trigger( $order_id, $old_status, $new_status ) {
+			$from_status = $this->from_status;
+			$to_status   = $this->to_status;
+			if ( ! empty( $from_status ) && ! empty( $to_status ) && in_array( $old_status, $from_status ) && in_array( $new_status, $to_status ) ) {
+				$this->trigger( $order_id );
+			}
 		}
 
 		function convert_template() {
@@ -171,6 +180,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function woocommerce_email_order_meta() {
 			ob_start();
 			do_action( 'woocommerce_email_order_meta', $this->object, true );
+
 			return ob_get_clean();
 		}
 
@@ -179,21 +189,23 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			if ( $totals = $this->object->get_order_item_totals() ) {
 				$i = 0;
 				foreach ( $totals as $total ) {
-					$i++;
+					$i ++;
 					?>
 					<tr>
 					<th scope='row' colspan='2'
-						style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['label']; ?></th>
+					    style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['label']; ?></th>
 					<td style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['value']; ?></td>
 					</tr><?php
 				}
 			}
+
 			return ob_get_clean();
 		}
 
 		function get_email_addresses() {
 			ob_start();
 			wc_get_template( 'emails/email-addresses.php', array( 'order' => $this->object ) );
+
 			return ob_get_clean();
 		}
 

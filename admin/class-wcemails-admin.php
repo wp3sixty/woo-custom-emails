@@ -117,6 +117,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			}
 
 			$wc_statuses = wc_get_order_statuses();
+			if ( ! empty( $wc_statuses ) ) {
+				foreach ( $wc_statuses as $k => $status ) {
+					$key = ( 'wc-' === substr( $k, 0, 3 ) ) ? substr( $k, 3 ) : $k;
+					$wc_statuses[ $key ] = $status;
+					unset( $wc_statuses[ $k ] );
+				}
+			}
 
 			wp_enqueue_script( 'jquery-cloneya' );
 			wp_enqueue_script( 'wcemails-custom-scripts' );
@@ -398,17 +405,16 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 					if ( 'on' == $enable ) {
 
-						$title       = $details['title'];
-						$id          = $details['id'];
-						$description = $details['description'];
-						$subject     = $details['subject'];
-						$heading     = $details['heading'];
-						$from_status = $details['from_status'];
-						$to_status = $details['to_status'];
-						$hook        = ! empty( $details['hook'] ) ? $details['hook'] : '';
-						$template    = html_entity_decode( $details['template'] );
+						$title       = isset( $details['title'] ) ? $details['title'] : '';
+						$id          = isset( $details['id'] ) ? $details['id'] : '';
+						$description = isset( $details['description'] ) ? $details['description'] : '';
+						$subject     = isset( $details['subject'] ) ? $details['subject'] : '';
+						$heading     = isset( $details['heading'] ) ? $details['heading'] : '';
+						$from_status = isset( $details['from_status'] ) ? $details['from_status'] : array();
+						$to_status   = isset( $details['to_status'] ) ? $details['to_status'] : array();
+						$template    = html_entity_decode( isset( $details['template'] ) ? $details['template'] : '' );
 
-						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $heading, $hook, $template );
+						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $heading, $from_status, $to_status, $template );
 
 						$email_classes[ 'WCustom_Emails_'.$id.'_Email' ] = $wcemails_instance;
 
