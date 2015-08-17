@@ -38,6 +38,7 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 				href="<?php echo add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"
 				title="Edit “<?php echo $item['title'] ?>”"><?php echo $item['title'] ?></a>
 			</strong>
+			<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 			<div class="row-actions">
 				<span class="edit">
 					<a href="<?php echo add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"
