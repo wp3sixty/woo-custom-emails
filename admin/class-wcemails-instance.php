@@ -14,7 +14,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @param $to_status
 		 * @param $template
 		 */
-		function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $template ) {
+		function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template ) {
 
 			$this->id          = $id;
 			$this->title       = __( $title, 'woocommerce' );
@@ -26,6 +26,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->custom_template = $template;
 			$this->from_status     = $from_status;
 			$this->to_status       = $to_status;
+			$this->send_customer   = $send_customer;
 
 			add_action( 'woocommerce_order_status_changed', array( $this, 'change_order_status_trigger' ), 10, 3 );
 
@@ -51,6 +52,16 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 			if ( $order_id ) {
 				$this->object = wc_get_order( $order_id );
+
+				if ( 'on' == $this->send_customer ) {
+					$this->recipient = $this->object->billing_email;
+				} else {
+					$recipients = explode( ',', $this->recipient );
+					array_push( $recipients, $this->object->billing_email );
+					$this->recipient = implode( ',', $recipients );
+				}
+
+				$this->recipient	= $this->object->billing_email;
 
 				$this->find['order-date']   = '{order_date}';
 				$this->find['order-number'] = '{order_number}';
