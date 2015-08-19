@@ -66,6 +66,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		function wcemails_settings_callback() {
 
+			$this->wcemails_woocommerce_check();
+
 			?>
 			<div class="wrap">
 				<h2><?php _e( 'Woocommerce Custom Emails Settings', WCEmails_TEXT_DOMAIN ); ?></h2>
@@ -463,6 +465,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 			return $emails;
 
+		}
+
+		function wcemails_woocommerce_check() {
+			if ( ! class_exists( 'WooCommerce' ) ) {
+				?><h2><?php _e( 'WooCommerce is not activated!', WCEmails_TEXT_DOMAIN );?></h2><?php
+				die();
+			}
 		}
 
 	}

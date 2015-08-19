@@ -143,15 +143,19 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 	}
 
+	/**
+	 * Returns the main instance of woo_custom_emails to prevent the need to use globals.
+	 *
+	 * @since  0.1
+	 * @return Woo_Custom_Emails
+	 */
+	function woo_custom_emails() {
+		return Woo_Custom_Emails::instance();
+	}
+
+	woo_custom_emails();
+
 }
 
-/**
- * Returns the main instance of woo_custom_emails to prevent the need to use globals.
- *
- * @since  0.1
- * @return Woo_Custom_Emails
- */
-function woo_custom_emails() {
-	return Woo_Custom_Emails::instance();
-}
-woo_custom_emails();
+
+
