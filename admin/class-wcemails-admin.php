@@ -60,7 +60,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		function wcemails_settings_menu() {
 
-			add_options_page( __( 'WC Custom Emails', WCEmails_TEXT_DOMAIN ), 'WC Custom Emails', 'manage_options', 'wcemails-settings', array( $this, 'wcemails_settings_callback' ) );
+			add_options_page( __( 'Woo Custom Emails', WCEmails_TEXT_DOMAIN ), 'Woo Custom Emails', 'manage_options', 'wcemails-settings', array( $this, 'wcemails_settings_callback' ) );
 
 		}
 
