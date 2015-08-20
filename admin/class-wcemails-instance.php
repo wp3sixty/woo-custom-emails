@@ -61,8 +61,6 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 					$this->recipient = implode( ',', $recipients );
 				}
 
-				$this->recipient	= $this->object->billing_email;
-
 				$this->find['order-date']   = '{order_date}';
 				$this->find['order-number'] = '{order_number}';
 
