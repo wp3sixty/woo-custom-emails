@@ -186,7 +186,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_send_customer" id="wcemails_send_customer" type="checkbox" <?php echo ( isset( $wcemails_detail['wcemails_send_customer'] ) && 'on' == $wcemails_detail['wcemails_send_customer'] ) ? 'checked="checked"' : ''; ?> />
+							<input name="wcemails_send_customer" id="wcemails_send_customer" type="checkbox" <?php echo ( isset( $wcemails_detail['send_customer'] ) && 'on' == $wcemails_detail['send_customer'] ) ? 'checked="checked"' : ''; ?> />
 						</td>
 					</tr>
 					<tr>
