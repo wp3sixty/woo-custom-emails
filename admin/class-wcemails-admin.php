@@ -113,7 +113,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					foreach ( $wcemails_email_details as $key => $details ) {
 						if ( $_REQUEST['wcemails_edit'] == $key ) {
 							$wcemails_detail = $details;
-							$wcemails_detail['template'] = stripslashes($wcemails_detail['template']);
+							$wcemails_detail['template'] = stripslashes( $wcemails_detail['template'] );
 						}
 					}
 				}
@@ -444,7 +444,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$from_status   = isset( $details['from_status'] ) ? $details['from_status'] : array();
 						$to_status     = isset( $details['to_status'] ) ? $details['to_status'] : array();
 						$send_customer = isset( $details['send_customer'] ) ? $details['send_customer'] : array();
-						$template    = stripslashes(html_entity_decode( isset( $details['template'] ) ? $details['template'] : '' ));
+						$template      = stripslashes( html_entity_decode( isset( $details['template'] ) ? $details['template'] : '' ) );
 
 						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template );
 
