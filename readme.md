@@ -53,6 +53,9 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 
 ## Changelog ##
 
+### 2.0.2 ###
+* Hotfix
+
 ### 2.0.1 ###
 * Send to customer only settings
 * WP List table WordPress < 4.3 compatibility support
