@@ -78,7 +78,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 			// if send to customer is selected add recipients to BCC
 			if ( $send_to_customer ) {
-				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10, 3);
+				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10, 3 );
 			}
 			$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 			if ( $send_to_customer ) {
@@ -231,7 +231,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			if ( $this->id != $email_id || ! empty( $this->bcc ) ) {
 				return $headers;
 			}
-			if ( ! is_array( $headers ) ){
+			if ( ! is_array( $headers ) ) {
 				$headers = array( $headers );
 			}
 			$headers[] = 'Bcc: '.$this->bcc;
