@@ -4,7 +4,7 @@
  * Plugin Name: Woo Custom Emails
  * Plugin URI: https://github.com/mehulkaklotar/woo-custom-emails
  * Description: A woocommerce add on to support customize emails
- * Version: 2.0.2
+ * Version: 2.0.3
  * Author: Mehul Kaklotar
  * Author URI: http://mehulkaklotar.branded.me
  * Requires at least: 4.1
@@ -26,14 +26,14 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 	 * Main Woo Custom Emails Class
 	 *
 	 * @class Woo_Custom_Emails
-	 * @version	2.0.2
+	 * @version	2.0.3
 	 */
 	final class Woo_Custom_Emails {
 
 		/**
 		 * @var string
 		 */
-		public $version = '2.0.2';
+		public $version = '2.0.3';
 		/**
 		 * @var Woo_Custom_Emails The single instance of the class
 		 * @since 2.1
@@ -62,14 +62,14 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 * @since 0.1
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '2.0.1' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '2.0.3' );
 		}
 		/**
 		 * Unserializing instances of this class is forbidden.
 		 * @since 2.1
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '2.0.1' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '2.0.3' );
 		}
 
 		/**
