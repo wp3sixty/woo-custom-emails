@@ -49,11 +49,13 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @return void
 		 */
 		function trigger( $order_id ) {
+			// checkbox of send to customer is checked or not.
+			$send_to_customer = ('on' == $this->send_customer);
 
 			if ( $order_id ) {
 				$this->object = wc_get_order( $order_id );
-
-				if ( 'on' == $this->send_customer ) {
+				if ( $send_to_customer ) {
+					$this->bcc = $this->recipient;
 					$this->recipient = $this->object->billing_email;
 				} else {
 					$recipients = explode( ',', $this->recipient );
@@ -74,7 +76,14 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 			$this->convert_template();
 
+			// if send to customer is selected add recipients to BCC
+			if ( $send_to_customer ) {
+				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10, 3);
+			}
 			$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+			if ( $send_to_customer ) {
+				remove_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10 );
+			}
 		}
 
 		/**
@@ -216,6 +225,17 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			wc_get_template( 'emails/email-addresses.php', array( 'order' => $this->object ) );
 
 			return ob_get_clean();
+		}
+
+		function add_bcc_to_custom_email( $headers, $email_id, $order ) {
+			if ( $this->id != $email_id || ! empty( $this->bcc ) ) {
+				return $headers;
+			}
+			if ( ! is_array( $headers ) ){
+				$headers = array( $headers );
+			}
+			$headers[] = 'Bcc: '.$this->bcc;
+			return $headers;
 		}
 
 	}

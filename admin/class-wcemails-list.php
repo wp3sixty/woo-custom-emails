@@ -59,11 +59,11 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 		}
 
 		function column_wcemails_description($item){
-			return $item['description'];
+			return isset( $item['description'] ) ? $item['description'] : '';
 		}
 
 		function column_wcemails_subject($item){
-			return $item['subject'];
+			return isset( $item['description'] ) ? $item['description'] : '';;
 		}
 
 		function column_wcemails_heading($item){

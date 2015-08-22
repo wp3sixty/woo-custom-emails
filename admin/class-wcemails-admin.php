@@ -183,7 +183,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Send Only To Customer?', WCEmails_TEXT_DOMAIN ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Enable this to send this email only to customer. If this field is enabled then `Recipients` field will not be effective. )' ); ?>
+							<?php _e( '( Enable this to send this email to customer. If this field is enabled then `Recipients` field will be added to BCC. )' ); ?>
 								</span>
 						</th>
 						<td>
