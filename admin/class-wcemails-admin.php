@@ -347,6 +347,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			$wcemails_list->display();
 		}
 
+		/**
+		 * Save email options
+		 */
 		function wcemails_email_actions_details() {
 
 			if ( isset( $_POST['wcemails_submit'] ) ) {
@@ -423,6 +426,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
+		/**
+		 * custom order action email classes instantiation
+		 *
+		 * @param $email_classes
+		 *
+		 * @return mixed
+		 */
 		function wcemails_custom_woocommerce_emails( $email_classes ) {
 
 			include_once( 'class-wcemails-instance.php' );
@@ -460,6 +470,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
+		/**
+		 * woocommerce order action change
+		 *
+		 * @param $emails
+		 *
+		 * @return mixed
+		 */
 		function wcemails_change_action_emails( $emails ) {
 
 			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
@@ -485,6 +502,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
+		/**
+		 * woocommerce active check
+		 */
 		function wcemails_woocommerce_check() {
 			if ( ! class_exists( 'WooCommerce' ) ) {
 				?><h2><?php _e( 'WooCommerce is not activated!', WCEmails_TEXT_DOMAIN );?></h2><?php
@@ -492,6 +512,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			}
 		}
 
+		/**
+		 * filter the email actions for order notifications
+		 *
+		 * @param $actions
+		 *
+		 * @return array
+		 */
 		function wcemails_filter_actions( $actions ) {
 
 			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
