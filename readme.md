@@ -4,11 +4,11 @@
 ![Banner](assets/banner-1544x500.png)
 Woo Custom Emails is a plugin that helps you create custom emails for your WooCommerce Order.
 
-**Contributors:** [mehulkaklotar](https://profiles.wordpress.org/mehulkaklotar), [utkarshpatel](https://profiles.wordpress.org/utkarshpatel), [dipesh.kakadiya](https://profiles.wordpress.org/dipesh.kakadiya)  
+**Contributors:** [littlemonks](https://profiles.wordpress.org/littlemonks), [mehulkaklotar](https://profiles.wordpress.org/mehulkaklotar), [utkarshpatel](https://profiles.wordpress.org/utkarshpatel), [dipesh.kakadiya](https://profiles.wordpress.org/dipesh.kakadiya)  
 **Tags:** [woo custom emails](https://wordpress.org/plugins/tags/woo custom emails), [woocommerce custom emails](https://wordpress.org/plugins/tags/woocommerce custom emails), [woocommerce](https://wordpress.org/plugins/tags/woocommerce), [email](https://wordpress.org/plugins/tags/email), [order](https://wordpress.org/plugins/tags/order), [ecommerce](https://wordpress.org/plugins/tags/ecommerce), [custom email template](https://wordpress.org/plugins/tags/custom email template)  
 **Requires at least:** 4.1  
-**Tested up to:** 4.3  
-**Stable tag:** 2.0.3  
+**Tested up to:** 4.4  
+**Stable tag:** 2.0.4  
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)  
 
 ## Description ##
@@ -52,6 +52,10 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 ![WooCommerce Order action with custom email](assets/screenshot-4.png)
 
 ## Changelog ##
+
+### 2.0.4 ###
+* Custom order status support
+* PHPDoc change
 
 ### 2.0.3 ###
 * Recipients added to bcc headers if send to customer only
