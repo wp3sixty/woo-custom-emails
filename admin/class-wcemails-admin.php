@@ -51,6 +51,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'wcemails_enqueue_scripts' ) );
 
+			add_filter( 'woocommerce_email_actions', array( $this, 'wcemails_filter_actions' ) );
+
 		}
 
 		function wcemails_enqueue_scripts() {
@@ -345,6 +347,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			$wcemails_list->display();
 		}
 
+		/**
+		 * Save email options
+		 */
 		function wcemails_email_actions_details() {
 
 			if ( isset( $_POST['wcemails_submit'] ) ) {
@@ -421,6 +426,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
+		/**
+		 * custom order action email classes instantiation
+		 *
+		 * @param $email_classes
+		 *
+		 * @return mixed
+		 */
 		function wcemails_custom_woocommerce_emails( $email_classes ) {
 
 			include_once( 'class-wcemails-instance.php' );
@@ -458,6 +470,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
+		/**
+		 * woocommerce order action change
+		 *
+		 * @param $emails
+		 *
+		 * @return mixed
+		 */
 		function wcemails_change_action_emails( $emails ) {
 
 			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
@@ -483,11 +502,51 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
+		/**
+		 * woocommerce active check
+		 */
 		function wcemails_woocommerce_check() {
 			if ( ! class_exists( 'WooCommerce' ) ) {
 				?><h2><?php _e( 'WooCommerce is not activated!', WCEmails_TEXT_DOMAIN );?></h2><?php
 				die();
 			}
+		}
+
+		/**
+		 * filter the email actions for order notifications
+		 *
+		 * @param $actions
+		 *
+		 * @return array
+		 */
+		function wcemails_filter_actions( $actions ) {
+
+			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+
+			if ( ! empty( $wcemails_email_details ) ) {
+
+				foreach ( $wcemails_email_details as $key => $details ) {
+
+					$enable = $details['enable'];
+
+					if ( 'on' == $enable ) {
+
+						$from_status   = isset( $details['from_status'] ) ? $details['from_status'] : array();
+						$to_status     = isset( $details['to_status'] ) ? $details['to_status'] : array();
+
+						if ( ! empty( $from_status ) && ! empty( ! empty( $to_status ) ) ) {
+							foreach ( $from_status as $k => $status ) {
+								$hook = 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ];
+								if ( ! in_array( $hook, $actions ) ) {
+									$actions[] = 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ];
+								}
+							}
+						}
+
+					}
+				}
+			}
+			return $actions;
 		}
 
 	}
