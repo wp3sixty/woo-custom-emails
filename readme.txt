@@ -1,9 +1,9 @@
 === Woo Custom Emails ===
-Contributors: mehulkaklotar, utkarshpatel, dipesh.kakadiya
+Contributors: littlemonks, mehulkaklotar, utkarshpatel, dipesh.kakadiya
 Tags: woo custom emails, woocommerce custom emails, woocommerce, email, order, ecommerce, custom email template
 Requires at least: 4.1
-Tested up to: 4.3
-Stable tag: 2.0.3
+Tested up to: 4.4
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,10 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 4. WooCommerce Order action with custom email
 
 == Changelog ==
+
+= 2.0.4 =
+* Custom order status support
+* PHPDoc change
 
 = 2.0.3 =
 * Recipients added to bcc headers if send to customer only
