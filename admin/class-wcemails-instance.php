@@ -28,7 +28,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->to_status       = $to_status;
 			$this->send_customer   = $send_customer;
 
-			add_action( 'woocommerce_order_status_changed', array( $this, 'change_order_status_trigger' ), 10, 3 );
+			$this->add_actions();
 
 			// Call parent constructor
 			parent::__construct();
@@ -167,6 +167,16 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$to_status   = $this->to_status;
 			if ( ! empty( $from_status ) && ! empty( $to_status ) && in_array( $old_status, $from_status ) && in_array( $new_status, $to_status ) ) {
 				$this->trigger( $order_id );
+			}
+		}
+
+		function add_actions() {
+			$from_status = $this->from_status;
+			$to_status   = $this->to_status;
+			if ( ! empty( $from_status ) && ! empty( ! empty( $to_status ) ) ) {
+				foreach ( $from_status as $k => $status ) {
+					add_action( 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ] . '_notification', array( $this, 'trigger' ) );
+				}
 			}
 		}
 
