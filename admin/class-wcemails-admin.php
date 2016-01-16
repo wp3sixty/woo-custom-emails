@@ -534,7 +534,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$from_status   = isset( $details['from_status'] ) ? $details['from_status'] : array();
 						$to_status     = isset( $details['to_status'] ) ? $details['to_status'] : array();
 
-						if ( ! empty( $from_status ) && ! empty( ! empty( $to_status ) ) ) {
+						if ( ! empty( $from_status ) && ! empty( $to_status ) ) {
 							foreach ( $from_status as $k => $status ) {
 								$hook = 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ];
 								if ( ! in_array( $hook, $actions ) ) {
