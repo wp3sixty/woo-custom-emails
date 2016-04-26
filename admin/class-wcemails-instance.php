@@ -203,6 +203,9 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->find[]    = '{email_addresses}';
 			$this->replace[] = $this->get_email_addresses();
 
+			$this->find = apply_filters( 'wcemails_find_placeholders', $this->find, $this->object );
+			$this->replace = apply_filters( 'wcemails_replace_placeholders', $this->replace, $this->object );
+
 		}
 
 		function woocommerce_email_order_meta() {
