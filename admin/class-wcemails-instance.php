@@ -241,7 +241,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		}
 
 		function add_bcc_to_custom_email( $headers, $email_id, $order ) {
-			if ( $this->id != $email_id || ! empty( $this->bcc ) ) {
+			if ( $this->id != $email_id || empty( $this->bcc ) ) {
 				return $headers;
 			}
 			if ( ! is_array( $headers ) ) {
