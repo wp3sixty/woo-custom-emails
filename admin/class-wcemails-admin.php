@@ -41,7 +41,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		 */
 		public function __construct() {
 
-			add_action( 'admin_menu', array( $this, 'wcemails_settings_menu' ) );
+			add_action( 'admin_menu', array( $this, 'wcemails_settings_menu' ), 100 );
 
 			add_action( 'admin_init', array( $this, 'wcemails_email_actions_details' ) );
 
@@ -62,7 +62,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		function wcemails_settings_menu() {
 
-			add_options_page( __( 'Woo Custom Emails', WCEmails_TEXT_DOMAIN ), 'Woo Custom Emails', 'manage_options', 'wcemails-settings', array( $this, 'wcemails_settings_callback' ) );
+			add_submenu_page( 'woocommerce', __( 'Woo Custom Emails', WCEmails_TEXT_DOMAIN ), 'Custom Emails', 'manage_options', 'wcemails-settings', array( $this, 'wcemails_settings_callback' ) );
 
 		}
 
