@@ -94,7 +94,14 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 */
 		function get_content_html() {
 			ob_start();
-			echo str_replace( $this->find, $this->replace, $this->custom_template );
+
+			$html = str_replace( $this->find, $this->replace, $this->custom_template );
+
+			do_action( 'woocommerce_email_header', $this->get_heading(), $this );
+
+			echo apply_filters( 'the_content', $html );
+
+			do_action( 'woocommerce_email_footer', $email );
 
 			return ob_get_clean();
 		}
@@ -107,7 +114,14 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 */
 		function get_content_plain() {
 			ob_start();
-			echo str_replace( $this->find, $this->replace, $this->custom_template );
+
+			$html = str_replace( $this->find, $this->replace, $this->custom_template );
+
+			do_action( 'woocommerce_email_header', $email_heading, $email );
+
+			echo apply_filters( 'the_content', $html );
+
+			do_action( 'woocommerce_email_footer', $email );
 
 			return ob_get_clean();
 		}
