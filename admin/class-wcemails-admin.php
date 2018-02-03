@@ -44,10 +44,11 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			add_action( 'admin_menu', array( $this, 'wcemails_settings_menu' ), 100 );
 
 			add_action( 'admin_init', array( $this, 'wcemails_email_actions_details' ) );
+			add_action( 'save_post', array( $this, 'do_email_actions' ), 10, 2 );
 
 			add_filter( 'woocommerce_email_classes', array( $this, 'wcemails_custom_woocommerce_emails' ) );
 
-			add_filter( 'woocommerce_resend_order_emails_available', array( $this, 'wcemails_change_action_emails' ) );
+			add_filter( 'woocommerce_order_actions', array( $this, 'wcemails_change_action_emails' ) );
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'wcemails_enqueue_scripts' ) );
 
@@ -491,8 +492,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					if ( 'on' == $enable && 'on' == $order_action ) {
 
 						$id             = $details['id'];
+						$title         = isset( $details['title'] ) ? $details['title'] : '';
 
-						array_push( $emails, $id );
+                        $emails[$id] = __( 'Resend ' . $title, WCEmails_TEXT_DOMAIN );
 
 					}
 				}
@@ -548,6 +550,34 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			}
 			return $actions;
 		}
+
+		function do_email_actions( $post_id, $post ) {
+
+			if ( ! empty( $_POST['wc_order_action'] ) ) {
+
+				// Order data saved, now get it so we can manipulate status.
+				$order = wc_get_order( $post_id );
+
+				$action = wc_clean( $_POST['wc_order_action'] );
+
+				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+				if ( ! empty( $wcemails_email_details ) ) {
+					foreach ( $wcemails_email_details as $key => $details ) {
+						$enable = $details['enable'];
+						$order_action = $details['order_action'];
+						if ( 'on' == $enable && 'on' == $order_action ) {
+							$id             = $details['id'];
+							if ( $id == $action ) {
+								WC()->payment_gateways();
+								WC()->shipping();
+								WC()->mailer()->emails['WCustom_Emails_'.$id.'_Email']->trigger( $order->get_id(), $order );
+                            }
+						}
+					}
+				}
+            }
+
+        }
 
 	}
 

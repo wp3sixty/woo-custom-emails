@@ -56,18 +56,16 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 				$this->object = wc_get_order( $order_id );
 				if ( $send_to_customer ) {
 					$this->bcc = $this->recipient;
-					$this->recipient = $this->object->billing_email;
+					$this->recipient = $this->object->get_billing_email();
 				} else {
 					$recipients = explode( ',', $this->recipient );
-					array_push( $recipients, $this->object->billing_email );
+					array_push( $recipients, $this->object->get_billing_email() );
 					$this->recipient = implode( ',', $recipients );
 				}
 
-				$this->find['order-date']   = '{order_date}';
-				$this->find['order-number'] = '{order_number}';
+				$this->placeholders['{order_date}']   = date_i18n( wc_date_format(), strtotime( $this->object->get_date_created() ) );
+				$this->placeholders['{order_number}'] = $this->object->get_order_number();
 
-				$this->replace['order-date']   = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
-				$this->replace['order-number'] = $this->object->get_order_number();
 			}
 
 			if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
@@ -95,13 +93,13 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function get_content_html() {
 			ob_start();
 
-			$html = str_replace( $this->find, $this->replace, $this->custom_template );
+			$html = $this->format_string( $this->custom_template );
 
 			do_action( 'woocommerce_email_header', $this->get_heading(), $this );
 
 			echo apply_filters( 'the_content', $html );
 
-			do_action( 'woocommerce_email_footer', $email );
+			do_action( 'woocommerce_email_footer', $this );
 
 			return ob_get_clean();
 		}
@@ -115,13 +113,13 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function get_content_plain() {
 			ob_start();
 
-			$html = str_replace( $this->find, $this->replace, $this->custom_template );
+			$html = $this->format_string( $this->custom_template );
 
-			do_action( 'woocommerce_email_header', $email_heading, $email );
+			do_action( 'woocommerce_email_header', $this->get_heading(), $this );
 
 			echo apply_filters( 'the_content', $html );
 
-			do_action( 'woocommerce_email_footer', $email );
+			do_action( 'woocommerce_email_footer', $this );
 
 			return ob_get_clean();
 		}
@@ -196,29 +194,15 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 		function convert_template() {
 
-			$this->find[]    = '{woocommerce_email_order_meta}';
-			$this->replace[] = $this->woocommerce_email_order_meta();
+			$this->placeholders['{woocommerce_email_order_meta}']    = $this->woocommerce_email_order_meta();
+			$this->placeholders['{order_billing_name}']    = $this->object->get_billing_first_name() . ' ' . $this->object->get_billing_last_name();
+			$this->placeholders['{email_order_items_table}']    = wc_get_email_order_items( $this->object );
+			$this->placeholders['{email_order_total_footer}']    = $this->email_order_total_footer();
+			$this->placeholders['{order_billing_email}']    = $this->object->get_billing_email();
+			$this->placeholders['{order_billing_phone}']    = $this->object->get_billing_phone();
+			$this->placeholders['{email_addresses}']    = $this->get_email_addresses();
 
-			$this->find[]    = '{order_billing_name}';
-			$this->replace[] = $this->object->billing_first_name . ' ' . $this->object->billing_last_name;
-
-			$this->find[]    = '{email_order_items_table}';
-			$this->replace[] = $this->object->email_order_items_table( false, true );
-
-			$this->find[]    = '{email_order_total_footer}';
-			$this->replace[] = $this->email_order_total_footer();
-
-			$this->find[]    = '{order_billing_email}';
-			$this->replace[] = $this->object->billing_email;
-
-			$this->find[]    = '{order_billing_phone}';
-			$this->replace[] = $this->object->billing_phone;
-
-			$this->find[]    = '{email_addresses}';
-			$this->replace[] = $this->get_email_addresses();
-
-			$this->find = apply_filters( 'wcemails_find_placeholders', $this->find, $this->object );
-			$this->replace = apply_filters( 'wcemails_replace_placeholders', $this->replace, $this->object );
+			$this->placeholders = apply_filters( 'wcemails_find_placeholders', $this->placeholders, $this->object );
 
 		}
 
