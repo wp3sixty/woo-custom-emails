@@ -247,6 +247,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 													echo $status_options;
 													?>
 												</select>
+												<input name="wcemails_send_delay[]" type="text" title="<?php _e( 'strtotime compatible string', WCEmails_TEXT_DOMAIN ) ?>" value="<?php echo $wcemails_detail['send_delay'][ $key ] ?>" />
 												<a href="#" class="clone" title="<?php _e( 'Add Another', WCEmails_TEXT_DOMAIN ) ?>">+</a>
 												<a href="#" class="delete" title="<?php _e( 'Delete', WCEmails_TEXT_DOMAIN ) ?>">-</a>
 											</div>
@@ -267,6 +268,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 												<option value=""><?php _e( 'Select To Status', WCEmails_TEXT_DOMAIN ); ?></option>
 												<?php echo $status_options; ?>
 											</select>
+											<input name="wcemails_send_delay[]" type="text" title="<?php _e( 'strtotime compatible string', WCEmails_TEXT_DOMAIN ) ?>" />
 											<a href="#" class="clone" title="<?php _e( 'Add Another', WCEmails_TEXT_DOMAIN ) ?>">+</a>
 											<a href="#" class="delete" title="<?php _e( 'Delete', WCEmails_TEXT_DOMAIN ) ?>">-</a>
 										</div>
@@ -362,6 +364,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 				$heading       = filter_input( INPUT_POST, 'wcemails_heading', FILTER_SANITIZE_STRING );
 				$from_status   = isset( $_POST['wcemails_from_status'] ) ? $_POST['wcemails_from_status'] : '';
 				$to_status     = isset( $_POST['wcemails_to_status'] ) ? $_POST['wcemails_to_status'] : '';
+				$send_delay    = isset( $_POST['wcemails_send_delay'] ) ? $_POST['wcemails_send_delay'] : '';
 				$template      = isset( $_POST['wcemails_template'] ) ? $_POST['wcemails_template'] : '';
 				$order_action  = filter_input( INPUT_POST, 'wcemails_order_action', FILTER_SANITIZE_STRING );
 				$order_action  = empty( $order_action ) ? 'off' : $order_action;
@@ -380,6 +383,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					'heading'       => $heading,
 					'from_status'   => $from_status,
 					'to_status'     => $to_status,
+					'send_delay'	=> $send_delay,
 					'template'      => $template,
 					'order_action'  => $order_action,
 					'enable'        => $enable,
@@ -456,10 +460,11 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$heading       = isset( $details['heading'] ) ? $details['heading'] : '';
 						$from_status   = isset( $details['from_status'] ) ? $details['from_status'] : array();
 						$to_status     = isset( $details['to_status'] ) ? $details['to_status'] : array();
+						$send_delay    = isset( $details['send_delay'] ) ? $details['send_delay'] : array();
 						$send_customer = isset( $details['send_customer'] ) ? $details['send_customer'] : array();
 						$template      = stripslashes( html_entity_decode( isset( $details['template'] ) ? $details['template'] : '' ) );
 
-						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template );
+						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_delay, $send_customer, $template );
 
 						$email_classes[ 'WCustom_Emails_'.$id.'_Email' ] = $wcemails_instance;
 
