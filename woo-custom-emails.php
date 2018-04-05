@@ -86,6 +86,15 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 */
 		private function init_hooks() {
 			add_action( 'init', array( $this, 'init' ) );
+			add_action('send_scheduled_email', array($this, 'send_scheduled_email'), 10, 2);
+		}
+
+		public function send_scheduled_email($email_id, $order_id){
+			$order = wc_get_order( $post_id );
+			$email = WC()->mailer()->emails['WCustom_Emails_'.$email_id.'_Email'];
+			if ($email ) {
+				$email->trigger( $order_id );
+			}
 		}
 
 		/**

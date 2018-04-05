@@ -14,7 +14,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @param $to_status
 		 * @param $template
 		 */
-		function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template ) {
+		function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_delay, $send_customer, $template ) {
 
 			$this->id          = $id;
 			$this->title       = __( $title, 'woocommerce' );
@@ -26,6 +26,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->custom_template = $template;
 			$this->from_status     = $from_status;
 			$this->to_status       = $to_status;
+			$this->send_delay      = $send_delay;
 			$this->send_customer   = $send_customer;
 
 			$this->add_actions();
@@ -81,6 +82,20 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 			if ( $send_to_customer ) {
 				remove_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10 );
+			}
+		}
+
+		function schedule( $order_id, $order ){
+			$from_status = $this->from_status;
+			$to_status   = $this->to_status;
+			$send_delay  = $this->send_delay;
+			//mail('test@test.com', '[DEBUG]', print_r(get_defined_vars(), TRUE));
+			if ( ! empty( $from_status ) && ! empty( $to_status ) ) {
+				foreach ( $from_status as $k => $status ) {
+					if(doing_action('woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ] . '_notification') && $send_delay[$k]){
+						wp_schedule_single_event( strtotime($send_delay[$k], current_time('timestamp')), 'send_scheduled_email', array($this->id, $order->get_id()) );
+					}
+				}
 			}
 		}
 
@@ -185,9 +200,13 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function add_actions() {
 			$from_status = $this->from_status;
 			$to_status   = $this->to_status;
+			$send_delay  = $this->send_delay;
 			if ( ! empty( $from_status ) && ! empty( $to_status ) ) {
 				foreach ( $from_status as $k => $status ) {
-					add_action( 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ] . '_notification', array( $this, 'trigger' ) );
+					if($send_delay[$k])
+						add_action( 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ] . '_notification', array( $this, 'schedule' ), 10, 2 );
+					else
+						add_action( 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ] . '_notification', array( $this, 'trigger' ) );
 				}
 			}
 		}
