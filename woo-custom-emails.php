@@ -20,6 +20,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+//We call this for localization.   
+load_plugin_textdomain('wcemails', PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)),
+					   dirname(plugin_basename(__FILE__)).'/languages');
+
 if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 	/**
