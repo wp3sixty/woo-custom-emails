@@ -17,11 +17,11 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template ) {
 
 			$this->id          = $id;
-			$this->title       = __( $title, 'woocommerce' );
-			$this->description = __( $description, 'woocommerce' );
+			$this->title       = $title;
+			$this->description = $description;
 
-			$this->heading = __( $heading, 'woocommerce' );
-			$this->subject = __( $subject, 'woocommerce' );
+			$this->heading = $heading;
+			$this->subject = $subject;
 
 			$this->custom_template = $template;
 			$this->from_status     = $from_status;
@@ -50,12 +50,12 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 */
 		function trigger( $order_id ) {
 			// checkbox of send to customer is checked or not.
-			$send_to_customer = ('on' == $this->send_customer);
+			$send_to_customer = ( 'on' == $this->send_customer );
 
 			if ( $order_id ) {
 				$this->object = wc_get_order( $order_id );
 				if ( $send_to_customer ) {
-					$this->bcc = $this->recipient;
+					$this->bcc       = $this->recipient;
 					$this->recipient = $this->object->get_billing_email();
 				} else {
 					$recipients = explode( ',', $this->recipient );
@@ -141,6 +141,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 				'recipient'  => array(
 					'title'       => __( 'Recipient(s)', 'woocommerce' ),
 					'type'        => 'text',
+					// translators: Admin email address.
 					'description' => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce' ), esc_attr( get_option( 'admin_email' ) ) ),
 					'placeholder' => '',
 					'default'     => '',
@@ -148,6 +149,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 				'subject'    => array(
 					'title'       => __( 'Subject', 'woocommerce' ),
 					'type'        => 'text',
+					// translators: Email Subject.
 					'description' => sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'woocommerce' ), $this->subject ),
 					'placeholder' => '',
 					'default'     => '',
@@ -155,6 +157,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 				'heading'    => array(
 					'title'       => __( 'Email Heading', 'woocommerce' ),
 					'type'        => 'text',
+					// translators: Email Heading.
 					'description' => sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'woocommerce' ), $this->heading ),
 					'placeholder' => '',
 					'default'     => '',
@@ -194,13 +197,13 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 		function convert_template() {
 
-			$this->placeholders['{woocommerce_email_order_meta}']    = $this->woocommerce_email_order_meta();
-			$this->placeholders['{order_billing_name}']    = $this->object->get_billing_first_name() . ' ' . $this->object->get_billing_last_name();
-			$this->placeholders['{email_order_items_table}']    = wc_get_email_order_items( $this->object );
-			$this->placeholders['{email_order_total_footer}']    = $this->email_order_total_footer();
-			$this->placeholders['{order_billing_email}']    = $this->object->get_billing_email();
-			$this->placeholders['{order_billing_phone}']    = $this->object->get_billing_phone();
-			$this->placeholders['{email_addresses}']    = $this->get_email_addresses();
+			$this->placeholders['{woocommerce_email_order_meta}'] = $this->woocommerce_email_order_meta();
+			$this->placeholders['{order_billing_name}']           = $this->object->get_billing_first_name() . ' ' . $this->object->get_billing_last_name();
+			$this->placeholders['{email_order_items_table}']      = wc_get_email_order_items( $this->object );
+			$this->placeholders['{email_order_total_footer}']     = $this->email_order_total_footer();
+			$this->placeholders['{order_billing_email}']          = $this->object->get_billing_email();
+			$this->placeholders['{order_billing_phone}']          = $this->object->get_billing_phone();
+			$this->placeholders['{email_addresses}']              = $this->get_email_addresses();
 
 			$this->placeholders = apply_filters( 'wcemails_find_placeholders', $this->placeholders, $this->object );
 
@@ -215,16 +218,18 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 		function email_order_total_footer() {
 			ob_start();
-			if ( $totals = $this->object->get_order_item_totals() ) {
+			$totals = $this->object->get_order_item_totals();
+			if ( $totals ) {
 				$i = 0;
 				foreach ( $totals as $total ) {
 					$i ++;
 					?>
 					<tr>
 					<th scope='row' colspan='2'
-					    style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['label']; ?></th>
+						style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['label']; ?></th>
 					<td style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['value']; ?></td>
-					</tr><?php
+					</tr>
+					<?php
 				}
 			}
 
@@ -245,7 +250,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			if ( ! is_array( $headers ) ) {
 				$headers = array( $headers );
 			}
-			$headers[] = 'Bcc: '.$this->bcc;
+			$headers[] = 'Bcc: ' . $this->bcc;
 			return $headers;
 		}
 
