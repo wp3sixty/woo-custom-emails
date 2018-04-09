@@ -1,0 +1,31 @@
+{
+  "name": "woo-custom-emails",
+  "version": "2.2.0",
+  "description": "Woocommerce add-on to support customize emails",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wp3sixty/woo-custom-emails.git"
+  },
+  "keywords": [
+    "woo",
+    "custom",
+    "Woocommerce",
+    "wordpress"
+  ],
+  "author": "wp3sixty",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wp3sixty/woo-custom-emails/issues"
+  },
+  "homepage": "https://github.com/wp3sixty/woo-custom-emails#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "grunt-cli": "^1.2.0",
+    "jscs": "^3.0.7",
+    "jshint": "^2.9.5"
+  }
+}
