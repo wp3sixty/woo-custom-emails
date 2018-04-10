@@ -175,7 +175,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Recipients', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( 'Recipients email addresses separated with comma' ); ?>
+							<?php _e( 'Recipients email addresses separated with comma', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -186,7 +186,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Send Only To Customer?', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Enable this to send this email to customer. If this field is enabled then `Recipients` field will be added to BCC. )' ); ?>
+							<?php _e( '( Enable this to send this email to customer. If this field is enabled then `Recipients` field will be added to BCC. )', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -208,7 +208,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Choose Order Status', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Choose order statuses when changed this email should fire. )' ); ?>
+							<?php _e( '( Choose order statuses when changed this email should fire. )', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -281,8 +281,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Template', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Use these tags to to print them in email. - <br/>
-										<i>{order_date},
+                                <?php _e( '( Use these tags to to print them in email. - ', 'woo-custom-emails' ) ?><br/>
+                                <i>{order_date},
 										{order_number},
 										{woocommerce_email_order_meta},
 										{order_billing_name},
@@ -290,7 +290,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 										{email_order_total_footer},
 										{order_billing_email},
 										{order_billing_phone},
-										{email_addresses}</i> )' ); ?>
+										{email_addresses}</i> )
 								</span>
 						</th>
 						<td>
@@ -306,7 +306,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Put It In Order Actions?', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Order Edit screen at backend will have this email as order action. )' ); ?>
+							<?php _e( '( Order Edit screen at backend will have this email as order action. )', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -317,7 +317,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Enable?', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Enable this email here. )' ); ?>
+							<?php _e( '( Enable this email here. )', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -327,7 +327,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					</tbody>
 				</table>
 				<p class="submit">
-					<input type="submit" name="wcemails_submit" id="wcemails_submit" class="button button-primary" value="Save Changes">
+					<input type="submit" name="wcemails_submit" id="wcemails_submit" class="button button-primary" value="<?php _e( 'Save Changes', 'woo-custom-emails' ); ?>">
 				</p>
 				<?php
 				if ( isset( $_REQUEST['wcemails_edit'] ) ) {

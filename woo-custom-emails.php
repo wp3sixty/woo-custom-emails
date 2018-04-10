@@ -20,10 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-//We call this for localization.   
-load_plugin_textdomain('wcemails', PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)),
-					   dirname(plugin_basename(__FILE__)).'/languages');
-
 if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 	/**
@@ -82,6 +78,8 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		public function __construct() {
 			$this->define_constants();
 			$this->init_hooks();
+			// Set up localisation.
+			$this->load_plugin_textdomain();
 		}
 
 		/**
@@ -99,7 +97,6 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 			$this->define( 'WCEmails_PLUGIN_FILE', __FILE__ );
 			$this->define( 'WCEmails_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			$this->define( 'WCEmails_VERSION', $this->version );
-			$this->define( ''woo-custom-emails'', 'wcemails' );
 			$this->define( 'WCEmails_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 			$this->define( 'WCEmails_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 		}
@@ -143,6 +140,24 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 */
 		public function plugin_path() {
 			return untrailingslashit( plugin_dir_path( __FILE__ ) );
+		}
+
+		/**
+		 * Load Localisation files.
+		 *
+		 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
+		 *
+		 * Locales found in:
+		 *      - WP_LANG_DIR/woo-custom-emails/woo-custom-emails-LOCALE.mo
+		 *      - WP_LANG_DIR/plugins/woo-custom-emails-LOCALE.mo
+		 */
+		public function load_plugin_textdomain() {
+			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+			$locale = apply_filters( 'plugin_locale', $locale, 'woo-custom-emails' );
+
+			unload_textdomain( 'woo-custom-emails' );
+			load_textdomain( 'woo-custom-emails', WP_LANG_DIR . '/woo-custom-emails/woo-custom-emails-' . $locale . '.mo' );
+			load_plugin_textdomain( 'woo-custom-emails', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 		}
 
 	}
