@@ -99,7 +99,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 			$this->define( 'WCEmails_PLUGIN_FILE', __FILE__ );
 			$this->define( 'WCEmails_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			$this->define( 'WCEmails_VERSION', $this->version );
-			$this->define( 'WCEmails_TEXT_DOMAIN', 'wcemails' );
+			$this->define( ''woo-custom-emails'', 'wcemails' );
 			$this->define( 'WCEmails_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 			$this->define( 'WCEmails_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 		}

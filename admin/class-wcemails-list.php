@@ -43,7 +43,7 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 					<a href="<?php echo add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"
 						data-key="<?php echo $item['ID']; ?>"
 						title="Edit this item"><?php
-						_e( 'Edit', WCEmails_TEXT_DOMAIN ); ?>
+						_e( 'Edit', 'woo-custom-emails' ); ?>
 					</a> |
 				</span>
 				<span class="delete">
@@ -51,7 +51,7 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 						class="wcemails_delete"
 						data-key="<?php echo $item['ID']; ?>"
 						title="Edit this item"><?php
-						_e( 'Delete', WCEmails_TEXT_DOMAIN ); ?>
+						_e( 'Delete', 'woo-custom-emails' ); ?>
 					</a> |
 				</span>
 			</div><?php
