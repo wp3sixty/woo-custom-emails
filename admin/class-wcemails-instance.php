@@ -64,13 +64,22 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$send_to_customer = ('on' == $this->send_customer);
 
 			if ( $order_id ) {
+				if ( ! $this->object ) {
+					$this->object = wc_get_order( $order_id );
+				}
+				if ( method_exists( $this->object, 'get_billing_email' ) ) {
+					$billing_email = $this->object->get_billing_email();
+				} else {
+					$billing_email = $this->object->billing_email;
+				}
+
 				$this->object = wc_get_order( $order_id );
 				if ( $send_to_customer ) {
 					$this->bcc = $this->recipient;
-					$this->recipient = $this->object->get_billing_email();
+					$this->recipient = $billing_email;
 				} else {
 					$recipients = explode( ',', $this->recipient );
-					array_push( $recipients, $this->object->get_billing_email() );
+					array_push( $recipients, $billing_email );
 					$this->recipient = implode( ',', $recipients );
 				}
 
@@ -220,12 +229,42 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 		function convert_template() {
 
+			if ( method_exists( $this->object, 'get_billing_first_name' ) ) {
+				$billing_first_name = $this->object->get_billing_first_name();
+			} else {
+				$billing_first_name = $this->object->billing_first_name;
+			}
+
+			if ( method_exists( $this->object, 'get_billing_last_name' ) ) {
+				$billing_last_name = $this->object->get_billing_last_name();
+			} else {
+				$billing_last_name = $this->object->billing_last_name;
+			}
+
+			if ( method_exists( $this->object, 'get_billing_email' ) ) {
+				$billing_email = $this->object->get_billing_email();
+			} else {
+				$billing_email = $this->object->billing_email;
+			}
+
+			if ( method_exists( $this->object, 'get_billing_phone' ) ) {
+				$billing_phone = $this->object->get_billing_phone();
+			} else {
+				$billing_phone = $this->object->billing_phone;
+			}
+
+			if(function_exists('wc_get_email_order_items')){
+				$item_table = wc_get_email_order_items( $this->object );
+			} else {
+				$item_table = $this->object->email_order_items_table();
+			}
+
 			$this->placeholders['{woocommerce_email_order_meta}']    = $this->woocommerce_email_order_meta();
-			$this->placeholders['{order_billing_name}']    = $this->object->get_billing_first_name() . ' ' . $this->object->get_billing_last_name();
-			$this->placeholders['{email_order_items_table}']    = wc_get_email_order_items( $this->object );
+			$this->placeholders['{order_billing_name}']    = $billing_first_name . ' ' . $billing_last_name;
+			$this->placeholders['{email_order_items_table}']    = $item_table;
 			$this->placeholders['{email_order_total_footer}']    = $this->email_order_total_footer();
-			$this->placeholders['{order_billing_email}']    = $this->object->get_billing_email();
-			$this->placeholders['{order_billing_phone}']    = $this->object->get_billing_phone();
+			$this->placeholders['{order_billing_email}']    = $billing_email;
+			$this->placeholders['{order_billing_phone}']    = $billing_phone;
 			$this->placeholders['{email_addresses}']    = $this->get_email_addresses();
 			$this->placeholders['{site_title}']    = get_bloginfo('name');
 
