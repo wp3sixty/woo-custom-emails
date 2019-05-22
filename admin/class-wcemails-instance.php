@@ -60,6 +60,10 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @return void
 		 */
 		function trigger( $order_id ) {
+			// clean up possible leftover from previous invocations (e.g. in case of bulk updates&sends)
+			$this->find = array();
+			$this->replace = array();
+			
 			// checkbox of send to customer is checked or not.
 			$send_to_customer = ('on' == $this->send_customer);
 
