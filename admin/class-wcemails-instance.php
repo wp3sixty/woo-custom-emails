@@ -61,7 +61,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 */
 		function trigger( $order_id ) {
 			// clean up possible leftover from previous invocations (e.g. in case of bulk updates&sends)
-			$this->find = array();
+			$this->find    = array();
 			$this->replace = array();
 
 			// checkbox of send to customer is checked or not.
@@ -78,16 +78,16 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 					$this->recipient = implode( ',', $recipients );
 				}
 
-				$order_date = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
+				$order_date   = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
 				$order_number = $this->object->get_order_number();
 
 				/**
 				 * WooCommerce =< 3.2.X
 				 */
-				$this->find['order-date']   = '{order_date}';
-				$this->replace['order-date']   = $order_date;
+				$this->find['order-date']    = '{order_date}';
+				$this->replace['order-date'] = $order_date;
 
-				$this->find['order-number'] = '{order_number}';
+				$this->find['order-number']    = '{order_number}';
 				$this->replace['order-number'] = $order_number;
 
 				/**
@@ -234,7 +234,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->placeholders['{order_billing_email}']          = $this->object->get_billing_email();
 			$this->placeholders['{order_billing_phone}']          = $this->object->get_billing_phone();
 			$this->placeholders['{email_addresses}']              = $this->get_email_addresses();
-			$this->placeholders['{site_title}']                   = get_bloginfo('name');
+			$this->placeholders['{site_title}']                   = get_bloginfo( 'name' );
 
 			// For old woocommerce use find and replace methods
 			foreach ( $this->placeholders as $find => $replace ) {
@@ -245,8 +245,8 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->placeholders = apply_filters( 'wcemails_find_placeholders', $this->placeholders, $this->object );
 
 			// Legacy filters
-			$this->find      = apply_filters( 'wcemails_find_placeholders', $this->find, $this->object );
-			$this->replace   = apply_filters( 'wcemails_replace_placeholders', $this->replace, $this->object );
+			$this->find    = apply_filters( 'wcemails_find_placeholders', $this->find, $this->object );
+			$this->replace = apply_filters( 'wcemails_replace_placeholders', $this->replace, $this->object );
 
 		}
 
