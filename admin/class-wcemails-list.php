@@ -34,12 +34,12 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 		 */
 		function get_columns() {
 			$columns = array(
-				'wcemails_title'        => __( 'Title' ),
-				'wcemails_description'  => __( 'Description' ),
-				'wcemails_subject'      => __( 'Subject' ),
-				'wcemails_heading'      => __( 'Heading' ),
-				'wcemails_order_action' => __( 'Order Action' ),
-				'wcemails_enable'       => __( 'Enable' ),
+				'wcemails_title'        => __( 'Title', 'woo-custom-emails' ),
+				'wcemails_description'  => __( 'Description', 'woo-custom-emails' ),
+				'wcemails_subject'      => __( 'Subject', 'woo-custom-emails' ),
+				'wcemails_heading'      => __( 'Heading', 'woo-custom-emails' ),
+				'wcemails_order_action' => __( 'Order Action', 'woo-custom-emails' ),
+				'wcemails_enable'       => __( 'Enable', 'woo-custom-emails' ),
 			);
 
 			return $columns;
@@ -80,12 +80,18 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 			</strong>
 			<div class="row-actions">
 				<span class="edit">
-					<a href="<?php echo esc_url( $title_url ); ?>" data-key="<?php echo $item['ID']; ?>" title="<?php esc_attr_e( 'Edit this item', 'woo-custom-emails' ); ?>">
-						<?php esc_html_e( 'Edit', 'woo-custom-emails' ); ?>
+					<a href="<?php echo add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"
+						data-key="<?php echo $item['ID']; ?>"
+						title="Edit this item"><?php
+						_e( 'Edit', 'woo-custom-emails' ); ?>
 					</a> |
 				</span>
 				<span class="delete">
-					<a href="<?php echo esc_url( $delete_url ); ?>" class="wcemails_delete" data-key="<?php echo $item['ID']; ?>" title="<?php esc_attr_e( 'Delete this item', 'woo-custom-emails' ); ?>"><?php esc_html_e( 'Delete', 'woo-custom-emails' ); ?>
+					<a href="<?php echo add_query_arg( array( 'type' => 'view-email', 'wcemails_delete' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"
+						class="wcemails_delete"
+						data-key="<?php echo $item['ID']; ?>"
+						title="Edit this item"><?php
+						_e( 'Delete', 'woo-custom-emails' ); ?>
 					</a> |
 				</span>
 			</div>

@@ -175,7 +175,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Recipients', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( 'Recipients email addresses separated with comma' ); ?>
+							<?php _e( 'Recipients email addresses separated with comma', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -186,7 +186,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Send Only To Customer?', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Enable this to send this email to customer. If this field is enabled then `Recipients` field will be added to BCC. )' ); ?>
+							<?php _e( '( Enable this to send this email to customer. If this field is enabled then `Recipients` field will be added to BCC. )', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -208,7 +208,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Choose Order Status', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Choose order statuses when changed this email should fire. )' ); ?>
+							<?php _e( '( Choose order statuses when changed this email should fire. )', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -247,8 +247,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 													echo $status_options;
 													?>
 												</select>
-												<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ); ?>">+</a>
-												<a href="#" class="delete" title="<?php _e( 'Delete', 'woo-custom-emails' ); ?>">-</a>
+												<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ) ?>">+</a>
+												<a href="#" class="delete" title="<?php _e( 'Delete', 'woo-custom-emails' ) ?>">-</a>
 											</div>
 											<?php
 										}
@@ -267,8 +267,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 												<option value=""><?php _e( 'Select To Status', 'woo-custom-emails' ); ?></option>
 												<?php echo $status_options; ?>
 											</select>
-											<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ); ?>">+</a>
-											<a href="#" class="delete" title="<?php _e( 'Delete', 'woo-custom-emails' ); ?>">-</a>
+											<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ) ?>">+</a>
+											<a href="#" class="delete" title="<?php _e( 'Delete', 'woo-custom-emails' ) ?>">-</a>
 										</div>
 										<?php
 									}
@@ -281,10 +281,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Template', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php
-							_e(
-								'( Use these tags to to print them in email. - <br/>
-										<i>{order_date},
+                                <?php _e( '( Use these tags to to print them in email. - ', 'woo-custom-emails' ) ?><br/>
+                                <i>{order_date},
 										{order_number},
 										{woocommerce_email_order_meta},
 										{order_billing_name},
@@ -292,9 +290,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 										{email_order_total_footer},
 										{order_billing_email},
 										{order_billing_phone},
-										{email_addresses}</i> )'
-							);
-?>
+										{email_addresses}</i> )
 								</span>
 						</th>
 						<td>
@@ -310,7 +306,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Put It In Order Actions?', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Order Edit screen at backend will have this email as order action. )' ); ?>
+							<?php _e( '( Order Edit screen at backend will have this email as order action. )', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -321,7 +317,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Enable?', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-							<?php _e( '( Enable this email here. )' ); ?>
+							<?php _e( '( Enable this email here. )', 'woo-custom-emails' ); ?>
 								</span>
 						</th>
 						<td>
@@ -331,7 +327,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					</tbody>
 				</table>
 				<p class="submit">
-					<input type="submit" name="wcemails_submit" id="wcemails_submit" class="button button-primary" value="Save Changes">
+					<input type="submit" name="wcemails_submit" id="wcemails_submit" class="button button-primary" value="<?php _e( 'Save Changes', 'woo-custom-emails' ); ?>">
 				</p>
 				<?php
 				if ( isset( $_REQUEST['wcemails_edit'] ) ) {
@@ -498,8 +494,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$id    = $details['id'];
 						$title = isset( $details['title'] ) ? $details['title'] : '';
 
-						// translators: Resent email title
-						$emails[ $id ] = sprintf( __( 'Resend %s', 'woo-custom-emails' ), $title );
+                        $emails[$id] = __( 'Resend ' . $title, 'woo-custom-emails' );
 
 					}
 				}
@@ -514,9 +509,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		 */
 		function wcemails_woocommerce_check() {
 			if ( ! class_exists( 'WooCommerce' ) ) {
-				?>
-				<h2><?php _e( 'WooCommerce is not activated!', 'woo-custom-emails' ); ?></h2>
-				<?php
+				?><h2><?php _e( 'WooCommerce is not activated!', 'woo-custom-emails' );?></h2><?php
 				die();
 			}
 		}

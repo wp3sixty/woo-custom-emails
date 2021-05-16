@@ -3,12 +3,12 @@
 /**
  * Plugin Name: Woo Custom Emails
  * Plugin URI: https://github.com/mehulkaklotar/woo-custom-emails
- * Description: Woocommerce add-on to support customize emails
- * Version: 2.1
+ * Description: A woocommerce add on to support customize emails
+ * Version: 2.2
  * Author: wp3sixty
  * Author URI: http://wp3sixty.com
  * Requires at least: 4.9
- * Tested up to: 4.9.2
+ * Tested up to: 4.9.5
  *
  * Text Domain: woo-custom-emails
  *
@@ -32,14 +32,14 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 	 * Main Woo Custom Emails Class
 	 *
 	 * @class Woo_Custom_Emails
-	 * @version 2.0.3
+	 * @version	2.0.3
 	 */
 	final class Woo_Custom_Emails {
 
 		/**
 		 * @var string
 		 */
-		public $version = '2.1';
+		public $version = '2.2';
 		/**
 		 * @var Woo_Custom_Emails The single instance of the class
 		 * @since 2.1
@@ -69,7 +69,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 * @since 0.1
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '2.0.7' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '2.2' );
 		}
 		/**
 		 * Unserializing instances of this class is forbidden.
@@ -77,7 +77,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 * @since 2.1
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '2.0.7' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '2.2' );
 		}
 
 		/**
@@ -86,6 +86,8 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		public function __construct() {
 			$this->define_constants();
 			$this->init_hooks();
+			// Set up localisation.
+			$this->load_plugin_textdomain();
 		}
 
 		/**
@@ -104,7 +106,6 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 			$this->define( 'WCEmails_PLUGIN_FILE', __FILE__ );
 			$this->define( 'WCEmails_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			$this->define( 'WCEmails_VERSION', $this->version );
-			$this->define( 'WCEmails_TEXT_DOMAIN', 'wcemails' );
 			$this->define( 'WCEmails_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 			$this->define( 'WCEmails_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 		}
@@ -151,6 +152,24 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 */
 		public function plugin_path() {
 			return untrailingslashit( plugin_dir_path( __FILE__ ) );
+		}
+
+		/**
+		 * Load Localisation files.
+		 *
+		 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
+		 *
+		 * Locales found in:
+		 *      - WP_LANG_DIR/woo-custom-emails/woo-custom-emails-LOCALE.mo
+		 *      - WP_LANG_DIR/plugins/woo-custom-emails-LOCALE.mo
+		 */
+		public function load_plugin_textdomain() {
+			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+			$locale = apply_filters( 'plugin_locale', $locale, 'woo-custom-emails' );
+
+			unload_textdomain( 'woo-custom-emails' );
+			load_textdomain( 'woo-custom-emails', WP_LANG_DIR . '/woo-custom-emails/woo-custom-emails-' . $locale . '.mo' );
+			load_plugin_textdomain( 'woo-custom-emails', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 		}
 
 	}
