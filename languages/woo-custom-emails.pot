@@ -1,0 +1,223 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2018-04-10 12:56+0530\n"
+"PO-Revision-Date: 2018-04-10 12:56+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: admin\n"
+"X-Poedit-SearchPath-1: woo-custom-emails.php\n"
+
+#: admin/class-wcemails-admin.php:66
+msgid "Woo Custom Emails"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:76
+msgid "Woocommerce Custom Emails Settings"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:89
+msgid "Add Custom Emails"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:90
+msgid "View Your Custom Emails"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:143 admin/class-wcemails-admin.php:149
+#: admin/class-wcemails-list.php:25
+msgid "Title"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:145
+msgid "( Title of the Email. )"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:154 admin/class-wcemails-admin.php:160
+#: admin/class-wcemails-list.php:26
+msgid "Description"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:156
+msgid "( Email Description to display at Woocommerce Email Setting. )"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:165 admin/class-wcemails-admin.php:171
+#: admin/class-wcemails-instance.php:175 admin/class-wcemails-list.php:27
+msgid "Subject"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:167
+msgid ""
+"( Email Subject <br/>[Try this placeholders : <i>{site_title}, "
+"{order_number}, {order_date}</i>] )"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:176 admin/class-wcemails-admin.php:182
+msgid "Recipients"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:178
+msgid "Recipients email addresses separated with comma"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:187
+msgid "Send Only To Customer?"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:189
+msgid ""
+"( Enable this to send this email to customer. If this field is enabled then "
+"`Recipients` field will be added to BCC. )"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:198 admin/class-wcemails-admin.php:204
+#: admin/class-wcemails-list.php:28
+msgid "Heading"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:200
+msgid "( Email Default Heading )"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:209
+msgid "Choose Order Status"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:211
+msgid "( Choose order statuses when changed this email should fire. )"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:223 admin/class-wcemails-admin.php:263
+msgid "Select From Status"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:237 admin/class-wcemails-admin.php:267
+msgid "Select To Status"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:250 admin/class-wcemails-admin.php:270
+msgid "Add Another"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:251 admin/class-wcemails-admin.php:271
+#: admin/class-wcemails-list.php:54
+msgid "Delete"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:282
+msgid "Template"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:284
+msgid "( Use these tags to to print them in email. - "
+msgstr ""
+
+#: admin/class-wcemails-admin.php:307
+msgid "Put It In Order Actions?"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:309
+msgid "( Order Edit screen at backend will have this email as order action. )"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:318
+msgid "Enable?"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:320
+msgid "( Enable this email here. )"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:330
+msgid "Save Changes"
+msgstr ""
+
+#: admin/class-wcemails-admin.php:497
+msgid "Resend "
+msgstr ""
+
+#: admin/class-wcemails-admin.php:512
+msgid "WooCommerce is not activated!"
+msgstr ""
+
+#: admin/class-wcemails-instance.php:162
+msgid "Enable/Disable"
+msgstr ""
+
+#: admin/class-wcemails-instance.php:164
+msgid "Enable this email notification"
+msgstr ""
+
+#: admin/class-wcemails-instance.php:168
+msgid "Recipient(s)"
+msgstr ""
+
+#: admin/class-wcemails-instance.php:170
+#, php-format
+msgid ""
+"Enter recipients (comma separated) for this email. Defaults to <code>%s</"
+"code>."
+msgstr ""
+
+#: admin/class-wcemails-instance.php:177
+#, php-format
+msgid ""
+"This controls the email subject line. Leave blank to use the default "
+"subject: <code>%s</code>."
+msgstr ""
+
+#: admin/class-wcemails-instance.php:182
+msgid "Email Heading"
+msgstr ""
+
+#: admin/class-wcemails-instance.php:184
+#, php-format
+msgid ""
+"This controls the main heading contained within the email notification. "
+"Leave blank to use the default heading: <code>%s</code>."
+msgstr ""
+
+#: admin/class-wcemails-instance.php:189
+msgid "Email type"
+msgstr ""
+
+#: admin/class-wcemails-instance.php:191
+msgid "Choose which format of email to send."
+msgstr ""
+
+#: admin/class-wcemails-instance.php:195
+msgid "Plain text"
+msgstr ""
+
+#: admin/class-wcemails-instance.php:196
+msgid "HTML"
+msgstr ""
+
+#: admin/class-wcemails-instance.php:197
+msgid "Multipart"
+msgstr ""
+
+#: admin/class-wcemails-list.php:29
+msgid "Order Action"
+msgstr ""
+
+#: admin/class-wcemails-list.php:30
+msgid "Enable"
+msgstr ""
+
+#: admin/class-wcemails-list.php:46
+msgid "Edit"
+msgstr ""
+
+#: woo-custom-emails.php:69 woo-custom-emails.php:76
+msgid "Cheatin&#8217; huh?"
+msgstr ""

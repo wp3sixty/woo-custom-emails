@@ -1,9 +1,9 @@
 === Woo Custom Emails ===
-Contributors: wp3sixty, mehulkaklotar, utkarshpatel, dipesh.kakadiya
+Contributors: wp3sixty, mehulkaklotar, utkarshpatel, dipesh.kakadiya, faishal
 Tags: woo custom emails, woocommerce custom emails, woocommerce, email, order, ecommerce, custom email template
 Requires at least: 4.9
-Tested up to: 4.9.2
-Stable tag: 2.1
+Tested up to: 5.7.2
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,6 +12,9 @@ Woo Custom Emails is a plugin that helps you create custom emails for your WooCo
 == Description ==
 
 Create your custom WooCommerce order emails with WooCommerce default email settings functionality.
+
+= Translation =
+If you want to translate the plugin strings in to your language then you can go here -> https://translate.wordpress.org/projects/wp-plugins/woo-custom-emails
 
 = Contributing to Woo Custom Emails =
 If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you can contribute this back to the code. Submit your pull request or issue on [Github WooCustomEmails](https://github.com/mehulkaklotar/woo-custom-emails)
@@ -40,6 +43,10 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 4. WooCommerce Order action with custom email
 
 == Changelog ==
+
+= 2.2 =
+* Translation changes
+* Fixed errors
 
 = 2.1 =
 * WC 3.2.6 update changes

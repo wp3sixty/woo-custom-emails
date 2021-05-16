@@ -34,12 +34,12 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 		 */
 		function get_columns() {
 			$columns = array(
-				'wcemails_title'        => __( 'Title' ),
-				'wcemails_description'  => __( 'Description' ),
-				'wcemails_subject'      => __( 'Subject' ),
-				'wcemails_heading'      => __( 'Heading' ),
-				'wcemails_order_action' => __( 'Order Action' ),
-				'wcemails_enable'       => __( 'Enable' ),
+				'wcemails_title'        => __( 'Title', 'woo-custom-emails' ),
+				'wcemails_description'  => __( 'Description', 'woo-custom-emails' ),
+				'wcemails_subject'      => __( 'Subject', 'woo-custom-emails' ),
+				'wcemails_heading'      => __( 'Heading', 'woo-custom-emails' ),
+				'wcemails_order_action' => __( 'Order Action', 'woo-custom-emails' ),
+				'wcemails_enable'       => __( 'Enable', 'woo-custom-emails' ),
 			);
 
 			return $columns;
