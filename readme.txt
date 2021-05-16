@@ -2,7 +2,7 @@
 Contributors: wp3sixty, mehulkaklotar, utkarshpatel, dipesh.kakadiya, faishal
 Tags: woo custom emails, woocommerce custom emails, woocommerce, email, order, ecommerce, custom email template
 Requires at least: 4.9
-Tested up to: 4.9.5
+Tested up to: 5.7.2
 Stable tag: 2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
