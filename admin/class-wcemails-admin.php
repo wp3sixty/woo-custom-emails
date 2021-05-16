@@ -558,6 +558,11 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 				// Order data saved, now get it so we can manipulate status.
 				$order = wc_get_order( $post_id );
 
+				if (method_exists($order, 'get_id')){
+					$order_id = $order->get_id();
+				} else {
+					$order_id = $order->id;
+				}
 				$action = wc_clean( $_POST['wc_order_action'] );
 
 				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
@@ -570,7 +575,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 							if ( $id == $action ) {
 								WC()->payment_gateways();
 								WC()->shipping();
-								WC()->mailer()->emails['WCustom_Emails_'.$id.'_Email']->trigger( $order->get_id(), $order );
+								WC()->mailer()->emails['WCustom_Emails_'.$id.'_Email']->trigger( $order_id, $order );
                             }
 						}
 					}
