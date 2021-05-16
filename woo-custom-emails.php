@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name: Woo Custom Emails
  * Plugin URI: https://github.com/mehulkaklotar/woo-custom-emails
@@ -16,13 +15,15 @@
  * @category Core
  * @author mehulkaklotar
  */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
 // We call this for localization.
 load_plugin_textdomain(
-	'woo-custom-emails', PLUGINDIR . '/' . dirname( plugin_basename( __FILE__ ) ),
+	'woo-custom-emails',
+	PLUGINDIR . '/' . dirname( plugin_basename( __FILE__ ) ),
 	dirname( plugin_basename( __FILE__ ) ) . '/languages'
 );
 

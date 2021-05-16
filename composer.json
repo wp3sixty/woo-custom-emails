@@ -10,11 +10,12 @@
         }
     ],
     "require": {
-        "php": ">=5.2"
+        "php": ">=7.0"
     },
     "require-dev": {
-        "wp-coding-standards/wpcs": "*",
-        "wimg/php-compatibility": "*",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4"
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "squizlabs/php_codesniffer": "^3.4.0",
+        "wp-coding-standards/wpcs": "*"
     }
 }

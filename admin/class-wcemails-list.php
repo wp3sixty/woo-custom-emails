@@ -58,21 +58,24 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 				array(
 					'type'          => 'add-email',
 					'wcemails_edit' => $item['ID'],
-				), $admin_url
+				),
+				$admin_url
 			);
 
 			$add_url = add_query_arg(
 				array(
 					'type'          => 'add-email',
 					'wcemails_edit' => $item['ID'],
-				), $admin_url
+				),
+				$admin_url
 			);
 
 			$delete_url = add_query_arg(
 				array(
 					'type'            => 'view-email',
 					'wcemails_delete' => $item['ID'],
-				), $admin_url
+				),
+				$admin_url
 			);
 			ob_start() ?>
 			<strong>
@@ -130,8 +133,7 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 		 * @return string
 		 */
 		function column_wcemails_order_action( $item ) {
-			return 'on' == $item['order_action'] ? 'Yes' : 'No';
-			;
+			return 'on' === $item['order_action'] ? 'Yes' : 'No';
 		}
 
 		/**
@@ -140,7 +142,7 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 		 * @return string
 		 */
 		function column_wcemails_enable( $item ) {
-			return 'on' == $item['enable'] ? 'Yes' : 'No';
+			return 'on' === $item['enable'] ? 'Yes' : 'No';
 		}
 
 		/**

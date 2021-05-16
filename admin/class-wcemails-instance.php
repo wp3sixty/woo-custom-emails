@@ -65,7 +65,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->replace = array();
 
 			// checkbox of send to customer is checked or not.
-			$send_to_customer = ( 'on' == $this->send_customer );
+			$send_to_customer = ( 'on' === $this->send_customer );
 
 			if ( $order_id ) {
 				$this->object = wc_get_order( $order_id );
@@ -210,7 +210,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		function change_order_status_trigger( $order_id, $old_status, $new_status ) {
 			$from_status = $this->from_status;
 			$to_status   = $this->to_status;
-			if ( ! empty( $from_status ) && ! empty( $to_status ) && in_array( $old_status, $from_status ) && in_array( $new_status, $to_status ) ) {
+			if ( ! empty( $from_status ) && ! empty( $to_status ) && in_array( $old_status, $from_status, true ) && in_array( $new_status, $to_status, true ) ) {
 				$this->trigger( $order_id );
 			}
 		}
@@ -267,8 +267,8 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 					?>
 					<tr>
 					<th scope='row' colspan='2'
-						style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['label']; ?></th>
-					<td style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['value']; ?></td>
+						style='text-align:left; border: 1px solid #eee; <?php echo 1 === $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['label']; ?></th>
+					<td style='text-align:left; border: 1px solid #eee; <?php echo 1 === $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['value']; ?></td>
 					</tr>
 					<?php
 				}
@@ -285,7 +285,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		}
 
 		function add_bcc_to_custom_email( $headers, $email_id, $order ) {
-			if ( $this->id != $email_id || empty( $this->bcc ) ) {
+			if ( $this->id !== $email_id || empty( $this->bcc ) ) {
 				return $headers;
 			}
 			if ( ! is_array( $headers ) ) {
