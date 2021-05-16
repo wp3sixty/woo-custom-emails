@@ -13,3 +13,7 @@ wp-content/uploads/
 wp-content/wp-cache-config.php
 .idea
 .DS_Store
+node_modules
+
+/vendor/
+vendor

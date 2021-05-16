@@ -10,7 +10,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 	 * Admin WooCommerce Custom Emails Class
 	 *
 	 * @class WCE_Admin
-	 * @version	0.1
+	 * @version 0.1
 	 */
 	class WCEmails_Admin {
 
@@ -81,13 +81,13 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					$type = $_REQUEST['type'];
 				}
 				$all_types = array( 'add-email', 'view-email' );
-				if ( ! in_array( $type, $all_types ) ) {
+				if ( ! in_array( $type, $all_types, true ) ) {
 					$type = 'add-email';
 				}
 				?>
 				<ul class="subsubsub">
-					<li class="today"><a class ="<?php echo ( 'add-email' == $type ) ? 'current' : ''; ?>" href="<?php echo add_query_arg( array( 'type' => 'add-email' ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"><?php _e( 'Add Custom Emails', 'woo-custom-emails' ); ?></a> |</li>
-					<li class="today"><a class ="<?php echo ( 'view-email' == $type ) ? 'current' : ''; ?>" href="<?php echo add_query_arg( array( 'type' => 'view-email' ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"><?php _e( 'View Your Custom Emails', 'woo-custom-emails' ); ?></a></li>
+					<li class="today"><a class ="<?php echo ( 'add-email' === $type ) ? 'current' : ''; ?>" href="<?php echo add_query_arg( array( 'type' => 'add-email' ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"><?php _e( 'Add Custom Emails', 'woo-custom-emails' ); ?></a> |</li>
+					<li class="today"><a class ="<?php echo ( 'view-email' === $type ) ? 'current' : ''; ?>" href="<?php echo add_query_arg( array( 'type' => 'view-email' ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"><?php _e( 'View Your Custom Emails', 'woo-custom-emails' ); ?></a></li>
 				</ul>
 				<?php $this->wcemails_render_sections( $type ); ?>
 			</div>
@@ -97,9 +97,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		function wcemails_render_sections( $type ) {
 
-			if ( 'add-email' == $type ) {
+			if ( 'add-email' === $type ) {
 				$this->wcemails_render_add_email_section();
-			} else if ( 'view-email' == $type ) {
+			} elseif ( 'view-email' === $type ) {
 				$this->wcemails_render_view_email_section();
 			} else {
 				$this->wcemails_render_add_email_section();
@@ -114,8 +114,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 				if ( ! empty( $wcemails_email_details ) ) {
 					foreach ( $wcemails_email_details as $key => $details ) {
-						if ( $_REQUEST['wcemails_edit'] == $key ) {
-							$wcemails_detail = $details;
+						if ( $_REQUEST['wcemails_edit'] === $key ) {
+							$wcemails_detail             = $details;
 							$wcemails_detail['template'] = stripslashes( $wcemails_detail['template'] );
 						}
 					}
@@ -125,7 +125,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			$wc_statuses = wc_get_order_statuses();
 			if ( ! empty( $wc_statuses ) ) {
 				foreach ( $wc_statuses as $k => $status ) {
-					$key = ( 'wc-' === substr( $k, 0, 3 ) ) ? substr( $k, 3 ) : $k;
+					$key                 = ( 'wc-' === substr( $k, 0, 3 ) ) ? substr( $k, 3 ) : $k;
 					$wc_statuses[ $key ] = $status;
 					unset( $wc_statuses[ $k ] );
 				}
@@ -190,7 +190,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_send_customer" id="wcemails_send_customer" type="checkbox" <?php echo ( isset( $wcemails_detail['send_customer'] ) && 'on' == $wcemails_detail['send_customer'] ) ? 'checked="checked"' : ''; ?> />
+							<input name="wcemails_send_customer" id="wcemails_send_customer" type="checkbox" <?php echo ( isset( $wcemails_detail['send_customer'] ) && 'on' === $wcemails_detail['send_customer'] ) ? 'checked="checked"' : ''; ?> />
 						</td>
 					</tr>
 					<tr>
@@ -225,7 +225,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 													$status_options = '';
 													foreach ( $wc_statuses as $k => $wc_status ) {
 														$selected = '';
-														if ( $k == $status ) {
+														if ( $k === $status ) {
 															$selected = 'selected="selected"';
 														}
 														$status_options .= '<option value="' . $k . '" ' . $selected . '>' . $wc_status . '</option>';
@@ -239,7 +239,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 													$status_options = '';
 													foreach ( $wc_statuses as $k => $wc_status ) {
 														$selected = '';
-														if ( $k == $wcemails_detail['to_status'][ $key ] ) {
+														if ( $k === $wcemails_detail['to_status'][ $key ] ) {
 															$selected = 'selected="selected"';
 														}
 														$status_options .= '<option value="' . $k . '" ' . $selected . '>' . $wc_status . '</option>';
@@ -247,8 +247,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 													echo $status_options;
 													?>
 												</select>
-												<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ) ?>">+</a>
-												<a href="#" class="delete" title="<?php _e( 'Delete', 'woo-custom-emails' ) ?>">-</a>
+												<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ); ?>">+</a>
+												<a href="#" class="delete" title="<?php _e( 'Delete', 'woo-custom-emails' ); ?>">-</a>
 											</div>
 											<?php
 										}
@@ -267,8 +267,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 												<option value=""><?php _e( 'Select To Status', 'woo-custom-emails' ); ?></option>
 												<?php echo $status_options; ?>
 											</select>
-											<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ) ?>">+</a>
-											<a href="#" class="delete" title="<?php _e( 'Delete', 'woo-custom-emails' ) ?>">-</a>
+											<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ); ?>">+</a>
+											<a href="#" class="delete" title="<?php _e( 'Delete', 'woo-custom-emails' ); ?>">-</a>
 										</div>
 										<?php
 									}
@@ -281,7 +281,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						<th scope="row">
 							<?php _e( 'Template', 'woo-custom-emails' ); ?>
 							<span style="display: block; font-size: 12px; font-weight: 300;">
-                                <?php _e( '( Use these tags to to print them in email. - ', 'woo-custom-emails' ) ?><br/>
+							<?php
+							_e(
+								'( Use these tags to to print them in email. - <br/>
                                 <i>{order_date},
 										{order_number},
 										{woocommerce_email_order_meta},
@@ -290,7 +292,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 										{email_order_total_footer},
 										{order_billing_email},
 										{order_billing_phone},
-										{email_addresses}</i> )
+										{email_addresses}</i> )'
+							);
+							?>
 								</span>
 						</th>
 						<td>
@@ -298,7 +302,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 							$settings = array(
 								'textarea_name' => 'wcemails_template',
 							);
-							wp_editor( html_entity_decode( isset( $wcemails_detail['template'] ) ? $wcemails_detail['template'] : '' ), 'ezway_custom_email_new_order', $settings );
+							wp_editor( html_entity_decode( isset( $wcemails_detail['template'] ) ? $wcemails_detail['template'] : '' ), 'ezway_custom_email_new_order', $settings ); // phpcs:ignore PHPCompatibility.ParameterValues.NewHTMLEntitiesEncodingDefault.NotSet
 							?>
 						</td>
 					</tr>
@@ -310,7 +314,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_order_action" id="wcemails_order_action" type="checkbox" <?php echo ( isset( $wcemails_detail['order_action'] ) && 'on' == $wcemails_detail['order_action'] ) ? 'checked="checked"' : ''; ?> />
+							<input name="wcemails_order_action" id="wcemails_order_action" type="checkbox" <?php echo ( isset( $wcemails_detail['order_action'] ) && 'on' === $wcemails_detail['order_action'] ) ? 'checked="checked"' : ''; ?> />
 						</td>
 					</tr>
 					<tr>
@@ -321,7 +325,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_enable" id="wcemails_enable" type="checkbox" <?php echo ( isset( $wcemails_detail['enable'] ) && 'on' == $wcemails_detail['enable'] ) ? 'checked="checked"' : ''; ?> />
+							<input name="wcemails_enable" id="wcemails_enable" type="checkbox" <?php echo ( isset( $wcemails_detail['enable'] ) && 'on' === $wcemails_detail['enable'] ) ? 'checked="checked"' : ''; ?> />
 						</td>
 					</tr>
 					</tbody>
@@ -389,23 +393,23 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 				if ( isset( $_POST['wcemails_update'] ) ) {
 					if ( ! empty( $wcemails_email_details ) ) {
 						foreach ( $wcemails_email_details as $key => $details ) {
-							if ( $key == $_POST['wcemails_update'] ) {
-								$data['id'] = $details['id'];
+							if ( $key === $_POST['wcemails_update'] ) {
+								$data['id']                     = $details['id'];
 								$wcemails_email_details[ $key ] = $data;
 							}
 						}
 					}
 				} else {
-					$id = uniqid( 'wcemails' );
+					$id         = uniqid( 'wcemails' );
 					$data['id'] = $id;
 					array_push( $wcemails_email_details, $data );
 				}
 
 				update_option( 'wcemails_email_details', $wcemails_email_details );
 
-				add_settings_error( 'wcemails-settings', 'error_code', $title.' is saved and if you have enabled it then you can see it in Woocommerce Email Settings Now', 'success' );
+				add_settings_error( 'wcemails-settings', 'error_code', $title . ' is saved and if you have enabled it then you can see it in Woocommerce Email Settings Now', 'success' );
 
-			} else if ( isset( $_REQUEST['wcemails_delete'] ) ) {
+			} elseif ( isset( $_REQUEST['wcemails_delete'] ) ) {
 
 				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
@@ -413,7 +417,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 				if ( ! empty( $wcemails_email_details ) ) {
 					foreach ( $wcemails_email_details as $key => $details ) {
-						if ( $key == $delete_key ) {
+						if ( $key === $delete_key ) {
 							unset( $wcemails_email_details[ $key ] );
 						}
 					}
@@ -446,7 +450,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 					$enable = $details['enable'];
 
-					if ( 'on' == $enable ) {
+					if ( 'on' === $enable ) {
 
 						$title         = isset( $details['title'] ) ? $details['title'] : '';
 						$id            = isset( $details['id'] ) ? $details['id'] : '';
@@ -457,11 +461,11 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$from_status   = isset( $details['from_status'] ) ? $details['from_status'] : array();
 						$to_status     = isset( $details['to_status'] ) ? $details['to_status'] : array();
 						$send_customer = isset( $details['send_customer'] ) ? $details['send_customer'] : array();
-						$template      = stripslashes( html_entity_decode( isset( $details['template'] ) ? $details['template'] : '' ) );
+						$template      = stripslashes( html_entity_decode( isset( $details['template'] ) ? $details['template'] : '' ) ); // phpcs:ignore PHPCompatibility.ParameterValues.NewHTMLEntitiesEncodingDefault.NotSet
 
 						$wcemails_instance = new WCEmails_Instance( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template );
 
-						$email_classes[ 'WCustom_Emails_'.$id.'_Email' ] = $wcemails_instance;
+						$email_classes[ 'WCustom_Emails_' . $id . '_Email' ] = $wcemails_instance;
 
 					}
 				}
@@ -486,15 +490,16 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 				foreach ( $wcemails_email_details as $key => $details ) {
 
-					$enable = $details['enable'];
+					$enable       = $details['enable'];
 					$order_action = $details['order_action'];
 
-					if ( 'on' == $enable && 'on' == $order_action ) {
+					if ( 'on' === $enable && 'on' === $order_action ) {
 
-						$id             = $details['id'];
-						$title         = isset( $details['title'] ) ? $details['title'] : '';
+						$id    = $details['id'];
+						$title = isset( $details['title'] ) ? $details['title'] : '';
 
-                        $emails[$id] = __( 'Resend ' . $title, 'woo-custom-emails' );
+						// translators: Resent email title
+						$emails[ $id ] = sprintf( __( 'Resend %s', 'woo-custom-emails' ), $title );
 
 					}
 				}
@@ -509,7 +514,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		 */
 		function wcemails_woocommerce_check() {
 			if ( ! class_exists( 'WooCommerce' ) ) {
-				?><h2><?php _e( 'WooCommerce is not activated!', 'woo-custom-emails' );?></h2><?php
+				?>
+				<h2><?php _e( 'WooCommerce is not activated!', 'woo-custom-emails' ); ?></h2>
+				<?php
 				die();
 			}
 		}
@@ -531,20 +538,19 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 					$enable = $details['enable'];
 
-					if ( 'on' == $enable ) {
+					if ( 'on' === $enable ) {
 
-						$from_status   = isset( $details['from_status'] ) ? $details['from_status'] : array();
-						$to_status     = isset( $details['to_status'] ) ? $details['to_status'] : array();
+						$from_status = isset( $details['from_status'] ) ? $details['from_status'] : array();
+						$to_status   = isset( $details['to_status'] ) ? $details['to_status'] : array();
 
 						if ( ! empty( $from_status ) && ! empty( $to_status ) ) {
 							foreach ( $from_status as $k => $status ) {
 								$hook = 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ];
-								if ( ! in_array( $hook, $actions ) ) {
+								if ( ! in_array( $hook, $actions, true ) ) {
 									$actions[] = 'woocommerce_order_status_' . $status . '_to_' . $to_status[ $k ];
 								}
 							}
 						}
-
 					}
 				}
 			}
@@ -563,21 +569,21 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 				if ( ! empty( $wcemails_email_details ) ) {
 					foreach ( $wcemails_email_details as $key => $details ) {
-						$enable = $details['enable'];
+						$enable       = $details['enable'];
 						$order_action = $details['order_action'];
-						if ( 'on' == $enable && 'on' == $order_action ) {
-							$id             = $details['id'];
-							if ( $id == $action ) {
+						if ( 'on' === $enable && 'on' === $order_action ) {
+							$id = $details['id'];
+							if ( $id === $action ) {
 								WC()->payment_gateways();
 								WC()->shipping();
-								WC()->mailer()->emails['WCustom_Emails_'.$id.'_Email']->trigger( $order->get_id(), $order );
-                            }
+								WC()->mailer()->emails[ 'WCustom_Emails_' . $id . '_Email' ]->trigger( $order->get_id(), $order );
+							}
 						}
 					}
 				}
-            }
+			}
 
-        }
+		}
 
 	}
 

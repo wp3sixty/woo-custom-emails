@@ -1,9 +1,8 @@
 <?php
-
 /**
  * Plugin Name: Woo Custom Emails
  * Plugin URI: https://github.com/mehulkaklotar/woo-custom-emails
- * Description: A woocommerce add on to support customize emails
+ * Description: Woocommerce add-on to support customize emails
  * Version: 2.2
  * Author: wp3sixty
  * Author URI: http://wp3sixty.com
@@ -16,9 +15,17 @@
  * @category Core
  * @author mehulkaklotar
  */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+
+// We call this for localization.
+load_plugin_textdomain(
+	'woo-custom-emails',
+	PLUGINDIR . '/' . dirname( plugin_basename( __FILE__ ) ),
+	dirname( plugin_basename( __FILE__ ) ) . '/languages'
+);
 
 if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
@@ -26,7 +33,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 	 * Main Woo Custom Emails Class
 	 *
 	 * @class Woo_Custom_Emails
-	 * @version	2.0.3
+	 * @version 2.0.3
 	 */
 	final class Woo_Custom_Emails {
 
@@ -59,6 +66,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 		/**
 		 * Cloning is forbidden.
+		 *
 		 * @since 0.1
 		 */
 		public function __clone() {
@@ -66,6 +74,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		}
 		/**
 		 * Unserializing instances of this class is forbidden.
+		 *
 		 * @since 2.1
 		 */
 		public function __wakeup() {
@@ -84,6 +93,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 		/**
 		 * Hook into actions and filters
+		 *
 		 * @since  0.1
 		 */
 		private function init_hooks() {
@@ -103,7 +113,8 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 		/**
 		 * Define constant if not already set
-		 * @param  string $name
+		 *
+		 * @param  string      $name
 		 * @param  string|bool $value
 		 */
 		private function define( $name, $value ) {
@@ -128,6 +139,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 		/**
 		 * Get the plugin url.
+		 *
 		 * @return string
 		 */
 		public function plugin_url() {
@@ -136,6 +148,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 		/**
 		 * Get the plugin path.
+		 *
 		 * @return string
 		 */
 		public function plugin_path() {
