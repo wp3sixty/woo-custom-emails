@@ -1,17 +1,16 @@
 <?php
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 if ( ! class_exists( 'WCEmails_List' ) ) {
 
 	class WCEmails_List extends WP_List_Table {
 
-		function __construct() {
-			global $status, $page;
+		public function __construct() {
 
-			//Set parent defaults
+			// Set parent defaults.
 			parent::__construct( array(
 				'singular' => 'WCEmail',     //singular name of the listed records
 				'plural'   => 'WCEmails',    //plural name of the listed records
@@ -20,7 +19,7 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 
 		}
 
-		function get_columns() {
+		public function get_columns() {
 			$columns = array(
 				'wcemails_title'        => __( 'Title', 'woo-custom-emails' ),
 				'wcemails_description'  => __( 'Description', 'woo-custom-emails' ),
@@ -32,72 +31,75 @@ if ( ! class_exists( 'WCEmails_List' ) ) {
 			return $columns;
 		}
 
-		function column_wcemails_title($item){
-			ob_start() ?>
-			<strong><a class="row-title"
-				href="<?php echo add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"
-				title="Edit “<?php echo $item['title'] ?>”"><?php echo $item['title'] ?></a>
-			</strong>
-			<div class="row-actions">
-				<span class="edit">
-					<a href="<?php echo add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"
-						data-key="<?php echo $item['ID']; ?>"
-						title="Edit this item"><?php
-						_e( 'Edit', 'woo-custom-emails' ); ?>
-					</a> |
-				</span>
-				<span class="delete">
-					<a href="<?php echo add_query_arg( array( 'type' => 'view-email', 'wcemails_delete' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"
-						class="wcemails_delete"
-						data-key="<?php echo $item['ID']; ?>"
-						title="Edit this item"><?php
-						_e( 'Delete', 'woo-custom-emails' ); ?>
-					</a> |
-				</span>
-			</div><?php
-			return ob_get_clean();
-		}
+	public function column_wcemails_title( $item ) {
+		$edit_url = add_query_arg( array( 'type' => 'add-email', 'wcemails_edit' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) );
+		$delete_url = wp_nonce_url(
+			add_query_arg( array( 'type' => 'view-email', 'wcemails_delete' => $item['ID'] ), admin_url( 'admin.php?page=wcemails-settings' ) ),
+			'wcemails_delete_email'
+		);
+		ob_start() ?>
+		<strong><a class="row-title"
+			href="<?php echo esc_url( $edit_url ); ?>"
+			title="<?php echo esc_attr( sprintf( __( 'Edit "%s"', 'woo-custom-emails' ), $item['title'] ) ); ?>"><?php echo esc_html( $item['title'] ); ?></a>
+		</strong>
+		<div class="row-actions">
+			<span class="edit">
+				<a href="<?php echo esc_url( $edit_url ); ?>"
+					data-key="<?php echo esc_attr( $item['ID'] ); ?>"
+					title="<?php esc_attr_e( 'Edit this item', 'woo-custom-emails' ); ?>"><?php
+					_e( 'Edit', 'woo-custom-emails' ); ?>
+				</a> |
+			</span>
+			<span class="delete">
+				<a href="<?php echo esc_url( $delete_url ); ?>"
+					class="wcemails_delete"
+					data-key="<?php echo esc_attr( $item['ID'] ); ?>"
+					title="<?php esc_attr_e( 'Delete this item', 'woo-custom-emails' ); ?>"><?php
+					_e( 'Delete', 'woo-custom-emails' ); ?>
+				</a> |
+			</span>
+		</div><?php
+		return ob_get_clean();
+	}
 
-		function column_wcemails_description($item){
-			return isset( $item['description'] ) ? $item['description'] : '';
-		}
+	public function column_wcemails_description( $item ) {
+		return isset( $item['description'] ) ? esc_html( $item['description'] ) : '';
+	}
 
-		function column_wcemails_subject($item){
-			return isset( $item['description'] ) ? $item['description'] : '';;
-		}
+	public function column_wcemails_subject( $item ) {
+		return isset( $item['subject'] ) ? esc_html( $item['subject'] ) : '';
+	}
 
-		function column_wcemails_heading($item){
-			return $item['heading'];
-		}
+	public function column_wcemails_heading( $item ) {
+		return esc_html( $item['heading'] );
+	}
 
-		function column_wcemails_order_action($item){
+		public function column_wcemails_order_action( $item ) {
 			return 'on' == $item['order_action'] ? 'Yes' : 'No'; ;
 		}
 
-		function column_wcemails_enable($item){
+		public function column_wcemails_enable( $item ) {
 			return 'on' == $item['enable'] ? 'Yes' : 'No';;
 		}
 
-		function get_sortable_columns() {
+		public function get_sortable_columns() {
 			$sortable_columns = array();
 			return $sortable_columns;
 		}
 
-		function get_bulk_actions() {
+		public function get_bulk_actions() {
 			$actions = array();
 			return $actions;
 		}
 
-		function process_bulk_action() {
+		public function process_bulk_action() {
 			//Detect when a bulk action is being triggered...
 			/*if( 'delete'===$this->current_action() ) {
 			}*/
 
 		}
 
-		function prepare_items() {
-			global $wpdb; //This is used only if making any database queries
-
+		public function prepare_items() {
 			$per_page = 10;
 
 			$columns  = $this->get_columns();

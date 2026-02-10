@@ -1,9 +1,12 @@
 === Woo Custom Emails ===
 Contributors: wp3sixty, mehulkaklotar, utkarshpatel, dipesh.kakadiya, faishal
 Tags: woo custom emails, woocommerce custom emails, woocommerce, email, order, ecommerce, custom email template
-Requires at least: 4.9
-Tested up to: 5.7.2
-Stable tag: 2.2
+Requires at least: 6.0
+Tested up to: 6.7
+Stable tag: 3.0.0
+Requires PHP: 7.4
+WC requires at least: 8.0
+WC tested up to: 9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,6 +46,14 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 4. WooCommerce Order action with custom email
 
 == Changelog ==
+
+= 3.0.0 =
+* HPOS (High-Performance Order Storage) compatibility
+* PHP 8.1+ compatibility - replaced deprecated FILTER_SANITIZE_STRING
+* Fixed deprecated order_date property usage (WC 3.0+)
+* Replaced save_post order action hook with modern woocommerce_order_action_{id} pattern
+* Updated trigger() method signature for WC 8.x+ compatibility
+* Updated version requirements: WP 6.0+, WC 8.0+, PHP 7.4+
 
 = 2.2 =
 * Translation changes

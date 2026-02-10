@@ -1,0 +1,18 @@
+{
+	"name": "woo-custom-emails",
+	"version": "3.0.0",
+	"private": true,
+	"description": "Development environment for Woo Custom Emails",
+	"scripts": {
+		"wp-env": "wp-env",
+		"start": "wp-env start",
+		"stop": "wp-env stop",
+		"destroy": "wp-env destroy",
+		"cli": "wp-env run cli",
+		"setup": "wp-env start && pnpm seed",
+		"seed": "wp-env run cli -- wp wc update --yes 2>/dev/null; echo 'WooCommerce ready. Visit http://localhost:8888/wp-admin (admin/password)'"
+	},
+	"devDependencies": {
+		"@wordpress/env": "^10"
+	}
+}

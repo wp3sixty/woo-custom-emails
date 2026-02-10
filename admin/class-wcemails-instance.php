@@ -25,14 +25,14 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @param $to_status
 		 * @param $template
 		 */
-		function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template ) {
+		public function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template ) {
 
 			$this->id          = $id;
-			$this->title       = __( $title, 'woocommerce' );
-			$this->description = __( $description, 'woocommerce' );
+			$this->title       = $title;
+			$this->description = $description;
 
-			$this->heading = __( $heading, 'woocommerce' );
-			$this->subject = __( $subject, 'woocommerce' );
+			$this->heading = $heading;
+			$this->subject = $subject;
 
 			$this->custom_template = $template;
 			$this->from_status     = $from_status;
@@ -59,59 +59,55 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @access public
 		 * @return void
 		 */
-		function trigger( $order_id ) {
-			// clean up possible leftover from previous invocations (e.g. in case of bulk updates&sends)
-			$this->find = array();
-			$this->replace = array();
-			
-			// checkbox of send to customer is checked or not.
-			$send_to_customer = ('on' == $this->send_customer);
+		public function trigger( $order_id, $order = false ) {
+			// Clean up possible leftover from previous invocations (e.g. in case of bulk updates & sends).
+			// Save the original recipient so it is not mutated across multiple trigger() calls.
+			$original_recipient = $this->recipient;
+			$this->find         = array();
+			$this->replace      = array();
+			$this->bcc          = '';
+
+			// Checkbox of send to customer is checked or not.
+			$send_to_customer = ( 'on' == $this->send_customer );
 
 			if ( $order_id ) {
-				$this->object = wc_get_order( $order_id );
+				$this->object = ( $order instanceof WC_Order ) ? $order : wc_get_order( $order_id );
 				if ( $send_to_customer ) {
-					$this->bcc = $this->recipient;
+					// Send TO customer, BCC the configured recipients (only if non-empty).
+					if ( ! empty( $original_recipient ) ) {
+						$this->bcc = $original_recipient;
+					}
 					$this->recipient = $this->object->get_billing_email();
-				} else {
-					$recipients = explode( ',', $this->recipient );
-					array_push( $recipients, $this->object->get_billing_email() );
-					$this->recipient = implode( ',', $recipients );
 				}
+				// When send_to_customer is off, the email goes only to configured recipients.
+				// The customer is NOT automatically added.
 
-				$order_date = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
+				$date_created = $this->object->get_date_created();
+				$order_date   = $date_created ? $date_created->date_i18n( wc_date_format() ) : '';
 				$order_number = $this->object->get_order_number();
 
-				/**
-				 * WooCommerce =< 3.2.X
-				 */
-				$this->find['order-date']   = '{order_date}';
-				$this->replace['order-date']   = $order_date;
-
-				$this->find['order-number'] = '{order_number}';
-				$this->replace['order-number'] = $order_number;
-
-				/**
-				 * WooCommerce > 3.2.X
-				 */
 				$this->placeholders['{order_date}']   = $order_date;
 				$this->placeholders['{order_number}'] = $order_number;
-
 			}
 
 			if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
+				$this->recipient = $original_recipient;
 				return;
 			}
 
 			$this->convert_template();
 
-			// if send to customer is selected add recipients to BCC
-			if ( $send_to_customer ) {
+			// If send to customer is selected add configured recipients as BCC.
+			if ( $send_to_customer && ! empty( $this->bcc ) ) {
 				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10, 3 );
 			}
 			$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-			if ( $send_to_customer ) {
+			if ( $send_to_customer && ! empty( $this->bcc ) ) {
 				remove_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10 );
 			}
+
+			// Restore original recipient for the next trigger() call (bulk sends).
+			$this->recipient = $original_recipient;
 		}
 
 		/**
@@ -120,14 +116,16 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @access public
 		 * @return string
 		 */
-		function get_content_html() {
+		public function get_content_html() {
 			ob_start();
 
 			$html = $this->format_string( $this->custom_template );
 
 			do_action( 'woocommerce_email_header', $this->get_heading(), $this );
 
-			echo apply_filters( 'the_content', $html );
+			// Use wpautop instead of the_content filter to avoid third-party plugin
+			// output (social sharing, oEmbed, etc.) leaking into emails.
+			echo wpautop( $html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			do_action( 'woocommerce_email_footer', $this );
 
@@ -140,14 +138,15 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @access public
 		 * @return string
 		 */
-		function get_content_plain() {
+		public function get_content_plain() {
 			ob_start();
 
 			$html = $this->format_string( $this->custom_template );
 
 			do_action( 'woocommerce_email_header', $this->get_heading(), $this );
 
-			echo apply_filters( 'the_content', $html );
+			// Strip HTML for plain text emails.
+			echo wp_strip_all_tags( $html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			do_action( 'woocommerce_email_footer', $this );
 
@@ -160,7 +159,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @access public
 		 * @return void
 		 */
-		function init_form_fields() {
+		public function init_form_fields() {
 			$this->form_fields = array(
 				'enabled'    => array(
 					'title'   => __( 'Enable/Disable', 'woocommerce' ),
@@ -204,7 +203,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			);
 		}
 
-		function change_order_status_trigger( $order_id, $old_status, $new_status ) {
+		public function change_order_status_trigger( $order_id, $old_status, $new_status ) {
 			$from_status = $this->from_status;
 			$to_status   = $this->to_status;
 			if ( ! empty( $from_status ) && ! empty( $to_status ) && in_array( $old_status, $from_status ) && in_array( $new_status, $to_status ) ) {
@@ -212,7 +211,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			}
 		}
 
-		function add_actions() {
+		public function add_actions() {
 			$from_status = $this->from_status;
 			$to_status   = $this->to_status;
 			if ( ! empty( $from_status ) && ! empty( $to_status ) ) {
@@ -222,39 +221,36 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			}
 		}
 
-		function convert_template() {
+		public function convert_template() {
 
-			$this->placeholders['{woocommerce_email_order_meta}']    = $this->woocommerce_email_order_meta();
-			$this->placeholders['{order_billing_name}']    = $this->object->get_billing_first_name() . ' ' . $this->object->get_billing_last_name();
-			$this->placeholders['{email_order_items_table}']    = wc_get_email_order_items( $this->object );
-			$this->placeholders['{email_order_total_footer}']    = $this->email_order_total_footer();
-			$this->placeholders['{order_billing_email}']    = $this->object->get_billing_email();
-			$this->placeholders['{order_billing_phone}']    = $this->object->get_billing_phone();
-			$this->placeholders['{email_addresses}']    = $this->get_email_addresses();
-			$this->placeholders['{site_title}']    = get_bloginfo('name');
+			$this->placeholders['{woocommerce_email_order_meta}'] = $this->woocommerce_email_order_meta();
+			$this->placeholders['{order_billing_name}']           = $this->object->get_billing_first_name() . ' ' . $this->object->get_billing_last_name();
+			$this->placeholders['{email_order_items_table}']      = wc_get_email_order_items( $this->object );
+			$this->placeholders['{email_order_total_footer}']     = $this->email_order_total_footer();
+			$this->placeholders['{order_billing_email}']          = $this->object->get_billing_email();
+			$this->placeholders['{order_billing_phone}']          = $this->object->get_billing_phone();
+			$this->placeholders['{email_addresses}']              = $this->get_email_addresses();
+			$this->placeholders['{site_title}']                   = get_bloginfo( 'name' );
 
-			// For old woocommerce use find and replace methods
-			foreach ( $this->placeholders as $find => $replace ) {
-				$this->find[]    = $find;
-				$this->replace[] = $replace;
-			}
-
+			/**
+			 * Filter custom email placeholders.
+			 *
+			 * @since 2.0.5
+			 * @param array    $placeholders Key-value pairs of placeholder => replacement.
+			 * @param WC_Order $order        The order object.
+			 */
 			$this->placeholders = apply_filters( 'wcemails_find_placeholders', $this->placeholders, $this->object );
-
-			// Legacy filters
-			$this->find      = apply_filters( 'wcemails_find_placeholders', $this->find, $this->object );
-			$this->replace   = apply_filters( 'wcemails_replace_placeholders', $this->replace, $this->object );
 
 		}
 
-		function woocommerce_email_order_meta() {
+		public function woocommerce_email_order_meta() {
 			ob_start();
 			do_action( 'woocommerce_email_order_meta', $this->object, true );
 
 			return ob_get_clean();
 		}
 
-		function email_order_total_footer() {
+		public function email_order_total_footer() {
 			ob_start();
 			if ( $totals = $this->object->get_order_item_totals() ) {
 				$i = 0;
@@ -272,14 +268,14 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			return ob_get_clean();
 		}
 
-		function get_email_addresses() {
+		public function get_email_addresses() {
 			ob_start();
 			wc_get_template( 'emails/email-addresses.php', array( 'order' => $this->object ) );
 
 			return ob_get_clean();
 		}
 
-		function add_bcc_to_custom_email( $headers, $email_id, $order ) {
+		public function add_bcc_to_custom_email( $headers, $email_id, $order ) {
 			if ( $this->id != $email_id || empty( $this->bcc ) ) {
 				return $headers;
 			}
