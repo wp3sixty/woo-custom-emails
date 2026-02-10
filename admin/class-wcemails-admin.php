@@ -43,8 +43,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 			add_action( 'admin_menu', array( $this, 'wcemails_settings_menu' ), 100 );
 
-		add_action( 'admin_init', array( $this, 'wcemails_email_actions_details' ) );
-		add_action( 'admin_init', array( $this, 'register_order_action_hooks' ) );
+			add_action( 'admin_init', array( $this, 'wcemails_email_actions_details' ) );
+			add_action( 'admin_init', array( $this, 'register_order_action_hooks' ) );
 
 			add_filter( 'woocommerce_email_classes', array( $this, 'wcemails_custom_woocommerce_emails' ) );
 
@@ -56,18 +56,18 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
-		function wcemails_enqueue_scripts() {
+		public function wcemails_enqueue_scripts() {
 			wp_register_script( 'jquery-cloneya', WCEmails_PLUGIN_URL . 'js/jquery-cloneya.min.js', array( 'jquery' ) );
 			wp_register_script( 'wcemails-custom-scripts', WCEmails_PLUGIN_URL . 'js/wcemails-custom-scripts.js', array( 'jquery' ), WCEmails_VERSION );
 		}
 
-		function wcemails_settings_menu() {
+		public function wcemails_settings_menu() {
 
 			add_submenu_page( 'woocommerce', __( 'Woo Custom Emails', 'woo-custom-emails' ), 'Custom Emails', 'manage_options', 'wcemails-settings', array( $this, 'wcemails_settings_callback' ) );
 
 		}
 
-		function wcemails_settings_callback() {
+		public function wcemails_settings_callback() {
 
 			$this->wcemails_woocommerce_check();
 
@@ -95,7 +95,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
-		function wcemails_render_sections( $type ) {
+		public function wcemails_render_sections( $type ) {
 
 			if ( 'add-email' == $type ) {
 				$this->wcemails_render_add_email_section();
@@ -107,21 +107,21 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
-		function wcemails_render_add_email_section() {
+		public function wcemails_render_add_email_section() {
 
-		$wcemails_detail = array();
-		$edit_key = isset( $_REQUEST['wcemails_edit'] ) ? absint( $_REQUEST['wcemails_edit'] ) : '';
-		if ( ! empty( $edit_key ) ) {
-			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
-			if ( ! empty( $wcemails_email_details ) ) {
-				foreach ( $wcemails_email_details as $key => $details ) {
-					if ( $edit_key == $key ) {
-						$wcemails_detail = $details;
-						$wcemails_detail['template'] = stripslashes( $wcemails_detail['template'] );
+			$wcemails_detail = array();
+			$edit_key = isset( $_REQUEST['wcemails_edit'] ) ? absint( $_REQUEST['wcemails_edit'] ) : '';
+			if ( ! empty( $edit_key ) ) {
+				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+				if ( ! empty( $wcemails_email_details ) ) {
+					foreach ( $wcemails_email_details as $key => $details ) {
+						if ( $edit_key == $key ) {
+							$wcemails_detail = $details;
+							$wcemails_detail['template'] = stripslashes( $wcemails_detail['template'] );
+						}
 					}
 				}
 			}
-		}
 
 			$wc_statuses = wc_get_order_statuses();
 			if ( ! empty( $wc_statuses ) ) {
@@ -226,13 +226,10 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 													<?php
 													$status_options = '';
 													foreach ( $wc_statuses as $k => $wc_status ) {
-														$selected = '';
-														if ( $k == $status ) {
-															$selected = 'selected="selected"';
-														}
-														$status_options .= '<option value="' . $k . '" ' . $selected . '>' . $wc_status . '</option>';
+														$selected = ( $k == $status ) ? ' selected="selected"' : '';
+														$status_options .= '<option value="' . esc_attr( $k ) . '"' . $selected . '>' . esc_html( $wc_status ) . '</option>';
 													}
-													echo $status_options;
+													echo $status_options; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above.
 													?>
 												</select>
 												<select name="wcemails_to_status[]" required>
@@ -240,13 +237,10 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 													<?php
 													$status_options = '';
 													foreach ( $wc_statuses as $k => $wc_status ) {
-														$selected = '';
-														if ( $k == $wcemails_detail['to_status'][ $key ] ) {
-															$selected = 'selected="selected"';
-														}
-														$status_options .= '<option value="' . $k . '" ' . $selected . '>' . $wc_status . '</option>';
+														$selected = ( $k == $wcemails_detail['to_status'][ $key ] ) ? ' selected="selected"' : '';
+														$status_options .= '<option value="' . esc_attr( $k ) . '"' . $selected . '>' . esc_html( $wc_status ) . '</option>';
 													}
-													echo $status_options;
+													echo $status_options; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above.
 													?>
 												</select>
 												<a href="#" class="clone" title="<?php _e( 'Add Another', 'woo-custom-emails' ) ?>">+</a>
@@ -257,7 +251,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 									} else {
 										$status_options = '';
 										foreach ( $wc_statuses as $k => $wc_status ) {
-											$status_options .= '<option value="' . $k . '">' . $wc_status . '</option>';
+											$status_options .= '<option value="' . esc_attr( $k ) . '">' . esc_html( $wc_status ) . '</option>';
 										}
 										?>
 										<div class="toclone">
@@ -343,42 +337,42 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		}
 
-		function wcemails_render_view_email_section() {
-			include_once( 'class-wcemails-list.php' );
+		public function wcemails_render_view_email_section() {
+			include_once 'class-wcemails-list.php';
 			$wcemails_list = new WCEmails_List();
 			$wcemails_list->prepare_items();
 			$wcemails_list->display();
 		}
 
-	/**
-	 * Save email options
-	 */
-	function wcemails_email_actions_details() {
+		/**
+		 * Save email options.
+		 */
+		public function wcemails_email_actions_details() {
 
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			return;
-		}
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
+				return;
+			}
 
-		if ( isset( $_POST['wcemails_submit'] ) ) {
+			if ( isset( $_POST['wcemails_submit'] ) ) {
 
-		if ( ! isset( $_POST['wcemails_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wcemails_nonce'] ) ), 'wcemails_save_email' ) ) {
-			return;
-		}
+				if ( ! isset( $_POST['wcemails_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wcemails_nonce'] ) ), 'wcemails_save_email' ) ) {
+					return;
+				}
 
-		$title         = isset( $_POST['wcemails_title'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_title'] ) ) : '';
-			$description   = isset( $_POST['wcemails_description'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_description'] ) ) : '';
-			$subject       = isset( $_POST['wcemails_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_subject'] ) ) : '';
-			$recipients    = isset( $_POST['wcemails_recipients'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_recipients'] ) ) : '';
-			$heading       = isset( $_POST['wcemails_heading'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_heading'] ) ) : '';
-			$from_status   = isset( $_POST['wcemails_from_status'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wcemails_from_status'] ) ) : '';
-			$to_status     = isset( $_POST['wcemails_to_status'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wcemails_to_status'] ) ) : '';
-			$template      = isset( $_POST['wcemails_template'] ) ? wp_kses_post( wp_unslash( $_POST['wcemails_template'] ) ) : '';
-			$order_action  = isset( $_POST['wcemails_order_action'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_order_action'] ) ) : 'off';
-			$order_action  = empty( $order_action ) ? 'off' : $order_action;
-			$enable        = isset( $_POST['wcemails_enable'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_enable'] ) ) : 'off';
-			$enable        = empty( $enable ) ? 'off' : $enable;
-			$send_customer = isset( $_POST['wcemails_send_customer'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_send_customer'] ) ) : 'off';
-			$send_customer = empty( $send_customer ) ? 'off' : $send_customer;
+				$title         = isset( $_POST['wcemails_title'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_title'] ) ) : '';
+				$description   = isset( $_POST['wcemails_description'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_description'] ) ) : '';
+				$subject       = isset( $_POST['wcemails_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_subject'] ) ) : '';
+				$recipients    = isset( $_POST['wcemails_recipients'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_recipients'] ) ) : '';
+				$heading       = isset( $_POST['wcemails_heading'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_heading'] ) ) : '';
+				$from_status   = isset( $_POST['wcemails_from_status'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wcemails_from_status'] ) ) : '';
+				$to_status     = isset( $_POST['wcemails_to_status'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wcemails_to_status'] ) ) : '';
+				$template      = isset( $_POST['wcemails_template'] ) ? wp_kses_post( wp_unslash( $_POST['wcemails_template'] ) ) : '';
+				$order_action  = isset( $_POST['wcemails_order_action'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_order_action'] ) ) : 'off';
+				$order_action  = empty( $order_action ) ? 'off' : $order_action;
+				$enable        = isset( $_POST['wcemails_enable'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_enable'] ) ) : 'off';
+				$enable        = empty( $enable ) ? 'off' : $enable;
+				$send_customer = isset( $_POST['wcemails_send_customer'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_send_customer'] ) ) : 'off';
+				$send_customer = empty( $send_customer ) ? 'off' : $send_customer;
 
 				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
@@ -396,11 +390,11 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					'send_customer' => $send_customer,
 				);
 
-			$update_key = isset( $_POST['wcemails_update'] ) ? absint( $_POST['wcemails_update'] ) : '';
-			if ( ! empty( $update_key ) ) {
-				if ( ! empty( $wcemails_email_details ) ) {
-					foreach ( $wcemails_email_details as $key => $details ) {
-						if ( $key == $update_key ) {
+				$update_key = isset( $_POST['wcemails_update'] ) ? absint( $_POST['wcemails_update'] ) : '';
+				if ( ! empty( $update_key ) ) {
+					if ( ! empty( $wcemails_email_details ) ) {
+						foreach ( $wcemails_email_details as $key => $details ) {
+							if ( $key == $update_key ) {
 								$data['id'] = $details['id'];
 								$wcemails_email_details[ $key ] = $data;
 							}
@@ -414,17 +408,17 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 				update_option( 'wcemails_email_details', $wcemails_email_details );
 
-				add_settings_error( 'wcemails-settings', 'error_code', $title.' is saved and if you have enabled it then you can see it in Woocommerce Email Settings Now', 'success' );
+				add_settings_error( 'wcemails-settings', 'error_code', $title . ' is saved and if you have enabled it then you can see it in Woocommerce Email Settings Now', 'success' );
 
-		} else if ( isset( $_REQUEST['wcemails_delete'] ) ) {
+			} elseif ( isset( $_REQUEST['wcemails_delete'] ) ) {
 
-			if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'wcemails_delete_email' ) ) {
-				return;
-			}
+				if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'wcemails_delete_email' ) ) {
+					return;
+				}
 
-			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
-			$delete_key = absint( $_REQUEST['wcemails_delete'] );
+				$delete_key = absint( $_REQUEST['wcemails_delete'] );
 
 				if ( ! empty( $wcemails_email_details ) ) {
 					foreach ( $wcemails_email_details as $key => $details ) {
@@ -449,9 +443,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		 *
 		 * @return mixed
 		 */
-		function wcemails_custom_woocommerce_emails( $email_classes ) {
+		public function wcemails_custom_woocommerce_emails( $email_classes ) {
 
-			include_once( 'class-wcemails-instance.php' );
+			include_once 'class-wcemails-instance.php';
 
 			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
@@ -493,7 +487,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		 *
 		 * @return mixed
 		 */
-		function wcemails_change_action_emails( $emails ) {
+		public function wcemails_change_action_emails( $emails ) {
 
 			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
@@ -521,12 +515,16 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		}
 
 		/**
-		 * woocommerce active check
+		 * Check if WooCommerce is active.
+		 *
+		 * @since 3.0.0
 		 */
-		function wcemails_woocommerce_check() {
+		public function wcemails_woocommerce_check() {
 			if ( ! class_exists( 'WooCommerce' ) ) {
-				?><h2><?php _e( 'WooCommerce is not activated!', 'woo-custom-emails' );?></h2><?php
-				die();
+				echo '<div class="notice notice-error"><p>';
+				esc_html_e( 'Woo Custom Emails requires WooCommerce to be installed and active.', 'woo-custom-emails' );
+				echo '</p></div>';
+				return;
 			}
 		}
 
@@ -537,7 +535,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		 *
 		 * @return array
 		 */
-		function wcemails_filter_actions( $actions ) {
+		public function wcemails_filter_actions( $actions ) {
 
 			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
@@ -567,56 +565,56 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			return $actions;
 		}
 
-	/**
-	 * Register WooCommerce order action hooks for custom emails.
-	 *
-	 * Uses the modern woocommerce_order_action_{action_id} pattern
-	 * which is HPOS compatible (replaces the legacy save_post approach).
-	 *
-	 * @since 3.0.0
-	 */
-	function register_order_action_hooks() {
+		/**
+		 * Register WooCommerce order action hooks for custom emails.
+		 *
+		 * Uses the modern woocommerce_order_action_{action_id} pattern
+		 * which is HPOS compatible (replaces the legacy save_post approach).
+		 *
+		 * @since 3.0.0
+		 */
+		public function register_order_action_hooks() {
 
-		$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
-		if ( ! empty( $wcemails_email_details ) ) {
-			foreach ( $wcemails_email_details as $key => $details ) {
-				$enable       = isset( $details['enable'] ) ? $details['enable'] : 'off';
-				$order_action = isset( $details['order_action'] ) ? $details['order_action'] : 'off';
+			if ( ! empty( $wcemails_email_details ) ) {
+				foreach ( $wcemails_email_details as $key => $details ) {
+					$enable       = isset( $details['enable'] ) ? $details['enable'] : 'off';
+					$order_action = isset( $details['order_action'] ) ? $details['order_action'] : 'off';
 
-				if ( 'on' === $enable && 'on' === $order_action ) {
-					$id = $details['id'];
-					add_action( 'woocommerce_order_action_' . $id, array( $this, 'handle_order_action_email' ) );
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * Handle order action email trigger.
-	 *
-	 * @since 3.0.0
-	 * @param WC_Order $order The order object.
-	 */
-	function handle_order_action_email( $order ) {
-
-		$action = str_replace( 'woocommerce_order_action_', '', current_action() );
-
-		$wcemails_email_details = get_option( 'wcemails_email_details', array() );
-		if ( ! empty( $wcemails_email_details ) ) {
-			foreach ( $wcemails_email_details as $key => $details ) {
-				if ( isset( $details['id'] ) && $details['id'] === $action ) {
-					$email_key = 'WCustom_Emails_' . $details['id'] . '_Email';
-					if ( isset( WC()->mailer()->emails[ $email_key ] ) ) {
-						WC()->mailer()->emails[ $email_key ]->trigger( $order->get_id(), $order );
+					if ( 'on' === $enable && 'on' === $order_action ) {
+						$id = $details['id'];
+						add_action( 'woocommerce_order_action_' . $id, array( $this, 'handle_order_action_email' ) );
 					}
-					break;
 				}
 			}
+
 		}
 
-	}
+		/**
+		 * Handle order action email trigger.
+		 *
+		 * @since 3.0.0
+		 * @param WC_Order $order The order object.
+		 */
+		public function handle_order_action_email( $order ) {
+
+			$action = str_replace( 'woocommerce_order_action_', '', current_action() );
+
+			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+			if ( ! empty( $wcemails_email_details ) ) {
+				foreach ( $wcemails_email_details as $key => $details ) {
+					if ( isset( $details['id'] ) && $details['id'] === $action ) {
+						$email_key = 'WCustom_Emails_' . $details['id'] . '_Email';
+						if ( isset( WC()->mailer()->emails[ $email_key ] ) ) {
+							WC()->mailer()->emails[ $email_key ]->trigger( $order->get_id(), $order );
+						}
+						break;
+					}
+				}
+			}
+
+		}
 
 	}
 

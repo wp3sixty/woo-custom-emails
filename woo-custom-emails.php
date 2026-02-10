@@ -65,14 +65,15 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 * @since 0.1
 		 */
 		public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '3.0.0' );
-	}
-	/**
-	 * Unserializing instances of this class is forbidden.
-	 * @since 2.1
-	 */
-	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '3.0.0' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '3.0.0' );
+		}
+
+		/**
+		 * Unserializing instances of this class is forbidden.
+		 * @since 2.1
+		 */
+		public function __wakeup() {
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '3.0.0' );
 		}
 
 		/**
@@ -85,28 +86,29 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 			$this->load_plugin_textdomain();
 		}
 
-	/**
-	 * Hook into actions and filters
-	 * @since  0.1
-	 */
-	private function init_hooks() {
-		add_action( 'init', array( $this, 'init' ) );
+		/**
+		 * Hook into actions and filters.
+		 *
+		 * @since 0.1
+		 */
+		private function init_hooks() {
+			add_action( 'init', array( $this, 'init' ) );
 
-		// Declare HPOS and email editor compatibility.
-		add_action( 'before_woocommerce_init', array( $this, 'declare_wc_feature_compatibility' ) );
-	}
-
-	/**
-	 * Declare compatibility with WooCommerce features.
-	 *
-	 * @since 3.0.0
-	 */
-	public function declare_wc_feature_compatibility() {
-		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', WCEmails_PLUGIN_FILE, true );
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'email_editor', WCEmails_PLUGIN_FILE, false );
+			// Declare HPOS and email editor compatibility.
+			add_action( 'before_woocommerce_init', array( $this, 'declare_wc_feature_compatibility' ) );
 		}
-	}
+
+		/**
+		 * Declare compatibility with WooCommerce features.
+		 *
+		 * @since 3.0.0
+		 */
+		public function declare_wc_feature_compatibility() {
+			if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', WCEmails_PLUGIN_FILE, true );
+				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'email_editor', WCEmails_PLUGIN_FILE, false );
+			}
+		}
 
 		/**
 		 * Define WCE Constants
@@ -134,7 +136,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 * Include required core files used in admin and on the frontend.
 		 */
 		public function includes() {
-			include_once( 'admin/class-wcemails-admin.php' );
+			include_once 'admin/class-wcemails-admin.php';
 		}
 
 		/**
