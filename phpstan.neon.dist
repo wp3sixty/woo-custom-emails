@@ -1,0 +1,53 @@
+parameters:
+    level: 5
+    paths:
+        - woo-custom-emails.php
+        - admin/
+    excludePaths:
+        - vendor/
+    scanDirectories:
+        - vendor/php-stubs/wordpress-stubs/
+    bootstrapFiles:
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        # WooCommerce classes/functions/constants not available in stubs.
+        - '#Class WC_Order not found#'
+        - '#Call to method .* on an unknown class WC_Order#'
+        - '#Parameter .* has invalid type WC_Order#'
+        - '#Function wc_get_order not found#'
+        - '#Function wc_get_order_statuses not found#'
+        - '#Function wc_get_email_order_items not found#'
+        - '#Function wc_get_template not found#'
+        - '#Function wc_date_format not found#'
+        - '#Function WC not found#'
+        -
+            message: '#Automattic\\WooCommerce\\Utilities\\FeaturesUtil not found#'
+            reportUnmatched: false
+        # WCEmails_Instance extends WC_Email which is not available to PHPStan.
+        # All property/method access on $this inside WCEmails_Instance is
+        # inherited from WC_Email and unresolvable without WC stubs.
+        -
+            message: '#Access to an undefined property WCEmails_Instance::#'
+            path: admin/class-wcemails-instance.php
+        -
+            message: '#Call to an undefined method WCEmails_Instance::#'
+            path: admin/class-wcemails-instance.php
+        -
+            message: '#does not extend any class#'
+            path: admin/class-wcemails-instance.php
+        # Plugin constants defined at runtime via define().
+        -
+            message: '#Constant WCEmails_\w+ not found#'
+        -
+            message: '#Constant WP_LANG_DIR not found#'
+        -
+            message: '#Constant ABSPATH not found#'
+        # WP_List_Table::set_pagination_args total_pages float vs int.
+        -
+            message: '#Parameter .* of method WP_List_Table::set_pagination_args#'
+            path: admin/class-wcemails-list.php
+        # esc_attr() receives int from absint() — safe, WordPress casts it.
+        -
+            message: '#Parameter .* of function esc_attr expects string, int#'
+            path: admin/class-wcemails-admin.php
