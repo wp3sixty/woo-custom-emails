@@ -110,8 +110,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 		public function wcemails_render_add_email_section() {
 
 			$wcemails_detail = array();
-			$edit_key = isset( $_REQUEST['wcemails_edit'] ) ? absint( $_REQUEST['wcemails_edit'] ) : '';
-			if ( ! empty( $edit_key ) ) {
+			$edit_key = isset( $_REQUEST['wcemails_edit'] ) ? absint( $_REQUEST['wcemails_edit'] ) : false;
+			if ( false !== $edit_key ) {
 				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 				if ( ! empty( $wcemails_email_details ) ) {
 					foreach ( $wcemails_email_details as $key => $details ) {
@@ -326,7 +326,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					<input type="submit" name="wcemails_submit" id="wcemails_submit" class="button button-primary" value="<?php _e( 'Save Changes', 'woo-custom-emails' ); ?>">
 				</p>
 				<?php
-			if ( ! empty( $edit_key ) ) {
+			if ( false !== $edit_key ) {
 				?>
 				<input type="hidden" name="wcemails_update" id="wcemails_update" value="<?php echo esc_attr( $edit_key ); ?>" />
 				<?php
@@ -390,8 +390,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					'send_customer' => $send_customer,
 				);
 
-				$update_key = isset( $_POST['wcemails_update'] ) ? absint( $_POST['wcemails_update'] ) : '';
-				if ( ! empty( $update_key ) ) {
+				$update_key = isset( $_POST['wcemails_update'] ) ? absint( $_POST['wcemails_update'] ) : false;
+				if ( false !== $update_key ) {
 					if ( ! empty( $wcemails_email_details ) ) {
 						foreach ( $wcemails_email_details as $key => $details ) {
 							if ( $key == $update_key ) {
