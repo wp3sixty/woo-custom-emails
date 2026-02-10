@@ -5,8 +5,6 @@ parameters:
         - admin/
     excludePaths:
         - vendor/
-        - node_modules/
-        - build/
     scanDirectories:
         - vendor/php-stubs/wordpress-stubs/
     bootstrapFiles:
