@@ -14,3 +14,5 @@ wp-content/wp-cache-config.php
 .idea
 .DS_Store
 node_modules/
+vendor/
+plan.md
