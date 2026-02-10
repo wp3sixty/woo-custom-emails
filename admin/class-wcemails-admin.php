@@ -43,8 +43,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 			add_action( 'admin_menu', array( $this, 'wcemails_settings_menu' ), 100 );
 
-			add_action( 'admin_init', array( $this, 'wcemails_email_actions_details' ) );
-			add_action( 'save_post', array( $this, 'do_email_actions' ), 10, 2 );
+		add_action( 'admin_init', array( $this, 'wcemails_email_actions_details' ) );
+		add_action( 'admin_init', array( $this, 'register_order_action_hooks' ) );
 
 			add_filter( 'woocommerce_email_classes', array( $this, 'wcemails_custom_woocommerce_emails' ) );
 
@@ -355,20 +355,20 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 			if ( isset( $_POST['wcemails_submit'] ) ) {
 
-				$title         = filter_input( INPUT_POST, 'wcemails_title', FILTER_SANITIZE_STRING );
-				$description   = filter_input( INPUT_POST, 'wcemails_description', FILTER_SANITIZE_STRING );
-				$subject       = filter_input( INPUT_POST, 'wcemails_subject', FILTER_SANITIZE_STRING );
-				$recipients    = filter_input( INPUT_POST, 'wcemails_recipients', FILTER_SANITIZE_STRING );
-				$heading       = filter_input( INPUT_POST, 'wcemails_heading', FILTER_SANITIZE_STRING );
-				$from_status   = isset( $_POST['wcemails_from_status'] ) ? $_POST['wcemails_from_status'] : '';
-				$to_status     = isset( $_POST['wcemails_to_status'] ) ? $_POST['wcemails_to_status'] : '';
-				$template      = isset( $_POST['wcemails_template'] ) ? $_POST['wcemails_template'] : '';
-				$order_action  = filter_input( INPUT_POST, 'wcemails_order_action', FILTER_SANITIZE_STRING );
-				$order_action  = empty( $order_action ) ? 'off' : $order_action;
-				$enable        = filter_input( INPUT_POST, 'wcemails_enable', FILTER_SANITIZE_STRING );
-				$enable        = empty( $enable ) ? 'off' : $enable;
-				$send_customer = filter_input( INPUT_POST, 'wcemails_send_customer', FILTER_SANITIZE_STRING );
-				$send_customer = empty( $send_customer ) ? 'off' : $send_customer;
+			$title         = isset( $_POST['wcemails_title'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_title'] ) ) : '';
+			$description   = isset( $_POST['wcemails_description'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_description'] ) ) : '';
+			$subject       = isset( $_POST['wcemails_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_subject'] ) ) : '';
+			$recipients    = isset( $_POST['wcemails_recipients'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_recipients'] ) ) : '';
+			$heading       = isset( $_POST['wcemails_heading'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_heading'] ) ) : '';
+			$from_status   = isset( $_POST['wcemails_from_status'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wcemails_from_status'] ) ) : '';
+			$to_status     = isset( $_POST['wcemails_to_status'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wcemails_to_status'] ) ) : '';
+			$template      = isset( $_POST['wcemails_template'] ) ? wp_kses_post( wp_unslash( $_POST['wcemails_template'] ) ) : '';
+			$order_action  = isset( $_POST['wcemails_order_action'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_order_action'] ) ) : 'off';
+			$order_action  = empty( $order_action ) ? 'off' : $order_action;
+			$enable        = isset( $_POST['wcemails_enable'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_enable'] ) ) : 'off';
+			$enable        = empty( $enable ) ? 'off' : $enable;
+			$send_customer = isset( $_POST['wcemails_send_customer'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_send_customer'] ) ) : 'off';
+			$send_customer = empty( $send_customer ) ? 'off' : $send_customer;
 
 				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
@@ -551,33 +551,56 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			return $actions;
 		}
 
-		function do_email_actions( $post_id, $post ) {
+	/**
+	 * Register WooCommerce order action hooks for custom emails.
+	 *
+	 * Uses the modern woocommerce_order_action_{action_id} pattern
+	 * which is HPOS compatible (replaces the legacy save_post approach).
+	 *
+	 * @since 3.0.0
+	 */
+	function register_order_action_hooks() {
 
-			if ( ! empty( $_POST['wc_order_action'] ) ) {
+		$wcemails_email_details = get_option( 'wcemails_email_details', array() );
 
-				// Order data saved, now get it so we can manipulate status.
-				$order = wc_get_order( $post_id );
+		if ( ! empty( $wcemails_email_details ) ) {
+			foreach ( $wcemails_email_details as $key => $details ) {
+				$enable       = isset( $details['enable'] ) ? $details['enable'] : 'off';
+				$order_action = isset( $details['order_action'] ) ? $details['order_action'] : 'off';
 
-				$action = wc_clean( $_POST['wc_order_action'] );
-
-				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
-				if ( ! empty( $wcemails_email_details ) ) {
-					foreach ( $wcemails_email_details as $key => $details ) {
-						$enable = $details['enable'];
-						$order_action = $details['order_action'];
-						if ( 'on' == $enable && 'on' == $order_action ) {
-							$id             = $details['id'];
-							if ( $id == $action ) {
-								WC()->payment_gateways();
-								WC()->shipping();
-								WC()->mailer()->emails['WCustom_Emails_'.$id.'_Email']->trigger( $order->get_id(), $order );
-                            }
-						}
-					}
+				if ( 'on' === $enable && 'on' === $order_action ) {
+					$id = $details['id'];
+					add_action( 'woocommerce_order_action_' . $id, array( $this, 'handle_order_action_email' ) );
 				}
-            }
+			}
+		}
 
-        }
+	}
+
+	/**
+	 * Handle order action email trigger.
+	 *
+	 * @since 3.0.0
+	 * @param WC_Order $order The order object.
+	 */
+	function handle_order_action_email( $order ) {
+
+		$action = str_replace( 'woocommerce_order_action_', '', current_action() );
+
+		$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+		if ( ! empty( $wcemails_email_details ) ) {
+			foreach ( $wcemails_email_details as $key => $details ) {
+				if ( isset( $details['id'] ) && $details['id'] === $action ) {
+					$email_key = 'WCustom_Emails_' . $details['id'] . '_Email';
+					if ( isset( WC()->mailer()->emails[ $email_key ] ) ) {
+						WC()->mailer()->emails[ $email_key ]->trigger( $order->get_id(), $order );
+					}
+					break;
+				}
+			}
+		}
+
+	}
 
 	}
 

@@ -59,27 +59,28 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 * @access public
 		 * @return void
 		 */
-		function trigger( $order_id ) {
-			// clean up possible leftover from previous invocations (e.g. in case of bulk updates&sends)
-			$this->find = array();
-			$this->replace = array();
-			
-			// checkbox of send to customer is checked or not.
-			$send_to_customer = ('on' == $this->send_customer);
+	function trigger( $order_id, $order = false ) {
+		// clean up possible leftover from previous invocations (e.g. in case of bulk updates&sends)
+		$this->find = array();
+		$this->replace = array();
+		
+		// checkbox of send to customer is checked or not.
+		$send_to_customer = ( 'on' == $this->send_customer );
 
-			if ( $order_id ) {
-				$this->object = wc_get_order( $order_id );
-				if ( $send_to_customer ) {
-					$this->bcc = $this->recipient;
-					$this->recipient = $this->object->get_billing_email();
-				} else {
-					$recipients = explode( ',', $this->recipient );
-					array_push( $recipients, $this->object->get_billing_email() );
-					$this->recipient = implode( ',', $recipients );
-				}
+		if ( $order_id ) {
+			$this->object = ( $order instanceof WC_Order ) ? $order : wc_get_order( $order_id );
+			if ( $send_to_customer ) {
+				$this->bcc = $this->recipient;
+				$this->recipient = $this->object->get_billing_email();
+			} else {
+				$recipients = explode( ',', $this->recipient );
+				array_push( $recipients, $this->object->get_billing_email() );
+				$this->recipient = implode( ',', $recipients );
+			}
 
-				$order_date = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
-				$order_number = $this->object->get_order_number();
+			$date_created = $this->object->get_date_created();
+			$order_date   = $date_created ? $date_created->date_i18n( wc_date_format() ) : '';
+			$order_number = $this->object->get_order_number();
 
 				/**
 				 * WooCommerce =< 3.2.X
