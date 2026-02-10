@@ -2,9 +2,7 @@ name: Lint
 
 on:
   push:
-    branches: [ modernize/v3.0.0, ci/phpcs-phpstan ]
   pull_request:
-    branches: [ modernize/v3.0.0, main ]
 
 jobs:
   phpcs:
