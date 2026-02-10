@@ -61,8 +61,11 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 */
 		public function trigger( $order_id, $order = false ) {
 			// Clean up possible leftover from previous invocations (e.g. in case of bulk updates & sends).
-			$this->find    = array();
-			$this->replace = array();
+			// Save the original recipient so it is not mutated across multiple trigger() calls.
+			$original_recipient = $this->recipient;
+			$this->find         = array();
+			$this->replace      = array();
+			$this->bcc          = '';
 
 			// Checkbox of send to customer is checked or not.
 			$send_to_customer = ( 'on' == $this->send_customer );
@@ -70,13 +73,14 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			if ( $order_id ) {
 				$this->object = ( $order instanceof WC_Order ) ? $order : wc_get_order( $order_id );
 				if ( $send_to_customer ) {
-					$this->bcc       = $this->recipient;
+					// Send TO customer, BCC the configured recipients (only if non-empty).
+					if ( ! empty( $original_recipient ) ) {
+						$this->bcc = $original_recipient;
+					}
 					$this->recipient = $this->object->get_billing_email();
-				} else {
-					$recipients = explode( ',', $this->recipient );
-					array_push( $recipients, $this->object->get_billing_email() );
-					$this->recipient = implode( ',', $recipients );
 				}
+				// When send_to_customer is off, the email goes only to configured recipients.
+				// The customer is NOT automatically added.
 
 				$date_created = $this->object->get_date_created();
 				$order_date   = $date_created ? $date_created->date_i18n( wc_date_format() ) : '';
@@ -87,19 +91,23 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			}
 
 			if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
+				$this->recipient = $original_recipient;
 				return;
 			}
 
 			$this->convert_template();
 
-			// If send to customer is selected add recipients to BCC.
-			if ( $send_to_customer ) {
+			// If send to customer is selected add configured recipients as BCC.
+			if ( $send_to_customer && ! empty( $this->bcc ) ) {
 				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10, 3 );
 			}
 			$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-			if ( $send_to_customer ) {
+			if ( $send_to_customer && ! empty( $this->bcc ) ) {
 				remove_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_to_custom_email' ), 10 );
 			}
+
+			// Restore original recipient for the next trigger() call (bulk sends).
+			$this->recipient = $original_recipient;
 		}
 
 		/**
@@ -115,7 +123,9 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 			do_action( 'woocommerce_email_header', $this->get_heading(), $this );
 
-			echo apply_filters( 'the_content', $html );
+			// Use wpautop instead of the_content filter to avoid third-party plugin
+			// output (social sharing, oEmbed, etc.) leaking into emails.
+			echo wpautop( $html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			do_action( 'woocommerce_email_footer', $this );
 
@@ -135,7 +145,8 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 			do_action( 'woocommerce_email_header', $this->get_heading(), $this );
 
-			echo apply_filters( 'the_content', $html );
+			// Strip HTML for plain text emails.
+			echo wp_strip_all_tags( $html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			do_action( 'woocommerce_email_footer', $this );
 
