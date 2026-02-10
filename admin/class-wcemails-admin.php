@@ -509,7 +509,8 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 						$id             = $details['id'];
 						$title         = isset( $details['title'] ) ? $details['title'] : '';
 
-                        $emails[$id] = __( 'Resend ' . $title, 'woo-custom-emails' );
+                        /* translators: %s: email title */
+                    $emails[$id] = sprintf( __( 'Resend %s', 'woo-custom-emails' ), $title );
 
 					}
 				}

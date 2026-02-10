@@ -104,6 +104,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 	public function declare_wc_feature_compatibility() {
 		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', WCEmails_PLUGIN_FILE, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'email_editor', WCEmails_PLUGIN_FILE, false );
 		}
 	}
 

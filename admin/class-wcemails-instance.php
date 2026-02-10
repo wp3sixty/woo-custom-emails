@@ -27,12 +27,12 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		 */
 		function __construct( $id, $title, $description, $subject, $recipients, $heading, $from_status, $to_status, $send_customer, $template ) {
 
-			$this->id          = $id;
-			$this->title       = __( $title, 'woocommerce' );
-			$this->description = __( $description, 'woocommerce' );
+		$this->id          = $id;
+		$this->title       = $title;
+		$this->description = $description;
 
-			$this->heading = __( $heading, 'woocommerce' );
-			$this->subject = __( $subject, 'woocommerce' );
+		$this->heading = $heading;
+		$this->subject = $subject;
 
 			$this->custom_template = $template;
 			$this->from_status     = $from_status;
@@ -82,20 +82,8 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$order_date   = $date_created ? $date_created->date_i18n( wc_date_format() ) : '';
 			$order_number = $this->object->get_order_number();
 
-				/**
-				 * WooCommerce =< 3.2.X
-				 */
-				$this->find['order-date']   = '{order_date}';
-				$this->replace['order-date']   = $order_date;
-
-				$this->find['order-number'] = '{order_number}';
-				$this->replace['order-number'] = $order_number;
-
-				/**
-				 * WooCommerce > 3.2.X
-				 */
-				$this->placeholders['{order_date}']   = $order_date;
-				$this->placeholders['{order_number}'] = $order_number;
+			$this->placeholders['{order_date}']   = $order_date;
+			$this->placeholders['{order_number}'] = $order_number;
 
 			}
 
@@ -225,26 +213,23 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 		function convert_template() {
 
-			$this->placeholders['{woocommerce_email_order_meta}']    = $this->woocommerce_email_order_meta();
-			$this->placeholders['{order_billing_name}']    = $this->object->get_billing_first_name() . ' ' . $this->object->get_billing_last_name();
-			$this->placeholders['{email_order_items_table}']    = wc_get_email_order_items( $this->object );
-			$this->placeholders['{email_order_total_footer}']    = $this->email_order_total_footer();
-			$this->placeholders['{order_billing_email}']    = $this->object->get_billing_email();
-			$this->placeholders['{order_billing_phone}']    = $this->object->get_billing_phone();
-			$this->placeholders['{email_addresses}']    = $this->get_email_addresses();
-			$this->placeholders['{site_title}']    = get_bloginfo('name');
+			$this->placeholders['{woocommerce_email_order_meta}'] = $this->woocommerce_email_order_meta();
+			$this->placeholders['{order_billing_name}']           = $this->object->get_billing_first_name() . ' ' . $this->object->get_billing_last_name();
+			$this->placeholders['{email_order_items_table}']      = wc_get_email_order_items( $this->object );
+			$this->placeholders['{email_order_total_footer}']     = $this->email_order_total_footer();
+			$this->placeholders['{order_billing_email}']          = $this->object->get_billing_email();
+			$this->placeholders['{order_billing_phone}']          = $this->object->get_billing_phone();
+			$this->placeholders['{email_addresses}']              = $this->get_email_addresses();
+			$this->placeholders['{site_title}']                   = get_bloginfo( 'name' );
 
-			// For old woocommerce use find and replace methods
-			foreach ( $this->placeholders as $find => $replace ) {
-				$this->find[]    = $find;
-				$this->replace[] = $replace;
-			}
-
+			/**
+			 * Filter custom email placeholders.
+			 *
+			 * @since 2.0.5
+			 * @param array    $placeholders Key-value pairs of placeholder => replacement.
+			 * @param WC_Order $order        The order object.
+			 */
 			$this->placeholders = apply_filters( 'wcemails_find_placeholders', $this->placeholders, $this->object );
-
-			// Legacy filters
-			$this->find      = apply_filters( 'wcemails_find_placeholders', $this->find, $this->object );
-			$this->replace   = apply_filters( 'wcemails_replace_placeholders', $this->replace, $this->object );
 
 		}
 
