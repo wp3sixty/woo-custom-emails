@@ -75,19 +75,19 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			<div class="wrap">
 				<h2><?php _e( 'Woocommerce Custom Emails Settings', 'woo-custom-emails' ); ?></h2>
 				<?php
-				if ( ! isset( $_REQUEST['type'] ) ) {
-					$type = 'today';
-				} else {
-					$type = $_REQUEST['type'];
-				}
-				$all_types = array( 'add-email', 'view-email' );
-				if ( ! in_array( $type, $all_types ) ) {
-					$type = 'add-email';
-				}
+			if ( ! isset( $_REQUEST['type'] ) ) {
+				$type = 'add-email';
+			} else {
+				$type = sanitize_text_field( wp_unslash( $_REQUEST['type'] ) );
+			}
+			$all_types = array( 'add-email', 'view-email' );
+			if ( ! in_array( $type, $all_types, true ) ) {
+				$type = 'add-email';
+			}
 				?>
 				<ul class="subsubsub">
-					<li class="today"><a class ="<?php echo ( 'add-email' == $type ) ? 'current' : ''; ?>" href="<?php echo add_query_arg( array( 'type' => 'add-email' ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"><?php _e( 'Add Custom Emails', 'woo-custom-emails' ); ?></a> |</li>
-					<li class="today"><a class ="<?php echo ( 'view-email' == $type ) ? 'current' : ''; ?>" href="<?php echo add_query_arg( array( 'type' => 'view-email' ), admin_url( 'admin.php?page=wcemails-settings' ) ); ?>"><?php _e( 'View Your Custom Emails', 'woo-custom-emails' ); ?></a></li>
+				<li class="today"><a class ="<?php echo ( 'add-email' === $type ) ? 'current' : ''; ?>" href="<?php echo esc_url( add_query_arg( array( 'type' => 'add-email' ), admin_url( 'admin.php?page=wcemails-settings' ) ) ); ?>"><?php _e( 'Add Custom Emails', 'woo-custom-emails' ); ?></a> |</li>
+				<li class="today"><a class ="<?php echo ( 'view-email' === $type ) ? 'current' : ''; ?>" href="<?php echo esc_url( add_query_arg( array( 'type' => 'view-email' ), admin_url( 'admin.php?page=wcemails-settings' ) ) ); ?>"><?php _e( 'View Your Custom Emails', 'woo-custom-emails' ); ?></a></li>
 				</ul>
 				<?php $this->wcemails_render_sections( $type ); ?>
 			</div>
@@ -109,18 +109,19 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 		function wcemails_render_add_email_section() {
 
-			$wcemails_detail = array();
-			if ( isset( $_REQUEST['wcemails_edit'] ) ) {
-				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
-				if ( ! empty( $wcemails_email_details ) ) {
-					foreach ( $wcemails_email_details as $key => $details ) {
-						if ( $_REQUEST['wcemails_edit'] == $key ) {
-							$wcemails_detail = $details;
-							$wcemails_detail['template'] = stripslashes( $wcemails_detail['template'] );
-						}
+		$wcemails_detail = array();
+		$edit_key = isset( $_REQUEST['wcemails_edit'] ) ? absint( $_REQUEST['wcemails_edit'] ) : '';
+		if ( ! empty( $edit_key ) ) {
+			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+			if ( ! empty( $wcemails_email_details ) ) {
+				foreach ( $wcemails_email_details as $key => $details ) {
+					if ( $edit_key == $key ) {
+						$wcemails_detail = $details;
+						$wcemails_detail['template'] = stripslashes( $wcemails_detail['template'] );
 					}
 				}
 			}
+		}
 
 			$wc_statuses = wc_get_order_statuses();
 			if ( ! empty( $wc_statuses ) ) {
@@ -135,8 +136,9 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			wp_enqueue_script( 'wcemails-custom-scripts' );
 
 			?>
-			<form method="post" action="">
-				<table class="form-table">
+		<form method="post" action="">
+			<?php wp_nonce_field( 'wcemails_save_email', 'wcemails_nonce' ); ?>
+			<table class="form-table">
 					<tbody>
 					<tr>
 						<th scope="row">
@@ -146,7 +148,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_title" id="wcemails_title" type="text" required value="<?php echo isset( $wcemails_detail['title'] ) ? $wcemails_detail['title'] : ''; ?>" placeholder="<?php _e( 'Title', 'woo-custom-emails' ); ?>" />
+							<input name="wcemails_title" id="wcemails_title" type="text" required value="<?php echo isset( $wcemails_detail['title'] ) ? esc_attr( $wcemails_detail['title'] ) : ''; ?>" placeholder="<?php esc_attr_e( 'Title', 'woo-custom-emails' ); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -157,7 +159,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<textarea name="wcemails_description" id="wcemails_description" required placeholder="<?php _e( 'Description', 'woo-custom-emails' ); ?>" ><?php echo isset( $wcemails_detail['description'] ) ? $wcemails_detail['description'] : ''; ?></textarea>
+							<textarea name="wcemails_description" id="wcemails_description" required placeholder="<?php esc_attr_e( 'Description', 'woo-custom-emails' ); ?>" ><?php echo isset( $wcemails_detail['description'] ) ? esc_textarea( $wcemails_detail['description'] ) : ''; ?></textarea>
 						</td>
 					</tr>
 					<tr>
@@ -168,7 +170,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_subject" id="wcemails_subject" type="text" required value="<?php echo isset( $wcemails_detail['subject'] ) ? $wcemails_detail['subject'] : ''; ?>" placeholder="<?php _e( 'Subject', 'woo-custom-emails' ); ?>" />
+							<input name="wcemails_subject" id="wcemails_subject" type="text" required value="<?php echo isset( $wcemails_detail['subject'] ) ? esc_attr( $wcemails_detail['subject'] ) : ''; ?>" placeholder="<?php esc_attr_e( 'Subject', 'woo-custom-emails' ); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -179,7 +181,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_recipients" id="wcemails_recipients" type="text" value="<?php echo isset( $wcemails_detail['recipients'] ) ? $wcemails_detail['recipients'] : ''; ?>" placeholder="<?php _e( 'Recipients', 'woo-custom-emails' ); ?>" />
+							<input name="wcemails_recipients" id="wcemails_recipients" type="text" value="<?php echo isset( $wcemails_detail['recipients'] ) ? esc_attr( $wcemails_detail['recipients'] ) : ''; ?>" placeholder="<?php esc_attr_e( 'Recipients', 'woo-custom-emails' ); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -201,7 +203,7 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 								</span>
 						</th>
 						<td>
-							<input name="wcemails_heading" id="wcemails_heading" type="text" required value="<?php echo isset( $wcemails_detail['heading'] ) ? $wcemails_detail['heading'] : ''; ?>" placeholder="<?php _e( 'Heading', 'woo-custom-emails' ); ?>" />
+							<input name="wcemails_heading" id="wcemails_heading" type="text" required value="<?php echo isset( $wcemails_detail['heading'] ) ? esc_attr( $wcemails_detail['heading'] ) : ''; ?>" placeholder="<?php esc_attr_e( 'Heading', 'woo-custom-emails' ); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -330,11 +332,11 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					<input type="submit" name="wcemails_submit" id="wcemails_submit" class="button button-primary" value="<?php _e( 'Save Changes', 'woo-custom-emails' ); ?>">
 				</p>
 				<?php
-				if ( isset( $_REQUEST['wcemails_edit'] ) ) {
-					?>
-					<input type="hidden" name="wcemails_update" id="wcemails_update" value="<?php echo $_REQUEST['wcemails_edit']; ?>" />
-					<?php
-				}
+			if ( ! empty( $edit_key ) ) {
+				?>
+				<input type="hidden" name="wcemails_update" id="wcemails_update" value="<?php echo esc_attr( $edit_key ); ?>" />
+				<?php
+			}
 				?>
 			</form>
 			<?php
@@ -348,14 +350,22 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 			$wcemails_list->display();
 		}
 
-		/**
-		 * Save email options
-		 */
-		function wcemails_email_actions_details() {
+	/**
+	 * Save email options
+	 */
+	function wcemails_email_actions_details() {
 
-			if ( isset( $_POST['wcemails_submit'] ) ) {
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			return;
+		}
 
-			$title         = isset( $_POST['wcemails_title'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_title'] ) ) : '';
+		if ( isset( $_POST['wcemails_submit'] ) ) {
+
+		if ( ! isset( $_POST['wcemails_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wcemails_nonce'] ) ), 'wcemails_save_email' ) ) {
+			return;
+		}
+
+		$title         = isset( $_POST['wcemails_title'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_title'] ) ) : '';
 			$description   = isset( $_POST['wcemails_description'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_description'] ) ) : '';
 			$subject       = isset( $_POST['wcemails_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_subject'] ) ) : '';
 			$recipients    = isset( $_POST['wcemails_recipients'] ) ? sanitize_text_field( wp_unslash( $_POST['wcemails_recipients'] ) ) : '';
@@ -386,10 +396,11 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 					'send_customer' => $send_customer,
 				);
 
-				if ( isset( $_POST['wcemails_update'] ) ) {
-					if ( ! empty( $wcemails_email_details ) ) {
-						foreach ( $wcemails_email_details as $key => $details ) {
-							if ( $key == $_POST['wcemails_update'] ) {
+			$update_key = isset( $_POST['wcemails_update'] ) ? absint( $_POST['wcemails_update'] ) : '';
+			if ( ! empty( $update_key ) ) {
+				if ( ! empty( $wcemails_email_details ) ) {
+					foreach ( $wcemails_email_details as $key => $details ) {
+						if ( $key == $update_key ) {
 								$data['id'] = $details['id'];
 								$wcemails_email_details[ $key ] = $data;
 							}
@@ -405,11 +416,15 @@ if ( ! class_exists( 'WCEmails_Admin' ) ) {
 
 				add_settings_error( 'wcemails-settings', 'error_code', $title.' is saved and if you have enabled it then you can see it in Woocommerce Email Settings Now', 'success' );
 
-			} else if ( isset( $_REQUEST['wcemails_delete'] ) ) {
+		} else if ( isset( $_REQUEST['wcemails_delete'] ) ) {
 
-				$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+			if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'wcemails_delete_email' ) ) {
+				return;
+			}
 
-				$delete_key = $_REQUEST['wcemails_delete'];
+			$wcemails_email_details = get_option( 'wcemails_email_details', array() );
+
+			$delete_key = absint( $_REQUEST['wcemails_delete'] );
 
 				if ( ! empty( $wcemails_email_details ) ) {
 					foreach ( $wcemails_email_details as $key => $details ) {
