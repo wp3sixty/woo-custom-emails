@@ -5,12 +5,14 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 	class WCEmails_Instance extends WC_Email {
 		/**
 		 * Strings to find in subjects/headings.
+		 *
 		 * @var array
 		 */
 		public $find = array();
 
 		/**
 		 * Strings to replace in subjects/headings.
+		 *
 		 * @var array
 		 */
 		public $replace = array();
@@ -50,7 +52,6 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			if ( ! $this->recipient ) {
 				$this->recipient = get_option( 'admin_email' );
 			}
-
 		}
 
 		/**
@@ -68,7 +69,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			$this->bcc          = '';
 
 			// Checkbox of send to customer is checked or not.
-			$send_to_customer = ( 'on' == $this->send_customer );
+			$send_to_customer = ( 'on' === $this->send_customer );
 
 			if ( $order_id ) {
 				$this->object = ( $order instanceof WC_Order ) ? $order : wc_get_order( $order_id );
@@ -170,6 +171,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 				'recipient'  => array(
 					'title'       => __( 'Recipient(s)', 'woocommerce' ),
 					'type'        => 'text',
+					/* translators: %s: admin email address */
 					'description' => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce' ), esc_attr( get_option( 'admin_email' ) ) ),
 					'placeholder' => '',
 					'default'     => '',
@@ -177,6 +179,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 				'subject'    => array(
 					'title'       => __( 'Subject', 'woocommerce' ),
 					'type'        => 'text',
+					/* translators: %s: default email subject */
 					'description' => sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'woocommerce' ), $this->subject ),
 					'placeholder' => '',
 					'default'     => '',
@@ -184,6 +187,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 				'heading'    => array(
 					'title'       => __( 'Email Heading', 'woocommerce' ),
 					'type'        => 'text',
+					/* translators: %s: default email heading */
 					'description' => sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'woocommerce' ), $this->heading ),
 					'placeholder' => '',
 					'default'     => '',
@@ -206,7 +210,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		public function change_order_status_trigger( $order_id, $old_status, $new_status ) {
 			$from_status = $this->from_status;
 			$to_status   = $this->to_status;
-			if ( ! empty( $from_status ) && ! empty( $to_status ) && in_array( $old_status, $from_status ) && in_array( $new_status, $to_status ) ) {
+			if ( ! empty( $from_status ) && ! empty( $to_status ) && in_array( $old_status, $from_status, true ) && in_array( $new_status, $to_status, true ) ) {
 				$this->trigger( $order_id );
 			}
 		}
@@ -240,7 +244,6 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 			 * @param WC_Order $order        The order object.
 			 */
 			$this->placeholders = apply_filters( 'wcemails_find_placeholders', $this->placeholders, $this->object );
-
 		}
 
 		public function woocommerce_email_order_meta() {
@@ -252,16 +255,18 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 		public function email_order_total_footer() {
 			ob_start();
-			if ( $totals = $this->object->get_order_item_totals() ) {
+			$totals = $this->object->get_order_item_totals();
+			if ( $totals ) {
 				$i = 0;
 				foreach ( $totals as $total ) {
-					$i ++;
+					++$i;
 					?>
 					<tr>
 					<th scope='row' colspan='2'
-					    style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['label']; ?></th>
-					<td style='text-align:left; border: 1px solid #eee; <?php echo 1 == $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo $total['value']; ?></td>
-					</tr><?php
+						style='text-align:left; border: 1px solid #eee; <?php echo 1 === $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo wp_kses_post( $total['label'] ); ?></th>
+					<td style='text-align:left; border: 1px solid #eee; <?php echo 1 === $i ? 'border-top-width: 4px;' : ''; ?>'><?php echo wp_kses_post( $total['value'] ); ?></td>
+					</tr>
+					<?php
 				}
 			}
 
@@ -276,16 +281,15 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		}
 
 		public function add_bcc_to_custom_email( $headers, $email_id, $order ) {
-			if ( $this->id != $email_id || empty( $this->bcc ) ) {
+			if ( $this->id !== $email_id || empty( $this->bcc ) ) {
 				return $headers;
 			}
 			if ( ! is_array( $headers ) ) {
 				$headers = array( $headers );
 			}
-			$headers[] = 'Bcc: '.$this->bcc;
+			$headers[] = 'Bcc: ' . $this->bcc;
 			return $headers;
 		}
-
 	}
 
 }

@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<ruleset name="Woo Custom Emails">
+	<description>PHPCS ruleset for Woo Custom Emails plugin.</description>
+
+	<!-- What to scan. -->
+	<file>.</file>
+
+	<!-- Exclude paths. -->
+	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>node_modules/*</exclude-pattern>
+	<exclude-pattern>build/*</exclude-pattern>
+	<exclude-pattern>tests/*</exclude-pattern>
+
+	<!-- Show progress and sniff codes in all reports. -->
+	<arg value="ps"/>
+	<arg name="colors"/>
+	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="8"/>
+
+	<!-- PHP compatibility. -->
+	<config name="testVersion" value="7.4-"/>
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- WordPress coding standards. -->
+	<config name="minimum_wp_version" value="6.0"/>
+	<rule ref="WordPress">
+		<!-- Allow short array syntax. -->
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+		<!-- Allow short ternary. -->
+		<exclude name="Universal.Operators.DisallowShortTernary"/>
+		<!-- File name conventions don't apply to plugin root file. -->
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<!-- Allow the template HTML indentation style used in the form. -->
+		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact"/>
+		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect"/>
+		<!-- Allow closing PHP tag alignment in HTML templates. -->
+		<exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
+
+		<!--
+			Doc-comment cosmetics: the existing codebase has minimal docblocks.
+			We enforce these incrementally — not blocking CI for now.
+		-->
+		<exclude name="Squiz.Commenting.FunctionComment.Missing"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamType"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
+		<exclude name="Squiz.Commenting.FileComment.Missing"/>
+		<exclude name="Squiz.Commenting.FileComment.SpacingAfterOpen"/>
+		<exclude name="Squiz.Commenting.FileComment.SpacingAfterComment"/>
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+		<exclude name="Generic.Commenting.DocComment.ShortNotCapital"/>
+
+		<!-- Inline/block comment style is not worth blocking CI. -->
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+		<exclude name="Squiz.Commenting.BlockComment.NoEmptyLineBefore"/>
+		<exclude name="Squiz.Commenting.BlockComment.NoCapital"/>
+		<exclude name="Squiz.Commenting.BlockComment.CloserSameLine"/>
+
+		<!-- Commented-out code warnings (informational, not actionable). -->
+		<exclude name="Squiz.PHP.CommentedOutCode.Found"/>
+
+		<!-- $_instance is a standard WP singleton pattern; underscore is expected. -->
+		<exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+
+		<!--
+			Plugin root and admin files define a helper function outside
+			the class in the same file — standard WP plugin bootstrap pattern.
+		-->
+		<exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed"/>
+	</rule>
+
+	<!--
+		WooCommerce hooks: we call do_action / apply_filters with WC-core
+		hook names (e.g. woocommerce_email_header). These are not our hooks,
+		so the prefix check does not apply.
+	-->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound">
+		<exclude-pattern>admin/class-wcemails-instance.php</exclude-pattern>
+	</rule>
+
+	<!-- manage_woocommerce is a WooCommerce capability — tell PHPCS it's known. -->
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="manage_woocommerce"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Enqueue version: jquery-cloneya is a vendored library without a version constant. -->
+	<rule ref="WordPress.WP.EnqueuedResourceParameters.MissingVersion">
+		<exclude-pattern>admin/class-wcemails-admin.php</exclude-pattern>
+	</rule>
+	<!-- In-footer: scripts need jQuery available; loading position is deliberate. -->
+	<rule ref="WordPress.WP.EnqueuedResourceParameters.NotInFooter">
+		<exclude-pattern>admin/class-wcemails-admin.php</exclude-pattern>
+	</rule>
+
+	<!-- Verify text domain usage. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="woo-custom-emails"/>
+				<!-- Allow WooCommerce text domain for WC-provided strings. -->
+				<element value="woocommerce"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Prefix check for global functions / options. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="woo_custom_emails"/>
+				<element value="wcemails"/>
+				<element value="WCEmails"/>
+				<element value="Woo_Custom_Emails"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

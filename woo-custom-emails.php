@@ -8,10 +8,11 @@
  * Author: wp3sixty
  * Author URI: http://wp3sixty.com
  * Requires at least: 6.0
- * Tested up to: 6.7
+ * Tested up to: 6.9
  * Requires PHP: 7.4
+ * Requires Plugins: woocommerce
  * WC requires at least: 8.0
- * WC tested up to: 9.5
+ * WC tested up to: 10.5
  *
  * Text Domain: woo-custom-emails
  *
@@ -20,7 +21,7 @@
  * @author mehulkaklotar
  */
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
@@ -29,7 +30,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 	 * Main Woo Custom Emails Class
 	 *
 	 * @class Woo_Custom_Emails
-	 * @version	2.0.3
+	 * @version 2.0.3
 	 */
 	final class Woo_Custom_Emails {
 
@@ -62,18 +63,20 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 		/**
 		 * Cloning is forbidden.
+		 *
 		 * @since 0.1
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '3.0.0' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '3.0.0' );
 		}
 
 		/**
 		 * Unserializing instances of this class is forbidden.
+		 *
 		 * @since 2.1
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '3.0.0' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'woo-custom-emails' ), '3.0.0' );
 		}
 
 		/**
@@ -122,13 +125,14 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		}
 
 		/**
-		 * Define constant if not already set
-		 * @param  string $name
-		 * @param  string|bool $value
+		 * Define constant if not already set.
+		 *
+		 * @param  string      $name  Constant name.
+		 * @param  string|bool $value Constant value.
 		 */
 		private function define( $name, $value ) {
 			if ( ! defined( $name ) ) {
-				define( $name, $value );
+				define( $name, $value ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.VariableConstantNameFound -- all constants use WCEmails_ prefix.
 			}
 		}
 
@@ -148,6 +152,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 		/**
 		 * Get the plugin url.
+		 *
 		 * @return string
 		 */
 		public function plugin_url() {
@@ -156,6 +161,7 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 
 		/**
 		 * Get the plugin path.
+		 *
 		 * @return string
 		 */
 		public function plugin_path() {
@@ -173,13 +179,12 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 		 */
 		public function load_plugin_textdomain() {
 			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-			$locale = apply_filters( 'plugin_locale', $locale, 'woo-custom-emails' );
+			$locale = apply_filters( 'plugin_locale', $locale, 'woo-custom-emails' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WP core filter.
 
 			unload_textdomain( 'woo-custom-emails' );
 			load_textdomain( 'woo-custom-emails', WP_LANG_DIR . '/woo-custom-emails/woo-custom-emails-' . $locale . '.mo' );
-			load_plugin_textdomain( 'woo-custom-emails', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+			load_plugin_textdomain( 'woo-custom-emails', false, plugin_basename( __DIR__ ) . '/languages' );
 		}
-
 	}
 
 	/**
@@ -195,6 +200,3 @@ if ( ! class_exists( 'Woo_Custom_Emails' ) ) {
 	woo_custom_emails();
 
 }
-
-
-
