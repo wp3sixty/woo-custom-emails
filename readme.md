@@ -8,7 +8,7 @@ Woo Custom Emails is a plugin that helps you create custom emails for your WooCo
 **Tags:** [woo custom emails](https://wordpress.org/plugins/tags/woo custom emails), [woocommerce custom emails](https://wordpress.org/plugins/tags/woocommerce custom emails), [woocommerce](https://wordpress.org/plugins/tags/woocommerce), [email](https://wordpress.org/plugins/tags/email), [order](https://wordpress.org/plugins/tags/order), [ecommerce](https://wordpress.org/plugins/tags/ecommerce), [custom email template](https://wordpress.org/plugins/tags/custom email template)  
 **Requires at least:** 6.0  
 **Tested up to:** 6.9  
-**Stable tag:** 3.0.0  
+**Stable tag:** 3.0.1  
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)  
 **Requires PHP:** 8.2  
 **Requires Plugins:** woocommerce  
@@ -27,14 +27,14 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 
 ## Installation ##
 
-### From your WordPress dashboard ###
-1. Visit 'Plugins > Add New'
-2. Search for 'Woo Custom Emails'
+### Via Composer (recommended) ###
+1. Run `composer require wp3sixty/woo-custom-emails`
+2. The plugin will be installed to your `wp-content/plugins/` directory automatically.
 3. Activate Woo Custom Emails from your Plugins page.
 4. Go to WordPress Settings menu -> Woo Custom Emails.
 
-### From WordPress.org ###
-1. Download Woo Custom Emails.
+### Manual installation ###
+1. Download the latest release from [GitHub](https://github.com/wp3sixty/woo-custom-emails/releases).
 2. Upload the 'woo-custom-emails' directory to your '/wp-content/plugins/' directory, using your favorite method (ftp, sftp, scp, etc...)
 3. Activate Woo Custom Emails from your Plugins page.
 4. Go to WordPress Settings menu -> Woo Custom Emails.
@@ -59,6 +59,11 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 ![WooCommerce Order action with custom email](assets/screenshot-4.png)
 
 ## Changelog ##
+
+### 3.0.1 ###
+* Added Composer support (`composer require wp3sixty/woo-custom-emails`)
+* Bumped minimum PHP requirement to 8.2
+* Updated installation instructions
 
 ### 3.0.0 ###
 * HPOS (High-Performance Order Storage) compatibility

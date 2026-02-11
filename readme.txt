@@ -3,7 +3,7 @@ Contributors: wp3sixty, mehulkaklotar, utkarshpatel, dipesh.kakadiya, faishal
 Tags: woo custom emails, woocommerce custom emails, woocommerce, email, order, ecommerce, custom email template
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 Requires PHP: 8.2
 Requires Plugins: woocommerce
 WC requires at least: 8.0
@@ -25,16 +25,16 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 
 == Installation ==
 
-= From your WordPress dashboard =
+= Via Composer (recommended) =
 
-1. Visit 'Plugins > Add New'
-2. Search for 'Woo Custom Emails'
+1. Run `composer require wp3sixty/woo-custom-emails`
+2. The plugin will be installed to your `wp-content/plugins/` directory automatically.
 3. Activate Woo Custom Emails from your Plugins page.
 4. Go to WordPress Settings menu -> Woo Custom Emails.
 
-= From WordPress.org =
+= Manual installation =
 
-1. Download Woo Custom Emails.
+1. Download the latest release from [GitHub](https://github.com/wp3sixty/woo-custom-emails/releases).
 2. Upload the 'woo-custom-emails' directory to your '/wp-content/plugins/' directory, using your favorite method (ftp, sftp, scp, etc...)
 3. Activate Woo Custom Emails from your Plugins page.
 4. Go to WordPress Settings menu -> Woo Custom Emails.
@@ -47,6 +47,11 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 4. WooCommerce Order action with custom email
 
 == Changelog ==
+
+= 3.0.1 =
+* Added Composer support (`composer require wp3sixty/woo-custom-emails`)
+* Bumped minimum PHP requirement to 8.2
+* Updated installation instructions
 
 = 3.0.0 =
 * HPOS (High-Performance Order Storage) compatibility

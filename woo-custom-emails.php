@@ -4,7 +4,7 @@
  * Plugin Name: Woo Custom Emails
  * Plugin URI: https://github.com/mehulkaklotar/woo-custom-emails
  * Description: A woocommerce add on to support customize emails
- * Version: 3.0.0
+ * Version: 3.0.1
  * Author: wp3sixty
  * Author URI: http://wp3sixty.com
  * Requires at least: 6.0

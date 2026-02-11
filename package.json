@@ -1,6 +1,6 @@
 {
 	"name": "woo-custom-emails",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"private": true,
 	"description": "Development environment for Woo Custom Emails",
 	"scripts": {
