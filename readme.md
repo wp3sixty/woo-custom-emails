@@ -6,10 +6,14 @@ Woo Custom Emails is a plugin that helps you create custom emails for your WooCo
 
 **Contributors:** [wp3sixty](https://profiles.wordpress.org/wp3sixty), [mehulkaklotar](https://profiles.wordpress.org/mehulkaklotar), [utkarshpatel](https://profiles.wordpress.org/utkarshpatel), [dipesh.kakadiya](https://profiles.wordpress.org/dipesh.kakadiya), [faishal](https://profiles.wordpress.org/faishal)  
 **Tags:** [woo custom emails](https://wordpress.org/plugins/tags/woo custom emails), [woocommerce custom emails](https://wordpress.org/plugins/tags/woocommerce custom emails), [woocommerce](https://wordpress.org/plugins/tags/woocommerce), [email](https://wordpress.org/plugins/tags/email), [order](https://wordpress.org/plugins/tags/order), [ecommerce](https://wordpress.org/plugins/tags/ecommerce), [custom email template](https://wordpress.org/plugins/tags/custom email template)  
-**Requires at least:** 4.9  
-**Tested up to:** 5.7.2
-**Stable tag:** 2.2
+**Requires at least:** 6.0  
+**Tested up to:** 6.9  
+**Stable tag:** 3.0.0  
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)  
+**Requires PHP:** 8.2  
+**Requires Plugins:** woocommerce  
+**WC requires at least:** 8.0  
+**WC tested up to:** 10.5  
 
 ## Description ##
 
@@ -55,6 +59,14 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 ![WooCommerce Order action with custom email](assets/screenshot-4.png)
 
 ## Changelog ##
+
+### 3.0.0 ###
+* HPOS (High-Performance Order Storage) compatibility
+* PHP 8.1+ compatibility - replaced deprecated FILTER_SANITIZE_STRING
+* Fixed deprecated order_date property usage (WC 3.0+)
+* Replaced save_post order action hook with modern woocommerce_order_action_{id} pattern
+* Updated trigger() method signature for WC 8.x+ compatibility
+* Updated version requirements: WP 6.0+, WC 8.0+, PHP 7.4+
 
 ### 2.2 ###
 * Translation changes
