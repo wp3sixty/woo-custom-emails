@@ -4,7 +4,7 @@ Tags: woo custom emails, woocommerce custom emails, woocommerce, email, order, e
 Requires at least: 6.0
 Tested up to: 6.7
 Stable tag: 3.0.0
-Requires PHP: 7.4
+Requires PHP: 8.2
 WC requires at least: 8.0
 WC tested up to: 9.5
 License: GPLv2 or later
