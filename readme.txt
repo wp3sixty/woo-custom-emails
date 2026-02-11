@@ -3,7 +3,7 @@ Contributors: wp3sixty, mehulkaklotar, utkarshpatel, dipesh.kakadiya, faishal
 Tags: woo custom emails, woocommerce custom emails, woocommerce, email, order, ecommerce, custom email template
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 Requires PHP: 8.2
 Requires Plugins: woocommerce
 WC requires at least: 8.0
@@ -47,6 +47,10 @@ If you have a patch, or stumbled upon an issue with Woo Custom Emails core, you 
 4. WooCommerce Order action with custom email
 
 == Changelog ==
+
+= 3.0.2 =
+* Fixed composer.lock out of sync with composer.json (CI fix)
+* Added composer/installers to allow-plugins config
 
 = 3.0.1 =
 * Added Composer support (`composer require wp3sixty/woo-custom-emails`)
