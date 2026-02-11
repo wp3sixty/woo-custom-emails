@@ -13,6 +13,11 @@
 		"seed": "wp-env run cli -- wp wc update --yes 2>/dev/null; echo 'WooCommerce ready. Visit http://localhost:8888/wp-admin (admin/password)'"
 	},
 	"devDependencies": {
-		"@wordpress/env": "^10"
+		"@wordpress/env": "^10.39.0"
+	},
+	"pnpm": {
+		"overrides": {
+			"fast-xml-parser": ">=5.3.4"
+		}
 	}
 }
