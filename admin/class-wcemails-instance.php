@@ -1,6 +1,7 @@
 <?php
+
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // Exit if accessed directly
 }
 
 if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
