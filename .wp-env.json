@@ -4,6 +4,7 @@
 	"plugins": [
 		"https://downloads.wordpress.org/plugin/woocommerce.zip",
 		"https://downloads.wordpress.org/plugin/wp-mail-logging.zip",
+        "https://downloads.wordpress.org/plugin/plugin-check.zip",
 		"."
 	],
     "port": 8888,
