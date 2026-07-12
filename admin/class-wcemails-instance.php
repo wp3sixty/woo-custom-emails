@@ -163,7 +163,7 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 		public function init_form_fields() {
 			$this->form_fields = array(
 				'enabled'    => array(
-					'title'   => __( 'Enable/Disable', 'woo-custom-emails' ),
+					'title'   => __( 'Enable/Disable', 'woocommerce' ),
 					'type'    => 'checkbox',
 					'label'   => __( 'Enable this email notification', 'woocommerce' ),
 					'default' => 'yes',
