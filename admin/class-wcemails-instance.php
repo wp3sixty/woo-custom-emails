@@ -1,9 +1,5 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
 if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 
 	class WCEmails_Instance extends WC_Email {
@@ -169,43 +165,43 @@ if ( ! class_exists( 'WCEmails_Instance' ) && class_exists( 'WC_Email' ) ) {
 				'enabled'    => array(
 					'title'   => __( 'Enable/Disable', 'woo-custom-emails' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable this email notification', 'woo-custom-emails' ),
+					'label'   => __( 'Enable this email notification', 'woocommerce' ),
 					'default' => 'yes',
 				),
 				'recipient'  => array(
-					'title'       => __( 'Recipient(s)', 'woo-custom-emails' ),
+					'title'       => __( 'Recipient(s)', 'woocommerce' ),
 					'type'        => 'text',
 					/* translators: %s: admin email address */
-					'description' => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woo-custom-emails' ), esc_attr( get_option( 'admin_email' ) ) ),
+					'description' => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce' ), esc_attr( get_option( 'admin_email' ) ) ),
 					'placeholder' => '',
 					'default'     => '',
 				),
 				'subject'    => array(
-					'title'       => __( 'Subject', 'woo-custom-emails' ),
+					'title'       => __( 'Subject', 'woocommerce' ),
 					'type'        => 'text',
 					/* translators: %s: default email subject */
-					'description' => sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'woo-custom-emails' ), $this->subject ),
+					'description' => sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'woocommerce' ), $this->subject ),
 					'placeholder' => '',
 					'default'     => '',
 				),
 				'heading'    => array(
-					'title'       => __( 'Email Heading', 'woo-custom-emails' ),
+					'title'       => __( 'Email Heading', 'woocommerce' ),
 					'type'        => 'text',
 					/* translators: %s: default email heading */
-					'description' => sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'woo-custom-emails' ), $this->heading ),
+					'description' => sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'woocommerce' ), $this->heading ),
 					'placeholder' => '',
 					'default'     => '',
 				),
 				'email_type' => array(
-					'title'       => __( 'Email type', 'woo-custom-emails' ),
+					'title'       => __( 'Email type', 'woocommerce' ),
 					'type'        => 'select',
-					'description' => __( 'Choose which format of email to send.', 'woo-custom-emails' ),
+					'description' => __( 'Choose which format of email to send.', 'woocommerce' ),
 					'default'     => 'html',
 					'class'       => 'email_type',
 					'options'     => array(
-						'plain'     => __( 'Plain text', 'woo-custom-emails' ),
-						'html'      => __( 'HTML', 'woo-custom-emails' ),
-						'multipart' => __( 'Multipart', 'woo-custom-emails' ),
+						'plain'     => __( 'Plain text', 'woocommerce' ),
+						'html'      => __( 'HTML', 'woocommerce' ),
+						'multipart' => __( 'Multipart', 'woocommerce' ),
 					),
 				),
 			);

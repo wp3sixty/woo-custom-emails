@@ -2,13 +2,10 @@
 	"core": "WordPress/WordPress#7.0",
 	"phpVersion": "8.2",
 	"plugins": [
-		"https://downloads.wordpress.org/plugin/woocommerce.zip",
-		"https://downloads.wordpress.org/plugin/wp-mail-logging.zip",
-        "https://downloads.wordpress.org/plugin/plugin-check.zip",
+		"https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
+		"https://downloads.wordpress.org/plugin/wp-mail-logging.latest-stable.zip",
 		"."
 	],
-    "port": 8888,
-    "testsEnvironment": false,
 	"config": {
 		"WP_DEBUG": true,
 		"WP_DEBUG_LOG": true,

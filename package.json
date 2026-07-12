@@ -8,7 +8,7 @@
 		"start": "wp-env start",
 		"stop": "wp-env stop",
 		"destroy": "wp-env destroy",
-		"shell": "wp-env run cli /bin/bash",
+		"cli": "wp-env run cli",
 		"setup": "wp-env start && pnpm seed",
 		"seed": "wp-env run cli -- wp wc update --yes 2>/dev/null; echo 'WooCommerce ready. Visit http://localhost:8888/wp-admin (admin/password)'"
 	},
