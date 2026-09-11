@@ -1,8 +1,8 @@
 === Woo Custom Emails ===
 Contributors: wp3sixty, mehulkaklotar, utkarshpatel, dipesh.kakadiya, faishal
-Tags: woo custom emails, woocommerce custom emails, woocommerce, email, order, ecommerce, custom email template
+Tags: woo custom emails, email, order, ecommerce, custom email template
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.0
 Stable tag: 3.0.2
 Requires PHP: 8.2
 Requires Plugins: woocommerce

@@ -2,20 +2,23 @@ name: Lint
 
 on:
   push:
+    branches: [main, develop]
   pull_request:
 
 jobs:
   phpcs:
-    name: PHPCS
     runs-on: ubuntu-latest
+
+    name: PHPCS
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.5'
           tools: composer
 
       - name: Install dependencies
@@ -25,16 +28,18 @@ jobs:
         run: vendor/bin/phpcs
 
   phpstan:
-    name: PHPStan
     runs-on: ubuntu-latest
+
+    name: PHPStan
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.5'
           tools: composer
 
       - name: Install dependencies

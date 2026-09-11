@@ -1,7 +1,4 @@
-*.log
-.htaccess
-sitemap.xml
-sitemap.xml.gz
+# WordPress
 wp-config.php
 wp-content/advanced-cache.php
 wp-content/backup-db/
@@ -11,8 +8,21 @@ wp-content/cache/
 wp-content/upgrade/
 wp-content/uploads/
 wp-content/wp-cache-config.php
-.idea
-.DS_Store
+.htaccess
+sitemap.xml
+sitemap.xml.gz
+
+# Dependencies
 node_modules/
 vendor/
+
+# Build artifacts
+*.log
+*.zip
+
+# IDE / OS
+.idea
+.DS_Store
+
+# Project
 plan.md
