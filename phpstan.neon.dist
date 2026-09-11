@@ -41,8 +41,6 @@ parameters:
             message: '#Constant WCEmails_\w+ not found#'
         -
             message: '#Constant WP_LANG_DIR not found#'
-        -
-            message: '#Constant ABSPATH not found#'
         # WP_List_Table::set_pagination_args total_pages float vs int.
         -
             message: '#Parameter .* of method WP_List_Table::set_pagination_args#'
