@@ -4,16 +4,13 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  fast-xml-parser: '>=5.3.4'
-
 importers:
 
   .:
     devDependencies:
       '@wordpress/env':
         specifier: ^10.39.0
-        version: 10.39.0(@types/node@25.2.3)
+        version: 10.39.0(@types/node@25.2.3)(supports-color@7.2.0)
 
 packages:
 
@@ -273,6 +270,7 @@ packages:
 
   '@octokit/webhooks-types@7.6.1':
     resolution: {integrity: sha512-S8u2cJzklBC0FgTwWVLaM8tMrDuDMVE4xiTK4EYXM9GntyvrdbSoxqDQa+Fh57CCNApyIpyeqPhhFEmHPfrXgw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   '@octokit/webhooks@12.3.2':
     resolution: {integrity: sha512-exj1MzVXoP7xnAcAB3jZ97pTvVPkQF9y6GA/dvYC47HV7vLv+24XRS6b/v/XnyikpEuvMhugEXdGtAlU086WkQ==}
@@ -658,7 +656,6 @@ packages:
 
   concat-stream@1.6.2:
     resolution: {integrity: sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==}
-    engines: {'0': node >= 0.8}
 
   content-disposition@0.5.4:
     resolution: {integrity: sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==}
@@ -812,8 +809,8 @@ packages:
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
-  fast-xml-parser@5.3.5:
-    resolution: {integrity: sha512-JeaA2Vm9ffQKp9VjvfzObuMCjUYAp5WDYhRYL5LrBPY/jUDlUtOvDfot0vKSkB9tuX885BDHjtw4fZadD95wnA==}
+  fast-xml-parser@5.3.0:
+    resolution: {integrity: sha512-gkWGshjYcQCF+6qtlrqBqELqNqnt4CxruY6UVAWWnqb3DQ6qaNFEIKqzYep1XzHLM/QtrHVCxyPOtTk4LTQ7Aw==}
     hasBin: true
 
   fd-slicer@1.1.0:
@@ -1184,8 +1181,8 @@ packages:
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
-  proxy-addr@2.0.7:
-    resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
+  proxy-addr@2.0.8:
+    resolution: {integrity: sha512-5nnx0yGyVUcY6t9RnWcARWtwT9F1D8O9rt08htPvnd49W1IgZtmLkhu9WfMzQj1cFxjHIO6connUNVW5k7AVyQ==}
     engines: {node: '>= 0.10'}
 
   ps-man@1.1.8:
@@ -1664,9 +1661,9 @@ snapshots:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
-  '@kwsites/file-exists@1.1.1':
+  '@kwsites/file-exists@1.1.1(supports-color@7.2.0)':
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -1926,18 +1923,18 @@ snapshots:
 
   '@php-wasm/cli-util@3.0.46':
     dependencies:
-      fast-xml-parser: 5.3.5
+      fast-xml-parser: 5.3.0
       jsonc-parser: 3.3.1
     optionalDependencies:
       fs-ext: 2.1.1
 
-  '@php-wasm/fs-journal@3.0.46':
+  '@php-wasm/fs-journal@3.0.46(supports-color@7.2.0)':
     dependencies:
       '@php-wasm/logger': 3.0.46
-      '@php-wasm/node': 3.0.46
+      '@php-wasm/node': 3.0.46(supports-color@7.2.0)
       '@php-wasm/universal': 3.0.46
       '@php-wasm/util': 3.0.46
-      express: 4.22.0
+      express: 4.22.0(supports-color@7.2.0)
       ini: 4.1.2
       wasm-feature-detect: 1.8.0
       ws: 8.18.3
@@ -2043,7 +2040,7 @@ snapshots:
     optionalDependencies:
       fs-ext: 2.1.1
 
-  '@php-wasm/node@3.0.46':
+  '@php-wasm/node@3.0.46(supports-color@7.2.0)':
     dependencies:
       '@php-wasm/logger': 3.0.46
       '@php-wasm/node-7-4': 3.0.46
@@ -2057,7 +2054,7 @@ snapshots:
       '@php-wasm/universal': 3.0.46
       '@php-wasm/util': 3.0.46
       '@wp-playground/common': 3.0.46
-      express: 4.22.0
+      express: 4.22.0(supports-color@7.2.0)
       ini: 4.1.2
       wasm-feature-detect: 1.8.0
       ws: 8.18.3
@@ -2164,9 +2161,9 @@ snapshots:
     optionalDependencies:
       fs-ext: 2.1.1
 
-  '@php-wasm/web@3.0.46':
+  '@php-wasm/web@3.0.46(supports-color@7.2.0)':
     dependencies:
-      '@php-wasm/fs-journal': 3.0.46
+      '@php-wasm/fs-journal': 3.0.46(supports-color@7.2.0)
       '@php-wasm/logger': 3.0.46
       '@php-wasm/universal': 3.0.46
       '@php-wasm/util': 3.0.46
@@ -2179,7 +2176,7 @@ snapshots:
       '@php-wasm/web-8-5': 3.0.46
       '@php-wasm/web-service-worker': 3.0.46
       '@wp-playground/common': 3.0.46
-      express: 4.22.0
+      express: 4.22.0(supports-color@7.2.0)
       ini: 4.1.2
       selfsigned: 5.5.0
       wasm-feature-detect: 1.8.0
@@ -2192,13 +2189,13 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@php-wasm/xdebug-bridge@3.0.46':
+  '@php-wasm/xdebug-bridge@3.0.46(supports-color@7.2.0)':
     dependencies:
       '@php-wasm/logger': 3.0.46
-      '@php-wasm/node': 3.0.46
+      '@php-wasm/node': 3.0.46(supports-color@7.2.0)
       '@php-wasm/universal': 3.0.46
       '@wp-playground/common': 3.0.46
-      express: 4.22.0
+      express: 4.22.0(supports-color@7.2.0)
       ini: 4.1.2
       wasm-feature-detect: 1.8.0
       ws: 8.18.3
@@ -2254,20 +2251,20 @@ snapshots:
 
   '@wolfy1339/lru-cache@11.0.2-patch.1': {}
 
-  '@wordpress/env@10.39.0(@types/node@25.2.3)':
+  '@wordpress/env@10.39.0(@types/node@25.2.3)(supports-color@7.2.0)':
     dependencies:
       '@inquirer/prompts': 7.10.1(@types/node@25.2.3)
-      '@wp-playground/cli': 3.0.46
+      '@wp-playground/cli': 3.0.46(supports-color@7.2.0)
       chalk: 4.1.2
       copy-dir: 1.3.0
       cross-spawn: 7.0.6
       docker-compose: 0.24.8
-      extract-zip: 1.7.0
+      extract-zip: 1.7.0(supports-color@7.2.0)
       got: 11.8.6
       js-yaml: 3.14.2
       ora: 4.1.1
       rimraf: 5.0.10
-      simple-git: 3.30.0
+      simple-git: 3.30.0(supports-color@7.2.0)
       terminal-link: 2.1.1
       yargs: 17.7.2
     transitivePeerDependencies:
@@ -2276,27 +2273,27 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@wp-playground/blueprints@3.0.46':
+  '@wp-playground/blueprints@3.0.46(supports-color@7.2.0)':
     dependencies:
       '@php-wasm/logger': 3.0.46
-      '@php-wasm/node': 3.0.46
+      '@php-wasm/node': 3.0.46(supports-color@7.2.0)
       '@php-wasm/node-polyfills': 3.0.46
       '@php-wasm/progress': 3.0.46
       '@php-wasm/scopes': 3.0.46
       '@php-wasm/stream-compression': 3.0.46
       '@php-wasm/universal': 3.0.46
       '@php-wasm/util': 3.0.46
-      '@php-wasm/web': 3.0.46
+      '@php-wasm/web': 3.0.46(supports-color@7.2.0)
       '@wp-playground/common': 3.0.46
-      '@wp-playground/storage': 3.0.46
-      '@wp-playground/wordpress': 3.0.46
+      '@wp-playground/storage': 3.0.46(supports-color@7.2.0)
+      '@wp-playground/wordpress': 3.0.46(supports-color@7.2.0)
       '@zip.js/zip.js': 2.7.57
       ajv: 8.12.0
       async-lock: 1.4.1
       clean-git-ref: 2.0.1
       crc-32: 1.2.2
       diff3: 0.0.4
-      express: 4.22.0
+      express: 4.22.0(supports-color@7.2.0)
       ignore: 5.3.2
       ini: 4.1.2
       minimisted: 2.0.1
@@ -2317,27 +2314,27 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@wp-playground/cli@3.0.46':
+  '@wp-playground/cli@3.0.46(supports-color@7.2.0)':
     dependencies:
       '@php-wasm/cli-util': 3.0.46
       '@php-wasm/logger': 3.0.46
-      '@php-wasm/node': 3.0.46
+      '@php-wasm/node': 3.0.46(supports-color@7.2.0)
       '@php-wasm/progress': 3.0.46
       '@php-wasm/universal': 3.0.46
       '@php-wasm/util': 3.0.46
-      '@php-wasm/xdebug-bridge': 3.0.46
-      '@wp-playground/blueprints': 3.0.46
+      '@php-wasm/xdebug-bridge': 3.0.46(supports-color@7.2.0)
+      '@wp-playground/blueprints': 3.0.46(supports-color@7.2.0)
       '@wp-playground/common': 3.0.46
-      '@wp-playground/storage': 3.0.46
-      '@wp-playground/wordpress': 3.0.46
+      '@wp-playground/storage': 3.0.46(supports-color@7.2.0)
+      '@wp-playground/wordpress': 3.0.46(supports-color@7.2.0)
       '@zip.js/zip.js': 2.7.57
       ajv: 8.12.0
       async-lock: 1.4.1
       clean-git-ref: 2.0.1
       crc-32: 1.2.2
       diff3: 0.0.4
-      express: 4.22.0
-      fast-xml-parser: 5.3.5
+      express: 4.22.0(supports-color@7.2.0)
+      fast-xml-parser: 5.3.0
       fs-extra: 11.1.1
       ignore: 5.3.2
       ini: 4.1.2
@@ -2371,18 +2368,18 @@ snapshots:
     optionalDependencies:
       fs-ext: 2.1.1
 
-  '@wp-playground/storage@3.0.46':
+  '@wp-playground/storage@3.0.46(supports-color@7.2.0)':
     dependencies:
       '@php-wasm/stream-compression': 3.0.46
       '@php-wasm/universal': 3.0.46
       '@php-wasm/util': 3.0.46
-      '@php-wasm/web': 3.0.46
+      '@php-wasm/web': 3.0.46(supports-color@7.2.0)
       '@zip.js/zip.js': 2.7.57
       async-lock: 1.4.1
       clean-git-ref: 2.0.1
       crc-32: 1.2.2
       diff3: 0.0.3
-      express: 4.22.0
+      express: 4.22.0(supports-color@7.2.0)
       ignore: 5.3.2
       ini: 4.1.2
       minimisted: 2.0.1
@@ -2403,14 +2400,14 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@wp-playground/wordpress@3.0.46':
+  '@wp-playground/wordpress@3.0.46(supports-color@7.2.0)':
     dependencies:
       '@php-wasm/logger': 3.0.46
-      '@php-wasm/node': 3.0.46
+      '@php-wasm/node': 3.0.46(supports-color@7.2.0)
       '@php-wasm/universal': 3.0.46
       '@php-wasm/util': 3.0.46
       '@wp-playground/common': 3.0.46
-      express: 4.22.0
+      express: 4.22.0(supports-color@7.2.0)
       ini: 4.1.2
       wasm-feature-detect: 1.8.0
       ws: 8.18.3
@@ -2481,11 +2478,11 @@ snapshots:
 
   before-after-hook@2.2.3: {}
 
-  body-parser@1.20.4:
+  body-parser@1.20.4(supports-color@7.2.0):
     dependencies:
       bytes: 3.1.2
       content-type: 1.0.5
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@7.2.0)
       depd: 2.0.0
       destroy: 1.2.0
       http-errors: 2.0.1
@@ -2628,13 +2625,17 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  debug@2.6.9:
+  debug@2.6.9(supports-color@7.2.0):
     dependencies:
       ms: 2.0.0
+    optionalDependencies:
+      supports-color: 7.2.0
 
-  debug@4.4.3:
+  debug@4.4.3(supports-color@7.2.0):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 7.2.0
 
   decompress-response@6.0.0:
     dependencies:
@@ -2708,21 +2709,21 @@ snapshots:
 
   etag@1.8.1: {}
 
-  express@4.22.0:
+  express@4.22.0(supports-color@7.2.0):
     dependencies:
       accepts: 1.3.8
       array-flatten: 1.1.1
-      body-parser: 1.20.4
+      body-parser: 1.20.4(supports-color@7.2.0)
       content-disposition: 0.5.4
       content-type: 1.0.5
       cookie: 0.7.2
       cookie-signature: 1.0.7
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@7.2.0)
       depd: 2.0.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
-      finalhandler: 1.3.2
+      finalhandler: 1.3.2(supports-color@7.2.0)
       fresh: 0.5.2
       http-errors: 2.0.1
       merge-descriptors: 1.0.3
@@ -2730,12 +2731,12 @@ snapshots:
       on-finished: 2.4.1
       parseurl: 1.3.3
       path-to-regexp: 0.1.12
-      proxy-addr: 2.0.7
+      proxy-addr: 2.0.8
       qs: 6.14.1
       range-parser: 1.2.1
       safe-buffer: 5.2.1
-      send: 0.19.2
-      serve-static: 1.16.3
+      send: 0.19.2(supports-color@7.2.0)
+      serve-static: 1.16.3(supports-color@7.2.0)
       setprototypeof: 1.2.0
       statuses: 2.0.2
       type-is: 1.6.18
@@ -2744,10 +2745,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  extract-zip@1.7.0:
+  extract-zip@1.7.0(supports-color@7.2.0):
     dependencies:
       concat-stream: 1.6.2
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@7.2.0)
       mkdirp: 0.5.6
       yauzl: 2.10.0
     transitivePeerDependencies:
@@ -2755,7 +2756,7 @@ snapshots:
 
   fast-deep-equal@3.1.3: {}
 
-  fast-xml-parser@5.3.5:
+  fast-xml-parser@5.3.0:
     dependencies:
       strnum: 2.1.2
 
@@ -2763,9 +2764,9 @@ snapshots:
     dependencies:
       pend: 1.2.0
 
-  finalhandler@1.3.2:
+  finalhandler@1.3.2(supports-color@7.2.0):
     dependencies:
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@7.2.0)
       encodeurl: 2.0.0
       escape-html: 1.0.3
       on-finished: 2.4.1
@@ -3119,7 +3120,7 @@ snapshots:
 
   process-nextick-args@2.0.1: {}
 
-  proxy-addr@2.0.7:
+  proxy-addr@2.0.8:
     dependencies:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
@@ -3206,9 +3207,9 @@ snapshots:
 
   semver@7.7.4: {}
 
-  send@0.19.2:
+  send@0.19.2(supports-color@7.2.0):
     dependencies:
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@7.2.0)
       depd: 2.0.0
       destroy: 1.2.0
       encodeurl: 2.0.0
@@ -3224,12 +3225,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  serve-static@1.16.3:
+  serve-static@1.16.3(supports-color@7.2.0):
     dependencies:
       encodeurl: 2.0.0
       escape-html: 1.0.3
       parseurl: 1.3.3
-      send: 0.19.2
+      send: 0.19.2(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -3296,11 +3297,11 @@ snapshots:
       once: 1.4.0
       simple-concat: 1.0.1
 
-  simple-git@3.30.0:
+  simple-git@3.30.0(supports-color@7.2.0):
     dependencies:
-      '@kwsites/file-exists': 1.1.1
+      '@kwsites/file-exists': 1.1.1(supports-color@7.2.0)
       '@kwsites/promise-deferred': 1.1.1
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
